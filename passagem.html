@@ -7,5 +7,77 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo-box">
+        <img src="assets/logo.png" alt="Logo">
+      </div>
+
+      <div class="title-box">
+        <h1>Passagem de Plantão</h1>
+        <p>Checklist operacional das últimas 10 horas e resumos dos últimos 3 dias</p>
+      </div>
+    </div>
+
+    <nav class="top-nav">
+      <div class="top-nav-inner">
+        <a href="index.html" class="nav-link">Avisos</a>
+        <a href="passagem.html" class="nav-link active">Passagem de Plantão</a>
+        <a href="insumos.html" class="nav-link">Insumos</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="page-wrap">
+    <section class="hero-card">
+      <h2>Painel de Passagem de Plantão</h2>
+      <p>
+        Aqui vamos exibir o checklist das últimas 10 horas, com filtro por unidade,
+        além do resumo de plantão dos últimos 3 dias.
+      </p>
+    </section>
+
+    <h2 class="section-title">Filtro</h2>
+    <section class="card">
+      <h3>Unidade</h3>
+      <p>Neste espaço vamos colocar o seletor de unidade.</p>
+    </section>
+
+    <h2 class="section-title">Checklist operacional</h2>
+    <section class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Unidade</th>
+            <th>Técnico</th>
+            <th>Timed</th>
+            <th>Oviyam</th>
+            <th>Laboratório</th>
+            <th>Internet</th>
+            <th>Servidores</th>
+            <th>Impressoras</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Exemplo</td>
+            <td>Exemplo</td>
+            <td>Operante</td>
+            <td>Operante</td>
+            <td>Não operante</td>
+            <td>Operante</td>
+            <td>Não se aplica</td>
+            <td>Operante</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <h2 class="section-title">Resumos recentes</h2>
+    <section class="card">
+      <h3>Últimos 3 dias</h3>
+      <p>Nesta área vamos mostrar os resumos pendentes por unidade.</p>
+    </section>
+  </main>
 </body>
 </html>

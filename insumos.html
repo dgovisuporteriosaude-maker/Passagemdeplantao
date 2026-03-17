@@ -7,5 +7,90 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo-box">
+        <img src="assets/logo.png" alt="Logo">
+      </div>
+
+      <div class="title-box">
+        <h1>Controle de Insumos</h1>
+        <p>Quantidades das últimas 10 horas e consumo consolidado dos últimos 30 dias</p>
+      </div>
+    </div>
+
+    <nav class="top-nav">
+      <div class="top-nav-inner">
+        <a href="index.html" class="nav-link">Avisos</a>
+        <a href="passagem.html" class="nav-link">Passagem de Plantão</a>
+        <a href="insumos.html" class="nav-link active">Insumos</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="page-wrap">
+    <section class="hero-card">
+      <h2>Painel de Insumos</h2>
+      <p>
+        Aqui vamos exibir os insumos informados nas últimas 10 horas, com destaque visual
+        para quantidades baixas, além do gráfico de consumo diário dos últimos 30 dias.
+      </p>
+    </section>
+
+    <h2 class="section-title">Filtro</h2>
+    <section class="card">
+      <h3>Unidade</h3>
+      <p>Neste espaço vamos colocar o seletor de unidade.</p>
+    </section>
+
+    <h2 class="section-title">Quantidades recentes</h2>
+    <section class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Unidade</th>
+            <th>Data/Hora</th>
+            <th>Pulseiras</th>
+            <th>Ribbon</th>
+            <th>Etiqueta Visitante</th>
+            <th>Etiqueta Branca</th>
+            <th>Etiqueta Vermelha</th>
+            <th>Tonner</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Exemplo</td>
+            <td>17/03/2026 09:31</td>
+            <td><span class="badge ok">11</span></td>
+            <td><span class="badge ok">25</span></td>
+            <td><span class="badge ok">161</span></td>
+            <td><span class="badge ok">16</span></td>
+            <td><span class="badge ok">12</span></td>
+            <td><span class="badge ok">14</span></td>
+          </tr>
+          <tr>
+            <td>Exemplo</td>
+            <td>17/03/2026 07:15</td>
+            <td><span class="badge alerta">8</span></td>
+            <td><span class="badge ok">18</span></td>
+            <td><span class="badge ok">95</span></td>
+            <td><span class="badge alerta">9</span></td>
+            <td><span class="badge critico">4</span></td>
+            <td><span class="badge critico">3</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <h2 class="section-title">Consumo dos últimos 30 dias</h2>
+    <section class="card">
+      <h3>Gráfico de consumo diário</h3>
+      <p>
+        Nesta área vamos colocar o gráfico usando o menor valor informado em cada dia
+        para cada insumo.
+      </p>
+    </section>
+  </main>
 </body>
 </html>
