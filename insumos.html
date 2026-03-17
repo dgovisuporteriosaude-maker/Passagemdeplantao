@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Passagem de Plantão</title>
+  <title>Insumos</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <header class="site-header">
@@ -13,24 +14,24 @@
         <img src="assets/logo.png" alt="Logo">
       </div>
       <div class="title-box">
-        <h1>Passagem de Plantão</h1>
-        <p>Checklist operacional das últimas 10 horas e pendências recentes por unidade</p>
+        <h1>Painel de Insumos</h1>
+        <p>Tabela compacta das últimas 10 horas e gráficos individualizados por item nos últimos 30 dias</p>
       </div>
     </div>
 
     <nav class="top-nav">
       <div class="top-nav-inner">
         <a href="index.html" class="nav-link">Avisos</a>
-        <a href="passagem.html" class="nav-link active">Passagem de Plantão</a>
-        <a href="insumos.html" class="nav-link">Insumos</a>
+        <a href="passagem.html" class="nav-link">Passagem de Plantão</a>
+        <a href="insumos.html" class="nav-link active">Insumos</a>
       </div>
     </nav>
   </header>
 
   <main class="page-wrap">
     <section class="hero-card">
-      <h2>Checklist operacional</h2>
-      <p>Visualização compacta por unidade, com presença do técnico nas últimas 10 horas e resumo dos problemas relatados quando o status foi marcado como não operante.</p>
+      <h2>Controle de insumos</h2>
+      <p>As células destacam valores abaixo do ideal: amarelo para abaixo de 10 e vermelho para abaixo de 5. Os gráficos usam sempre o menor valor informado em cada dia.</p>
     </section>
 
     <section class="card">
@@ -43,104 +44,65 @@
 
       <div class="kpi-row">
         <div class="kpi-card">
-          <span>Unidades presentes</span>
-          <strong id="kpiPresentes">0</strong>
+          <span>Registros nas últimas 10h</span>
+          <strong id="kpiRegistros">0</strong>
         </div>
         <div class="kpi-card">
-          <span>Unidades ausentes</span>
-          <strong id="kpiAusentes">0</strong>
+          <span>Alertas (&lt; 10)</span>
+          <strong id="kpiAlertas">0</strong>
         </div>
         <div class="kpi-card">
-          <span>Problemas relatados</span>
-          <strong id="kpiProblemas">0</strong>
+          <span>Críticos (&lt; 5)</span>
+          <strong id="kpiCriticos">0</strong>
         </div>
       </div>
     </section>
 
-    <h2 class="section-title">Status das unidades</h2>
-    <section class="unit-status-wrap">
-      <div class="unit-legend">
-        <div class="legend-item"><span class="legend-dot dot-green"></span><span>Técnico presente</span></div>
-        <div class="legend-item"><span class="legend-dot dot-red"></span><span>Técnico ausente</span></div>
-      </div>
-      <div id="unitStatusGrid" class="unit-status-grid"></div>
-    </section>
-
-    <h2 class="section-title">Checklist das últimas 10 horas</h2>
+    <h2 class="section-title">Tabela de insumos - últimas 10 horas</h2>
     <section class="table-box">
       <table class="data-table">
         <thead>
           <tr>
             <th>Unidade</th>
-            <th>Técnico</th>
             <th>Data/Hora</th>
-            <th>TIMED</th>
-            <th>OVIYAM</th>
-            <th>LABORATÓRIO</th>
-            <th>INTERNET</th>
-            <th>PPD</th>
-            <th>GLPI</th>
-            <th>SERVIDORES</th>
-            <th>PAINEL CHAMADOS</th>
-            <th>PAINEL ESCALA</th>
-            <th>TOTEM</th>
-            <th>COMPUTADORES</th>
-            <th>IMPRESSORAS</th>
-            <th>CFTV</th>
-            <th>BOTÃO DE PÂNICO</th>
+            <th>Etiqueta Visitante</th>
+            <th>Etiqueta Vermelha</th>
+            <th>Etiqueta Branca</th>
+            <th>Pulseiras</th>
+            <th>Ribbon</th>
+            <th>Tempo armazenamento CFTV</th>
+            <th>Tonner</th>
           </tr>
         </thead>
-        <tbody id="checklistBody"></tbody>
+        <tbody id="supplyBody"></tbody>
       </table>
     </section>
 
-    <h2 class="section-title">Pendências relatadas - últimos 3 dias</h2>
-    <section class="resume-box">
-      <div id="resumeList" class="resume-list"></div>
+    <h2 class="section-title">Consumo diário - últimos 30 dias</h2>
+    <section class="chart-grid">
+      <div class="chart-box"><h3>Pulseiras</h3><canvas id="chart-pulseiras"></canvas></div>
+      <div class="chart-box"><h3>Ribbon</h3><canvas id="chart-ribbon"></canvas></div>
+      <div class="chart-box"><h3>Etiqueta Visitante</h3><canvas id="chart-visitante"></canvas></div>
+      <div class="chart-box"><h3>Etiqueta Vermelha</h3><canvas id="chart-vermelha"></canvas></div>
+      <div class="chart-box"><h3>Etiqueta Branca</h3><canvas id="chart-branca"></canvas></div>
+      <div class="chart-box"><h3>Tonner</h3><canvas id="chart-tonner"></canvas></div>
+      <div class="chart-box"><h3>Tempo de armazenamento CFTV</h3><canvas id="chart-cftvtempo"></canvas></div>
     </section>
   </main>
 
   <script>
-    const ALL_UNITS = [
-      'UPA CIDADE DE DEUS',
-      'UPA JOAO XXIII',
-      'UPA MAGALHÃES BASTOS',
-      'MATERNIDADE DA ROCINHA',
-      'UPA COSTA BARROS',
-      'UPA DEL CASTILHO',
-      'UPA ENGENHO DE DENTRO',
-      'UPA MADUREIRA',
-      'UPA SENADOR CAMARÁ',
-      'UPA SEPETIBA',
-      'UPA VILA KENNEDY'
-    ];
-
-    const CHECK_FIELDS = [
-      { label: 'TIMED', statusKey: 'TIMED', problemKey: 'Qual problema encontrado no TIMED?' },
-      { label: 'OVIYAM', statusKey: 'OVIYAM & INTEGRAÇÃO', problemKey: 'Qual problema encontrado no OVIYAM?' },
-      { label: 'LABORATÓRIO', statusKey: 'INTEGRAÇÃO DE LABORATÓRIO', problemKey: 'Qual problema encontrado na integração de laboratório?' },
-      { label: 'INTERNET', statusKey: 'INTERNET', problemKey: 'Qual problema com a internet?' },
-      { label: 'PPD', statusKey: 'PPD', problemKey: null },
-      { label: 'GLPI', statusKey: 'GLPI', problemKey: null },
-      { label: 'SERVIDORES', statusKey: 'SERVIDORES', problemKey: 'Qual problema com os servidores?' },
-      { label: 'PAINEL CHAMADOS', statusKey: 'PAINEL DE CHAMADOS', problemKey: 'Qual problema com o painel de chamados?' },
-      { label: 'PAINEL ESCALA', statusKey: 'PAINEL DE ESCALA', problemKey: 'Qual problema com o painel de escala?' },
-      { label: 'TOTEM', statusKey: 'TOTEM', problemKey: 'Qual problema com o totem?' },
-      { label: 'COMPUTADORES', statusKey: 'COMPUTADORES', problemKey: 'Qual problema com computadores?' },
-      { label: 'IMPRESSORAS', statusKey: 'IMPRESSORAS', problemKey: 'Qual problema com impressoras?' },
-      { label: 'CFTV', statusKey: 'CFTV', problemKey: 'Qual problema com CFTV?' },
-      { label: 'BOTÃO DE PÂNICO', statusKey: 'BOTAO DE PANICO', problemKey: null }
+    const SUPPLY_FIELDS = [
+      { key: 'ETIQUETA VISITANTE', label: 'Etiqueta Visitante', canvasId: 'chart-visitante' },
+      { key: 'ETIQUETA DE UNITARIZAÇÃO VERMELHA', label: 'Etiqueta Vermelha', canvasId: 'chart-vermelha' },
+      { key: 'ETIQUETA DE UNITARIZAÇÃO BRANCA', label: 'Etiqueta Branca', canvasId: 'chart-branca' },
+      { key: 'PULSEIRAS', label: 'Pulseiras', canvasId: 'chart-pulseiras' },
+      { key: 'RIBBON', label: 'Ribbon', canvasId: 'chart-ribbon' },
+      { key: 'TEMPO DE ARMAZENAMENTO', label: 'Tempo de armazenamento CFTV', canvasId: 'chart-cftvtempo' },
+      { key: 'Tonner', label: 'Tonner', canvasId: 'chart-tonner' }
     ];
 
     let allRows = [];
-
-    function normalizeText(value) {
-      return String(value || '')
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .trim()
-        .toUpperCase();
-    }
+    const charts = {};
 
     function parseBrazilDateTime(value) {
       if (!value) return null;
@@ -151,42 +113,38 @@
       return new Date(year, month - 1, day, hour, minute, second);
     }
 
+    function getUnit(row) {
+      return row['Qual Sua unidade?'] || 'Sem unidade';
+    }
+
+    function toNumber(value) {
+      const n = Number(String(value || '').replace(',', '.'));
+      return Number.isFinite(n) ? n : null;
+    }
+
     function formatDateTime(value) {
       const d = parseBrazilDateTime(value);
       if (!d || isNaN(d)) return '-';
       return d.toLocaleString('pt-BR');
     }
 
-    function getUnit(row) {
-      return row['Qual Sua unidade?'] || 'Sem unidade';
+    function fillUnitFilter() {
+      const select = document.getElementById('unitFilter');
+      const units = [...new Set(allRows.map(getUnit).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR'));
+      select.innerHTML =
+        '<option value="__ALL__">Todas as unidades</option>' +
+        units.map(unit => `<option value="${unit}">${unit}</option>`).join('');
+      select.addEventListener('change', renderAll);
     }
 
-    function getTech(row) {
-      return row['Técnico Pantonista'] || '-';
+    function selectedUnit() {
+      return document.getElementById('unitFilter').value;
     }
 
-    function isOperante(value) {
-      return normalizeText(value) === 'OPERANTE';
-    }
-
-    function isNaoSeAplica(value) {
-      const v = normalizeText(value);
-      return v === 'NAO SE APLICA' || v === 'NÃO SE APLICA';
-    }
-
-    function isNaoOperante(value) {
-      const v = normalizeText(value);
-      return !!v && !isOperante(value) && !isNaoSeAplica(value);
-    }
-
-    function renderStatusCell(value) {
-      if (isOperante(value)) {
-        return '<span class="status-dot dot-green"></span>';
-      }
-      if (isNaoOperante(value)) {
-        return '<span class="status-dot dot-red"></span>';
-      }
-      return '<span class="na-text">Não se aplica</span>';
+    function filterRowsByUnit(rows) {
+      const unit = selectedUnit();
+      if (!unit || unit === '__ALL__') return rows;
+      return rows.filter(row => getUnit(row) === unit);
     }
 
     function getRowsLastHours(hours) {
@@ -200,148 +158,129 @@
         .sort((a, b) => parseBrazilDateTime(b['Carimbo de data/hora']) - parseBrazilDateTime(a['Carimbo de data/hora']));
     }
 
-    function getRowsLastDays(days) {
-      const now = new Date();
-      const cutoff = new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
-      return allRows
-        .filter(row => {
-          const dt = parseBrazilDateTime(row['Carimbo de data/hora']);
-          return dt && dt >= cutoff && dt <= now;
-        })
-        .sort((a, b) => parseBrazilDateTime(b['Carimbo de data/hora']) - parseBrazilDateTime(a['Carimbo de data/hora']));
+    function qtyClass(value) {
+      const n = toNumber(value);
+      if (n === null) return '';
+      if (n < 5) return 'qty-critical';
+      if (n < 10) return 'qty-warn';
+      return '';
     }
 
-    function fillUnitFilter() {
-      const select = document.getElementById('unitFilter');
-      const units = [...new Set([...ALL_UNITS, ...allRows.map(getUnit)])].filter(Boolean).sort((a, b) => a.localeCompare(b, 'pt-BR'));
-      select.innerHTML =
-        '<option value="__ALL__">Todas as unidades</option>' +
-        units.map(unit => `<option value="${unit}">${unit}</option>`).join('');
-      select.addEventListener('change', renderAll);
+    function qtyHtml(value) {
+      const cls = qtyClass(value);
+      return `<span class="qty-box ${cls}">${value ?? '-'}</span>`;
     }
 
-    function selectedUnit() {
-      return document.getElementById('unitFilter').value;
-    }
-
-    function filterRowsBySelectedUnit(rows) {
-      const unit = selectedUnit();
-      if (!unit || unit === '__ALL__') return rows;
-      return rows.filter(row => getUnit(row) === unit);
-    }
-
-    function buildPresenceMap(recentRows) {
-      const map = {};
-      ALL_UNITS.forEach(unit => map[unit] = false);
-      recentRows.forEach(row => {
-        map[getUnit(row)] = true;
-      });
-      return map;
-    }
-
-    function renderUnitStatus(recentRows) {
-      const grid = document.getElementById('unitStatusGrid');
-      const map = buildPresenceMap(recentRows);
-      const unitsToShow = selectedUnit() === '__ALL__' ? ALL_UNITS : [selectedUnit()];
-
-      grid.innerHTML = unitsToShow.map(unit => `
-        <div class="unit-status-item">
-          <div class="unit-status-name">${unit}</div>
-          <div class="unit-status-bar ${map[unit] ? 'present' : 'absent'}"></div>
-        </div>
-      `).join('');
-
-      const present = unitsToShow.filter(unit => map[unit]).length;
-      const absent = unitsToShow.filter(unit => !map[unit]).length;
-
-      document.getElementById('kpiPresentes').textContent = present;
-      document.getElementById('kpiAusentes').textContent = absent;
-    }
-
-    function renderChecklistTable(rows) {
-      const tbody = document.getElementById('checklistBody');
+    function renderTable(rows) {
+      const tbody = document.getElementById('supplyBody');
       if (!rows.length) {
-        tbody.innerHTML = `<tr><td colspan="17" style="background:#fff;color:#6b7280;padding:18px;">Nenhum checklist encontrado nas últimas 10 horas.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="9" style="background:#fff;color:#6b7280;padding:18px;">Nenhum registro encontrado nas últimas 10 horas.</td></tr>`;
         return;
       }
 
-      tbody.innerHTML = rows.map(row => {
-        const cells = CHECK_FIELDS.map(field => `
-          <td class="status-cell">${renderStatusCell(row[field.statusKey])}</td>
-        `).join('');
-
-        return `
-          <tr>
-            <td class="col-unit">${getUnit(row)}</td>
-            <td class="col-tech">${getTech(row)}</td>
-            <td class="col-datetime">${formatDateTime(row['Carimbo de data/hora'])}</td>
-            ${cells}
-          </tr>
-        `;
-      }).join('');
+      tbody.innerHTML = rows.map(row => `
+        <tr>
+          <td class="col-unit">${getUnit(row)}</td>
+          <td class="col-datetime">${formatDateTime(row['Carimbo de data/hora'])}</td>
+          <td>${qtyHtml(row['ETIQUETA VISITANTE'])}</td>
+          <td>${qtyHtml(row['ETIQUETA DE UNITARIZAÇÃO VERMELHA'])}</td>
+          <td>${qtyHtml(row['ETIQUETA DE UNITARIZAÇÃO BRANCA'])}</td>
+          <td>${qtyHtml(row['PULSEIRAS'])}</td>
+          <td>${qtyHtml(row['RIBBON'])}</td>
+          <td>${qtyHtml(row['TEMPO DE ARMAZENAMENTO'])}</td>
+          <td>${qtyHtml(row['Tonner'])}</td>
+        </tr>
+      `).join('');
     }
 
-    function collectProblemEntries(rows) {
-      const entries = [];
+    function updateKpis(rows) {
+      let alerts = 0;
+      let criticals = 0;
 
       rows.forEach(row => {
-        const problems = [];
-
-        CHECK_FIELDS.forEach(field => {
-          const value = row[field.statusKey];
-          if (isNaoOperante(value)) {
-            const problemText = field.problemKey ? String(row[field.problemKey] || '').trim() : '';
-            problems.push({
-              item: field.label,
-              detail: problemText || 'Problema não detalhado.'
-            });
-          }
+        SUPPLY_FIELDS.forEach(field => {
+          const n = toNumber(row[field.key]);
+          if (n !== null && n < 10) alerts += 1;
+          if (n !== null && n < 5) criticals += 1;
         });
+      });
 
-        if (problems.length) {
-          entries.push({
-            unit: getUnit(row),
-            tech: getTech(row),
-            date: formatDateTime(row['Carimbo de data/hora']),
-            problems
-          });
+      document.getElementById('kpiRegistros').textContent = rows.length;
+      document.getElementById('kpiAlertas').textContent = alerts;
+      document.getElementById('kpiCriticos').textContent = criticals;
+    }
+
+    function buildDailyMinSeries(rows, fieldKey) {
+      const now = new Date();
+      const start = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 29);
+      const labels = [];
+      const valuesByDay = {};
+
+      for (let i = 0; i < 30; i++) {
+        const d = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
+        const key = d.toISOString().slice(0, 10);
+        labels.push(d.toLocaleDateString('pt-BR'));
+        valuesByDay[key] = null;
+      }
+
+      rows.forEach(row => {
+        const dt = parseBrazilDateTime(row['Carimbo de data/hora']);
+        if (!dt || dt < start || dt > now) return;
+        const n = toNumber(row[fieldKey]);
+        if (n === null) return;
+        const dayKey = dt.toISOString().slice(0, 10);
+        if (valuesByDay[dayKey] === null || n < valuesByDay[dayKey]) {
+          valuesByDay[dayKey] = n;
         }
       });
 
-      return entries;
+      return {
+        labels,
+        values: Object.values(valuesByDay)
+      };
     }
 
-    function renderProblemSummaries(rows) {
-      const container = document.getElementById('resumeList');
-      const entries = collectProblemEntries(rows);
-      document.getElementById('kpiProblemas').textContent =
-        entries.reduce((acc, item) => acc + item.problems.length, 0);
+    function renderCharts(rows) {
+      SUPPLY_FIELDS.forEach(field => {
+        const canvas = document.getElementById(field.canvasId);
+        const series = buildDailyMinSeries(rows, field.key);
 
-      if (!entries.length) {
-        container.innerHTML = `<div class="empty-state">Nenhuma pendência relatada nos últimos 3 dias para o filtro selecionado.</div>`;
-        return;
-      }
+        if (charts[field.canvasId]) {
+          charts[field.canvasId].destroy();
+        }
 
-      container.innerHTML = entries.map(entry => `
-        <article class="resume-item">
-          <div class="resume-head">
-            <span class="resume-chip">${entry.unit}</span>
-            <span class="resume-chip">${entry.tech}</span>
-            <span class="resume-chip">${entry.date}</span>
-          </div>
-          <ul class="resume-problem-list">
-            ${entry.problems.map(problem => `<li><strong>${problem.item}:</strong> ${problem.detail}</li>`).join('')}
-          </ul>
-        </article>
-      `).join('');
+        charts[field.canvasId] = new Chart(canvas, {
+          type: 'line',
+          data: {
+            labels: series.labels,
+            datasets: [{
+              label: 'Menor valor do dia',
+              data: series.values,
+              borderWidth: 2,
+              tension: 0.25,
+              fill: false
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false }
+            },
+            scales: {
+              y: { beginAtZero: true }
+            }
+          }
+        });
+      });
     }
 
     function renderAll() {
-      const recentRows = filterRowsBySelectedUnit(getRowsLastHours(10));
-      const last3Days = filterRowsBySelectedUnit(getRowsLastDays(3));
-      renderUnitStatus(getRowsLastHours(10));
-      renderChecklistTable(recentRows);
-      renderProblemSummaries(last3Days);
+      const recentRows = filterRowsByUnit(getRowsLastHours(10));
+      const last30Rows = filterRowsByUnit(allRows);
+      renderTable(recentRows);
+      updateKpis(recentRows);
+      renderCharts(last30Rows);
     }
 
     async function loadData() {
@@ -354,10 +293,8 @@
     }
 
     loadData().catch(error => {
-      document.getElementById('checklistBody').innerHTML =
-        `<tr><td colspan="17" style="background:#fff;color:#c62828;padding:18px;">Erro ao carregar os dados: ${error.message}</td></tr>`;
-      document.getElementById('resumeList').innerHTML =
-        `<div class="empty-state">Erro ao carregar os dados.</div>`;
+      document.getElementById('supplyBody').innerHTML =
+        `<tr><td colspan="9" style="background:#fff;color:#c62828;padding:18px;">Erro ao carregar os dados: ${error.message}</td></tr>`;
     });
   </script>
 </body>
