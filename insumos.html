@@ -125,6 +125,10 @@
       return row['Qual Sua unidade?'] || 'Sem unidade';
     }
 
+    function getTech(row) {
+      return row['Técnico Pantonista'] || '-';
+    }
+
     function getUnitShort(name) {
       return UNIT_SHORT[name] || name;
     }
@@ -208,12 +212,14 @@
       const start = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 29);
       const labels = [];
       const valuesByDay = {};
+      const techByDay = {};
 
       for (let i = 0; i < 30; i++) {
         const d = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
         const key = d.toISOString().slice(0, 10);
         labels.push(d.toLocaleDateString('pt-BR'));
         valuesByDay[key] = null;
+        techByDay[key] = '-';
       }
 
       rows.forEach(row => {
@@ -226,16 +232,18 @@
         const dayKey = dt.toISOString().slice(0, 10);
         if (valuesByDay[dayKey] === null || n < valuesByDay[dayKey]) {
           valuesByDay[dayKey] = n;
+          techByDay[dayKey] = getTech(row);
         }
       });
 
       return {
         labels,
-        values: Object.values(valuesByDay)
+        values: Object.values(valuesByDay),
+        techs: Object.keys(valuesByDay).map(day => techByDay[day])
       };
     }
 
-    function chartOptions() {
+    function chartOptions(series) {
       return {
         responsive: true,
         maintainAspectRatio: false,
@@ -246,7 +254,14 @@
         plugins: {
           legend: { display: false },
           tooltip: {
-            enabled: true
+            enabled: true,
+            callbacks: {
+              label: function(context) {
+                const valor = context.raw ?? '-';
+                const tecnico = series.techs[context.dataIndex] || '-';
+                return [`Quantidade: ${valor}`, `Técnico: ${tecnico}`];
+              }
+            }
           }
         },
         elements: {
@@ -305,7 +320,7 @@
               fill: false
             }]
           },
-          options: chartOptions()
+          options: chartOptions(series)
         });
       });
     }
