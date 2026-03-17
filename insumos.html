@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Insumos</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <header class="site-header">
@@ -12,10 +13,9 @@
       <div class="logo-box">
         <img src="assets/logo.png" alt="Logo">
       </div>
-
       <div class="title-box">
         <h1>Controle de Insumos</h1>
-        <p>Quantidades das últimas 10 horas e consumo consolidado dos últimos 30 dias</p>
+        <p>Últimas 10 horas e acompanhamento diário do menor saldo informado por dia</p>
       </div>
     </div>
 
@@ -31,66 +31,255 @@
   <main class="page-wrap">
     <section class="hero-card">
       <h2>Painel de Insumos</h2>
-      <p>
-        Aqui vamos exibir os insumos informados nas últimas 10 horas, com destaque visual
-        para quantidades baixas, além do gráfico de consumo diário dos últimos 30 dias.
-      </p>
+      <p>Quantidades recentes com alertas visuais e gráfico dos últimos 30 dias usando o menor valor informado em cada dia.</p>
     </section>
 
-    <h2 class="section-title">Filtro</h2>
     <section class="card">
-      <h3>Unidade</h3>
-      <p>Neste espaço vamos colocar o seletor de unidade.</p>
+      <div class="toolbar">
+        <div class="field-group">
+          <label for="unitFilter">Unidade</label>
+          <select id="unitFilter" class="select-input"></select>
+        </div>
+
+        <div class="field-group">
+          <label for="itemFilter">Insumo do gráfico</label>
+          <select id="itemFilter" class="select-input"></select>
+        </div>
+      </div>
+
+      <div class="kpi-row">
+        <div class="kpi-card">
+          <span>Registros nas últimas 10h</span>
+          <strong id="kpiRegistros">0</strong>
+        </div>
+        <div class="kpi-card">
+          <span>Itens em alerta (&lt; 10)</span>
+          <strong id="kpiAlerta">0</strong>
+        </div>
+        <div class="kpi-card">
+          <span>Itens críticos (&lt; 5)</span>
+          <strong id="kpiCritico">0</strong>
+        </div>
+      </div>
     </section>
 
-    <h2 class="section-title">Quantidades recentes</h2>
-    <section class="table-card">
-      <table>
-        <thead>
-          <tr>
-            <th>Unidade</th>
-            <th>Data/Hora</th>
-            <th>Pulseiras</th>
-            <th>Ribbon</th>
-            <th>Etiqueta Visitante</th>
-            <th>Etiqueta Branca</th>
-            <th>Etiqueta Vermelha</th>
-            <th>Tonner</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Exemplo</td>
-            <td>17/03/2026 09:31</td>
-            <td><span class="badge ok">11</span></td>
-            <td><span class="badge ok">25</span></td>
-            <td><span class="badge ok">161</span></td>
-            <td><span class="badge ok">16</span></td>
-            <td><span class="badge ok">12</span></td>
-            <td><span class="badge ok">14</span></td>
-          </tr>
-          <tr>
-            <td>Exemplo</td>
-            <td>17/03/2026 07:15</td>
-            <td><span class="badge alerta">8</span></td>
-            <td><span class="badge ok">18</span></td>
-            <td><span class="badge ok">95</span></td>
-            <td><span class="badge alerta">9</span></td>
-            <td><span class="badge critico">4</span></td>
-            <td><span class="badge critico">3</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
+    <h2 class="section-title">Quantidades das últimas 10 horas</h2>
+    <section id="recentSupplies" class="record-list"></section>
 
     <h2 class="section-title">Consumo dos últimos 30 dias</h2>
-    <section class="card">
-      <h3>Gráfico de consumo diário</h3>
-      <p>
-        Nesta área vamos colocar o gráfico usando o menor valor informado em cada dia
-        para cada insumo.
-      </p>
+    <section class="chart-wrap">
+      <canvas id="consumoChart" height="110"></canvas>
     </section>
   </main>
+
+  <script>
+    const SUPPLY_FIELDS = [
+      { key: 'PULSEIRAS', label: 'Pulseiras' },
+      { key: 'RIBBON', label: 'Ribbon' },
+      { key: 'ETIQUETA VISITANTE', label: 'Etiqueta visitante' },
+      { key: 'ETIQUETA DE UNITARIZAÇÃO BRANCA', label: 'Etiqueta branca' },
+      { key: 'ETIQUETA DE UNITARIZAÇÃO VERMELHA', label: 'Etiqueta vermelha' },
+      { key: 'Tonner', label: 'Tonner' }
+    ];
+
+    let allRows = [];
+    let chartInstance = null;
+
+    function parseBrazilDateTime(value) {
+      if (!value) return null;
+      const [datePart, timePart = '00:00:00'] = String(value).trim().split(' ');
+      const [day, month, year] = datePart.split('/').map(Number);
+      const [hour = 0, minute = 0, second = 0] = timePart.split(':').map(Number);
+      if (!day || !month || !year) return null;
+      return new Date(year, month - 1, day, hour, minute, second);
+    }
+
+    function formatDate(date) {
+      if (!(date instanceof Date) || isNaN(date)) return '-';
+      return date.toLocaleString('pt-BR');
+    }
+
+    function getUnit(row) {
+      return row['Qual Sua unidade?'] || 'Sem unidade';
+    }
+
+    function getTech(row) {
+      return row['Técnico Pantonista'] || 'Não informado';
+    }
+
+    function toNumber(value) {
+      const n = Number(String(value || '').replace(',', '.'));
+      return Number.isFinite(n) ? n : null;
+    }
+
+    function qtyClass(value) {
+      const n = toNumber(value);
+      if (n === null) return 'qty-ok';
+      if (n < 5) return 'qty-critical';
+      if (n < 10) return 'qty-warn';
+      return 'qty-ok';
+    }
+
+    function fillFilters(rows) {
+      const unitSelect = document.getElementById('unitFilter');
+      const units = [...new Set(rows.map(getUnit).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR'));
+      unitSelect.innerHTML = '<option value="__ALL__">Todas as unidades</option>' +
+        units.map(unit => `<option value="${unit}">${unit}</option>`).join('');
+
+      const itemSelect = document.getElementById('itemFilter');
+      itemSelect.innerHTML = SUPPLY_FIELDS.map(field =>
+        `<option value="${field.key}">${field.label}</option>`
+      ).join('');
+
+      unitSelect.addEventListener('change', renderAll);
+      itemSelect.addEventListener('change', renderAll);
+    }
+
+    function filterByUnit(rows) {
+      const value = document.getElementById('unitFilter').value;
+      if (!value || value === '__ALL__') return rows;
+      return rows.filter(row => getUnit(row) === value);
+    }
+
+    function getRecentRows(hours) {
+      const now = new Date();
+      const cutoff = new Date(now.getTime() - hours * 60 * 60 * 1000);
+      return allRows.filter(row => {
+        const dt = parseBrazilDateTime(row['Carimbo de data/hora']);
+        return dt && dt >= cutoff && dt <= now;
+      }).sort((a, b) => parseBrazilDateTime(b['Carimbo de data/hora']) - parseBrazilDateTime(a['Carimbo de data/hora']));
+    }
+
+    function renderRecentSupplies(rows) {
+      const container = document.getElementById('recentSupplies');
+      if (!rows.length) {
+        container.innerHTML = '<div class="empty-state">Nenhum registro encontrado nas últimas 10 horas para o filtro selecionado.</div>';
+        return;
+      }
+
+      container.innerHTML = rows.map(row => {
+        const quantities = SUPPLY_FIELDS.map(field => `
+          <div class="qty-item">
+            <div class="qty-label">${field.label}</div>
+            <span class="qty-pill ${qtyClass(row[field.key])}">${row[field.key] || '-'}</span>
+          </div>
+        `).join('');
+
+        return `
+          <article class="record-card">
+            <div class="record-head">
+              <div class="record-title">${getUnit(row)}</div>
+              <div class="record-meta">
+                <span class="meta-chip">${formatDate(parseBrazilDateTime(row['Carimbo de data/hora']))}</span>
+                <span class="meta-chip">${getTech(row)}</span>
+                <span class="meta-chip">Armazenamento CFTV: ${row['TEMPO DE ARMAZENAMENTO'] || '-'} dias</span>
+              </div>
+            </div>
+            <div class="qty-grid">${quantities}</div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    function updateKpis(rows) {
+      let alerta = 0;
+      let critico = 0;
+
+      rows.forEach(row => {
+        SUPPLY_FIELDS.forEach(field => {
+          const n = toNumber(row[field.key]);
+          if (n !== null && n < 10) alerta += 1;
+          if (n !== null && n < 5) critico += 1;
+        });
+      });
+
+      document.getElementById('kpiRegistros').textContent = rows.length;
+      document.getElementById('kpiAlerta').textContent = alerta;
+      document.getElementById('kpiCritico').textContent = critico;
+    }
+
+    function buildChart(rows) {
+      const selectedKey = document.getElementById('itemFilter').value;
+      const now = new Date();
+      const start = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 29);
+
+      const labels = [];
+      const dailyMin = {};
+
+      for (let i = 0; i < 30; i++) {
+        const d = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
+        const key = d.toISOString().slice(0, 10);
+        labels.push(d.toLocaleDateString('pt-BR'));
+        dailyMin[key] = null;
+      }
+
+      rows.forEach(row => {
+        const dt = parseBrazilDateTime(row['Carimbo de data/hora']);
+        if (!dt || dt < start || dt > now) return;
+
+        const n = toNumber(row[selectedKey]);
+        if (n === null) return;
+
+        const dayKey = dt.toISOString().slice(0, 10);
+        if (dailyMin[dayKey] === null || n < dailyMin[dayKey]) {
+          dailyMin[dayKey] = n;
+        }
+      });
+
+      const values = Object.values(dailyMin);
+
+      if (chartInstance) chartInstance.destroy();
+
+      chartInstance = new Chart(document.getElementById('consumoChart'), {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Menor valor informado no dia',
+            data: values,
+            tension: 0.25,
+            borderWidth: 3,
+            fill: false
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins: {
+            legend: {
+              display: true
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+
+    function renderAll() {
+      const recentRows = filterByUnit(getRecentRows(10));
+      const last30Rows = filterByUnit(allRows);
+      updateKpis(recentRows);
+      renderRecentSupplies(recentRows);
+      buildChart(last30Rows);
+    }
+
+    async function loadData() {
+      const response = await fetch('./data/dados.json?_=' + Date.now());
+      if (!response.ok) throw new Error('Não foi possível carregar o JSON.');
+      const payload = await response.json();
+      allRows = Array.isArray(payload.dados) ? payload.dados : [];
+      fillFilters(allRows);
+      renderAll();
+    }
+
+    loadData().catch(error => {
+      document.getElementById('recentSupplies').innerHTML =
+        `<div class="empty-state">Erro ao carregar os dados: ${error.message}</div>`;
+    });
+  </script>
 </body>
 </html>

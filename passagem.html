@@ -12,7 +12,6 @@
       <div class="logo-box">
         <img src="assets/logo.png" alt="Logo">
       </div>
-
       <div class="title-box">
         <h1>Passagem de Plantão</h1>
         <p>Checklist operacional das últimas 10 horas e resumos dos últimos 3 dias</p>
@@ -31,53 +30,231 @@
   <main class="page-wrap">
     <section class="hero-card">
       <h2>Painel de Passagem de Plantão</h2>
-      <p>
-        Aqui vamos exibir o checklist das últimas 10 horas, com filtro por unidade,
-        além do resumo de plantão dos últimos 3 dias.
-      </p>
+      <p>Visualização dos registros mais recentes por unidade, com destaque para itens não operantes e consulta rápida dos resumos anteriores.</p>
     </section>
 
-    <h2 class="section-title">Filtro</h2>
     <section class="card">
-      <h3>Unidade</h3>
-      <p>Neste espaço vamos colocar o seletor de unidade.</p>
+      <div class="toolbar">
+        <div class="field-group">
+          <label for="unitFilter">Unidade</label>
+          <select id="unitFilter" class="select-input"></select>
+        </div>
+      </div>
+
+      <div class="kpi-row">
+        <div class="kpi-card">
+          <span>Registros nas últimas 10h</span>
+          <strong id="kpiRegistros">0</strong>
+        </div>
+        <div class="kpi-card">
+          <span>Itens não operantes</span>
+          <strong id="kpiAlertas">0</strong>
+        </div>
+        <div class="kpi-card">
+          <span>Resumos nos últimos 3 dias</span>
+          <strong id="kpiResumos">0</strong>
+        </div>
+      </div>
     </section>
 
-    <h2 class="section-title">Checklist operacional</h2>
-    <section class="table-card">
-      <table>
-        <thead>
-          <tr>
-            <th>Unidade</th>
-            <th>Técnico</th>
-            <th>Timed</th>
-            <th>Oviyam</th>
-            <th>Laboratório</th>
-            <th>Internet</th>
-            <th>Servidores</th>
-            <th>Impressoras</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Exemplo</td>
-            <td>Exemplo</td>
-            <td>Operante</td>
-            <td>Operante</td>
-            <td>Não operante</td>
-            <td>Operante</td>
-            <td>Não se aplica</td>
-            <td>Operante</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
+    <h2 class="section-title">Checklist das últimas 10 horas</h2>
+    <section id="recentRecords" class="record-list"></section>
 
-    <h2 class="section-title">Resumos recentes</h2>
-    <section class="card">
-      <h3>Últimos 3 dias</h3>
-      <p>Nesta área vamos mostrar os resumos pendentes por unidade.</p>
-    </section>
+    <h2 class="section-title">Resumo do plantão - últimos 3 dias</h2>
+    <section id="recentSummaries" class="resume-list"></section>
   </main>
+
+  <script>
+    const STATUS_FIELDS = [
+      { label: 'TIMED', statusKey: 'TIMED', problemKey: 'Qual problema encontrado no TIMED?' },
+      { label: 'OVIYAM & INTEGRAÇÃO', statusKey: 'OVIYAM & INTEGRAÇÃO', problemKey: 'Qual problema encontrado no OVIYAM?' },
+      { label: 'INTEGRAÇÃO DE LABORATÓRIO', statusKey: 'INTEGRAÇÃO DE LABORATÓRIO', problemKey: 'Qual problema encontrado na integração de laboratório?' },
+      { label: 'INTERNET', statusKey: 'INTERNET', problemKey: 'Qual problema com a internet?' },
+      { label: 'PPD', statusKey: 'PPD', problemKey: null },
+      { label: 'GLPI', statusKey: 'GLPI', problemKey: null },
+      { label: 'SERVIDORES', statusKey: 'SERVIDORES', problemKey: 'Qual problema com os servidores?' },
+      { label: 'PAINEL DE CHAMADOS', statusKey: 'PAINEL DE CHAMADOS', problemKey: 'Qual problema com o painel de chamados?' },
+      { label: 'PAINEL DE ESCALA', statusKey: 'PAINEL DE ESCALA', problemKey: 'Qual problema com o painel de escala?' },
+      { label: 'TOTEM', statusKey: 'TOTEM', problemKey: 'Qual problema com o totem?' },
+      { label: 'COMPUTADORES', statusKey: 'COMPUTADORES', problemKey: 'Qual problema com computadores?' },
+      { label: 'IMPRESSORAS', statusKey: 'IMPRESSORAS', problemKey: 'Qual problema com impressoras?' },
+      { label: 'CFTV', statusKey: 'CFTV', problemKey: 'Qual problema com CFTV?' },
+      { label: 'MONITOR MULTIPARAMETRO - PAINEL', statusKey: 'MONITOR MULTIPARAMETRO - PAINEL', problemKey: 'Descreva o problema encontrado com  MONITOR MULTIPARAMETRO - PAINEL' }
+    ];
+
+    let allRows = [];
+
+    function normalizeText(value) {
+      return String(value || '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .trim()
+        .toUpperCase();
+    }
+
+    function parseBrazilDateTime(value) {
+      if (!value) return null;
+      const [datePart, timePart = '00:00:00'] = String(value).trim().split(' ');
+      const [day, month, year] = datePart.split('/').map(Number);
+      const [hour = 0, minute = 0, second = 0] = timePart.split(':').map(Number);
+      if (!day || !month || !year) return null;
+      return new Date(year, month - 1, day, hour, minute, second);
+    }
+
+    function formatDate(date) {
+      if (!(date instanceof Date) || isNaN(date)) return '-';
+      return date.toLocaleString('pt-BR');
+    }
+
+    function isNotApplicable(value) {
+      const v = normalizeText(value);
+      return v === 'NAO SE APLICA' || v === 'NÃO SE APLICA';
+    }
+
+    function isOperante(value) {
+      return normalizeText(value) === 'OPERANTE';
+    }
+
+    function statusClass(value) {
+      if (isOperante(value)) return 'status-ok';
+      if (isNotApplicable(value) || !String(value || '').trim()) return 'status-na';
+      return 'status-bad';
+    }
+
+    function statusText(value) {
+      if (isOperante(value)) return 'OPERANTE';
+      if (isNotApplicable(value) || !String(value || '').trim()) return 'NÃO SE APLICA';
+      return String(value || 'NÃO OPERANTE');
+    }
+
+    function getUnit(row) {
+      return row['Qual Sua unidade?'] || 'Sem unidade';
+    }
+
+    function getTech(row) {
+      return row['Técnico Pantonista'] || 'Não informado';
+    }
+
+    function fillUnitFilter(rows) {
+      const select = document.getElementById('unitFilter');
+      const units = [...new Set(rows.map(getUnit).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR'));
+      select.innerHTML = '<option value="__ALL__">Todas as unidades</option>' +
+        units.map(unit => `<option value="${unit}">${unit}</option>`).join('');
+      select.addEventListener('change', renderAll);
+    }
+
+    function filterByUnit(rows) {
+      const value = document.getElementById('unitFilter').value;
+      if (!value || value === '__ALL__') return rows;
+      return rows.filter(row => getUnit(row) === value);
+    }
+
+    function getRecentRows(hours) {
+      const now = new Date();
+      const cutoff = new Date(now.getTime() - hours * 60 * 60 * 1000);
+      return allRows.filter(row => {
+        const dt = parseBrazilDateTime(row['Carimbo de data/hora']);
+        return dt && dt >= cutoff && dt <= now;
+      }).sort((a, b) => parseBrazilDateTime(b['Carimbo de data/hora']) - parseBrazilDateTime(a['Carimbo de data/hora']));
+    }
+
+    function getSummaryRows(days) {
+      const now = new Date();
+      const cutoff = new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
+      return allRows.filter(row => {
+        const dt = parseBrazilDateTime(row['Carimbo de data/hora']);
+        return dt && dt >= cutoff && dt <= now && String(row['Resumo do plantao'] || '').trim();
+      }).sort((a, b) => parseBrazilDateTime(b['Carimbo de data/hora']) - parseBrazilDateTime(a['Carimbo de data/hora']));
+    }
+
+    function renderRecentCards(rows) {
+      const container = document.getElementById('recentRecords');
+      if (!rows.length) {
+        container.innerHTML = '<div class="empty-state">Nenhum registro encontrado nas últimas 10 horas para o filtro selecionado.</div>';
+        return;
+      }
+
+      container.innerHTML = rows.map(row => {
+        const statuses = STATUS_FIELDS.map(field => {
+          const status = row[field.statusKey];
+          const problem = field.problemKey ? String(row[field.problemKey] || '').trim() : '';
+          return `
+            <div class="status-item">
+              <div class="status-label">${field.label}</div>
+              <span class="status-pill ${statusClass(status)}">${statusText(status)}</span>
+              ${problem ? `<div class="problem-box">${problem}</div>` : ''}
+            </div>
+          `;
+        }).join('');
+
+        return `
+          <article class="record-card">
+            <div class="record-head">
+              <div class="record-title">${getUnit(row)}</div>
+              <div class="record-meta">
+                <span class="meta-chip">${formatDate(parseBrazilDateTime(row['Carimbo de data/hora']))}</span>
+                <span class="meta-chip">${getTech(row)}</span>
+              </div>
+            </div>
+            <div class="status-grid">${statuses}</div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    function renderSummaries(rows) {
+      const container = document.getElementById('recentSummaries');
+      if (!rows.length) {
+        container.innerHTML = '<div class="empty-state">Nenhum resumo encontrado nos últimos 3 dias para o filtro selecionado.</div>';
+        return;
+      }
+
+      container.innerHTML = rows.map(row => `
+        <article class="resume-item">
+          <h3>${getUnit(row)} - ${formatDate(parseBrazilDateTime(row['Carimbo de data/hora']))}</h3>
+          <div class="record-meta" style="margin-bottom:10px;">
+            <span class="meta-chip">${getTech(row)}</span>
+          </div>
+          <p>${row['Resumo do plantao'] || '-'}</p>
+        </article>
+      `).join('');
+    }
+
+    function updateKpis(recentRows, summaryRows) {
+      const alertCount = recentRows.reduce((total, row) => {
+        return total + STATUS_FIELDS.filter(field => {
+          const value = row[field.statusKey];
+          return value && !isOperante(value) && !isNotApplicable(value);
+        }).length;
+      }, 0);
+
+      document.getElementById('kpiRegistros').textContent = recentRows.length;
+      document.getElementById('kpiAlertas').textContent = alertCount;
+      document.getElementById('kpiResumos').textContent = summaryRows.length;
+    }
+
+    function renderAll() {
+      const recentRows = filterByUnit(getRecentRows(10));
+      const summaryRows = filterByUnit(getSummaryRows(3));
+      updateKpis(recentRows, summaryRows);
+      renderRecentCards(recentRows);
+      renderSummaries(summaryRows);
+    }
+
+    async function loadData() {
+      const response = await fetch('./data/dados.json?_=' + Date.now());
+      if (!response.ok) throw new Error('Não foi possível carregar o JSON.');
+      const payload = await response.json();
+      allRows = Array.isArray(payload.dados) ? payload.dados : [];
+      fillUnitFilter(allRows);
+      renderAll();
+    }
+
+    loadData().catch(error => {
+      document.getElementById('recentRecords').innerHTML =
+        `<div class="empty-state">Erro ao carregar os dados: ${error.message}</div>`;
+      document.getElementById('recentSummaries').innerHTML = '';
+    });
+  </script>
 </body>
 </html>
