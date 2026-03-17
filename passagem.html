@@ -14,7 +14,7 @@
       </div>
       <div class="title-box">
         <h1>Passagem de Plantão</h1>
-        <p>Checklist operacional das últimas 10 horas e resumo de plantão dos últimos 3 dias</p>
+        <p>Checklist operacional das últimas 10 horas e resumo do plantão dos últimos 3 dias</p>
       </div>
     </div>
 
@@ -30,7 +30,7 @@
   <main class="page-wrap">
     <section class="hero-card">
       <h2>Checklist operacional</h2>
-      <p>Visualização compacta por unidade, com presença do técnico nas últimas 10 horas e exibição direta do campo “Resumo do plantao”.</p>
+      <p>Visualização compacta por unidade, mostrando todas as unidades no status superior, mesmo quando não houve preenchimento nas últimas 10 horas.</p>
     </section>
 
     <section class="card">
@@ -38,21 +38,6 @@
         <div class="field-group">
           <label for="unitFilter">Unidade</label>
           <select id="unitFilter" class="select-input"></select>
-        </div>
-      </div>
-
-      <div class="kpi-row">
-        <div class="kpi-card">
-          <span>Unidades presentes</span>
-          <strong id="kpiPresentes">0</strong>
-        </div>
-        <div class="kpi-card">
-          <span>Unidades ausentes</span>
-          <strong id="kpiAusentes">0</strong>
-        </div>
-        <div class="kpi-card">
-          <span>Resumos encontrados</span>
-          <strong id="kpiResumos">0</strong>
         </div>
       </div>
     </section>
@@ -76,18 +61,18 @@
             <th>Data/Hora</th>
             <th>TIMED</th>
             <th>OVIYAM</th>
-            <th>LABORATÓRIO</th>
+            <th>LAB</th>
             <th>INTERNET</th>
             <th>PPD</th>
             <th>GLPI</th>
-            <th>SERVIDORES</th>
-            <th>PAINEL CHAMADOS</th>
-            <th>PAINEL ESCALA</th>
+            <th>SERV.</th>
+            <th>PAINEL CH.</th>
+            <th>PAINEL ESC.</th>
             <th>TOTEM</th>
-            <th>COMPUTADORES</th>
-            <th>IMPRESSORAS</th>
+            <th>COMP.</th>
+            <th>IMPRES.</th>
             <th>CFTV</th>
-            <th>BOTÃO PÂNICO</th>
+            <th>PÂNICO</th>
           </tr>
         </thead>
         <tbody id="checklistBody"></tbody>
@@ -102,34 +87,37 @@
 
   <script>
     const ALL_UNITS = [
-      'UPA CIDADE DE DEUS',
-      'UPA JOAO XXIII',
-      'UPA MAGALHÃES BASTOS',
-      'MATERNIDADE DA ROCINHA',
-      'UPA COSTA BARROS',
-      'UPA DEL CASTILHO',
-      'UPA ENGENHO DE DENTRO',
-      'UPA MADUREIRA',
-      'UPA SENADOR CAMARÁ',
-      'UPA SEPETIBA',
-      'UPA VILA KENNEDY'
+      { full: 'UPA CIDADE DE DEUS', short: 'UPACDD' },
+      { full: 'UPA JOAO XXIII', short: 'UPAJ23' },
+      { full: 'UPA MAGALHÃES BASTOS', short: 'UPAMB' },
+      { full: 'MATERNIDADE DA ROCINHA', short: 'MATROC' },
+      { full: 'UPA COSTA BARROS', short: 'UPACB' },
+      { full: 'UPA DEL CASTILHO', short: 'UPADC' },
+      { full: 'UPA ENGENHO DE DENTRO', short: 'UPAED' },
+      { full: 'UPA MADUREIRA', short: 'UPAMAD' },
+      { full: 'UPA SENADOR CAMARÁ', short: 'UPASC' },
+      { full: 'UPA SEPETIBA', short: 'UPASEP' },
+      { full: 'UPA VILA KENNEDY', short: 'UPAVK' },
+      { full: 'CERBARRA', short: 'CERBARRA' },
+      { full: 'UPA CAMPO GRANDE II', short: 'UPACG2' },
+      { full: 'UPA MARECHAL HERMES', short: 'UPAMH' }
     ];
 
     const CHECK_FIELDS = [
       { label: 'TIMED', statusKey: 'TIMED' },
       { label: 'OVIYAM', statusKey: 'OVIYAM & INTEGRAÇÃO' },
-      { label: 'LABORATÓRIO', statusKey: 'INTEGRAÇÃO DE LABORATÓRIO' },
+      { label: 'LAB', statusKey: 'INTEGRAÇÃO DE LABORATÓRIO' },
       { label: 'INTERNET', statusKey: 'INTERNET' },
       { label: 'PPD', statusKey: 'PPD' },
       { label: 'GLPI', statusKey: 'GLPI' },
-      { label: 'SERVIDORES', statusKey: 'SERVIDORES' },
-      { label: 'PAINEL CHAMADOS', statusKey: 'PAINEL DE CHAMADOS' },
-      { label: 'PAINEL ESCALA', statusKey: 'PAINEL DE ESCALA' },
+      { label: 'SERV.', statusKey: 'SERVIDORES' },
+      { label: 'PAINEL CH.', statusKey: 'PAINEL DE CHAMADOS' },
+      { label: 'PAINEL ESC.', statusKey: 'PAINEL DE ESCALA' },
       { label: 'TOTEM', statusKey: 'TOTEM' },
-      { label: 'COMPUTADORES', statusKey: 'COMPUTADORES' },
-      { label: 'IMPRESSORAS', statusKey: 'IMPRESSORAS' },
+      { label: 'COMP.', statusKey: 'COMPUTADORES' },
+      { label: 'IMPRES.', statusKey: 'IMPRESSORAS' },
       { label: 'CFTV', statusKey: 'CFTV' },
-      { label: 'BOTÃO PÂNICO', statusKey: 'BOTAO DE PANICO' }
+      { label: 'PÂNICO', statusKey: 'BOTAO DE PANICO' }
     ];
 
     let allRows = [];
@@ -161,6 +149,11 @@
       return row['Qual Sua unidade?'] || 'Sem unidade';
     }
 
+    function getUnitShort(fullName) {
+      const found = ALL_UNITS.find(item => normalizeText(item.full) === normalizeText(fullName));
+      return found ? found.short : fullName;
+    }
+
     function getTech(row) {
       return row['Técnico Pantonista'] || '-';
     }
@@ -180,12 +173,8 @@
     }
 
     function renderStatusCell(value) {
-      if (isOperante(value)) {
-        return '<span class="status-dot dot-green"></span>';
-      }
-      if (isNaoOperante(value)) {
-        return '<span class="status-dot dot-red"></span>';
-      }
+      if (isOperante(value)) return '<span class="status-dot dot-green"></span>';
+      if (isNaoOperante(value)) return '<span class="status-dot dot-red"></span>';
       return '<span class="na-text">Não se aplica</span>';
     }
 
@@ -215,7 +204,7 @@
 
     function fillUnitFilter() {
       const select = document.getElementById('unitFilter');
-      const units = [...new Set([...ALL_UNITS, ...allRows.map(getUnit)])]
+      const units = [...new Set([...ALL_UNITS.map(x => x.full), ...allRows.map(getUnit)])]
         .filter(Boolean)
         .sort((a, b) => a.localeCompare(b, 'pt-BR'));
 
@@ -238,7 +227,7 @@
 
     function buildPresenceMap(recentRows) {
       const map = {};
-      ALL_UNITS.forEach(unit => map[unit] = false);
+      ALL_UNITS.forEach(unit => map[unit.full] = false);
 
       recentRows.forEach(row => {
         map[getUnit(row)] = true;
@@ -250,20 +239,16 @@
     function renderUnitStatus(recentRows) {
       const grid = document.getElementById('unitStatusGrid');
       const map = buildPresenceMap(recentRows);
-      const unitsToShow = selectedUnit() === '__ALL__' ? ALL_UNITS : [selectedUnit()];
+      const unitsToShow = selectedUnit() === '__ALL__'
+        ? ALL_UNITS
+        : [{ full: selectedUnit(), short: getUnitShort(selectedUnit()) }];
 
       grid.innerHTML = unitsToShow.map(unit => `
         <div class="unit-status-item">
-          <div class="unit-status-name">${unit}</div>
-          <div class="unit-status-bar ${map[unit] ? 'present' : 'absent'}"></div>
+          <div class="unit-status-name">${unit.short}</div>
+          <div class="unit-status-bar ${map[unit.full] ? 'present' : 'absent'}"></div>
         </div>
       `).join('');
-
-      const present = unitsToShow.filter(unit => map[unit]).length;
-      const absent = unitsToShow.filter(unit => !map[unit]).length;
-
-      document.getElementById('kpiPresentes').textContent = present;
-      document.getElementById('kpiAusentes').textContent = absent;
     }
 
     function renderChecklistTable(rows) {
@@ -281,7 +266,7 @@
 
         return `
           <tr>
-            <td class="col-unit">${getUnit(row)}</td>
+            <td class="col-unit">${getUnitShort(getUnit(row))}</td>
             <td class="col-tech">${getTech(row)}</td>
             <td class="col-datetime">${formatDateTime(row['Carimbo de data/hora'])}</td>
             ${statusCells}
@@ -296,13 +281,11 @@
       const entries = rows
         .filter(row => String(row['Resumo do plantao'] || '').trim())
         .map(row => ({
-          unit: getUnit(row),
+          unit: getUnitShort(getUnit(row)),
           tech: getTech(row),
           date: formatDateTime(row['Carimbo de data/hora']),
           resumo: String(row['Resumo do plantao'] || '').trim()
         }));
-
-      document.getElementById('kpiResumos').textContent = entries.length;
 
       if (!entries.length) {
         container.innerHTML = `<div class="empty-state">Nenhum resumo encontrado nos últimos 3 dias para o filtro selecionado.</div>`;
@@ -345,7 +328,6 @@
     loadData().catch(error => {
       document.getElementById('checklistBody').innerHTML =
         `<tr><td colspan="17" style="background:#fff;color:#c62828;padding:18px;">Erro ao carregar os dados: ${error.message}</td></tr>`;
-
       document.getElementById('resumeList').innerHTML =
         `<div class="empty-state">Erro ao carregar os dados.</div>`;
     });

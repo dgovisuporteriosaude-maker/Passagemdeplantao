@@ -15,7 +15,7 @@
       </div>
       <div class="title-box">
         <h1>Painel de Insumos</h1>
-        <p>Tabela compacta das últimas 10 horas e gráficos individualizados por item nos últimos 30 dias</p>
+        <p>Tabela das últimas 10 horas e monitoramento diário individual por item nos últimos 30 dias</p>
       </div>
     </div>
 
@@ -31,7 +31,7 @@
   <main class="page-wrap">
     <section class="hero-card">
       <h2>Controle de insumos</h2>
-      <p>As células destacam valores abaixo do ideal: amarelo para abaixo de 10 e vermelho para abaixo de 5. Os gráficos usam sempre o menor valor informado em cada dia.</p>
+      <p>Quadrados coloridos quando o valor entrar em alerta e gráficos compactos por item usando o menor valor informado em cada dia.</p>
     </section>
 
     <section class="card">
@@ -39,21 +39,6 @@
         <div class="field-group">
           <label for="unitFilter">Unidade</label>
           <select id="unitFilter" class="select-input"></select>
-        </div>
-      </div>
-
-      <div class="kpi-row">
-        <div class="kpi-card">
-          <span>Registros nas últimas 10h</span>
-          <strong id="kpiRegistros">0</strong>
-        </div>
-        <div class="kpi-card">
-          <span>Alertas (&lt; 10)</span>
-          <strong id="kpiAlertas">0</strong>
-        </div>
-        <div class="kpi-card">
-          <span>Críticos (&lt; 5)</span>
-          <strong id="kpiCriticos">0</strong>
         </div>
       </div>
     </section>
@@ -70,7 +55,7 @@
             <th>Etiqueta Branca</th>
             <th>Pulseiras</th>
             <th>Ribbon</th>
-            <th>Tempo armazenamento CFTV</th>
+            <th>Tempo Armaz. CFTV</th>
             <th>Tonner</th>
           </tr>
         </thead>
@@ -78,27 +63,44 @@
       </table>
     </section>
 
-    <h2 class="section-title">Consumo diário - últimos 30 dias</h2>
+    <h2 class="section-title">Monitoramento diário de insumos</h2>
     <section class="chart-grid">
       <div class="chart-box"><h3>Pulseiras</h3><canvas id="chart-pulseiras"></canvas></div>
-      <div class="chart-box"><h3>Ribbon</h3><canvas id="chart-ribbon"></canvas></div>
-      <div class="chart-box"><h3>Etiqueta Visitante</h3><canvas id="chart-visitante"></canvas></div>
-      <div class="chart-box"><h3>Etiqueta Vermelha</h3><canvas id="chart-vermelha"></canvas></div>
       <div class="chart-box"><h3>Etiqueta Branca</h3><canvas id="chart-branca"></canvas></div>
+      <div class="chart-box"><h3>Etiqueta Vermelha</h3><canvas id="chart-vermelha"></canvas></div>
+      <div class="chart-box"><h3>Ribbon</h3><canvas id="chart-ribbon"></canvas></div>
       <div class="chart-box"><h3>Tonner</h3><canvas id="chart-tonner"></canvas></div>
-      <div class="chart-box"><h3>Tempo de armazenamento CFTV</h3><canvas id="chart-cftvtempo"></canvas></div>
+      <div class="chart-box"><h3>Tempo de Armazenamento</h3><canvas id="chart-cftv"></canvas></div>
+      <div class="chart-box"><h3>Etiqueta Visitante</h3><canvas id="chart-visitante"></canvas></div>
     </section>
   </main>
 
   <script>
+    const UNIT_SHORT = {
+      'UPA CIDADE DE DEUS': 'UPACDD',
+      'UPA JOAO XXIII': 'UPAJ23',
+      'UPA MAGALHÃES BASTOS': 'UPAMB',
+      'MATERNIDADE DA ROCINHA': 'MATROC',
+      'UPA COSTA BARROS': 'UPACB',
+      'UPA DEL CASTILHO': 'UPADC',
+      'UPA ENGENHO DE DENTRO': 'UPAED',
+      'UPA MADUREIRA': 'UPAMAD',
+      'UPA SENADOR CAMARÁ': 'UPASC',
+      'UPA SEPETIBA': 'UPASEP',
+      'UPA VILA KENNEDY': 'UPAVK',
+      'CERBARRA': 'CERBARRA',
+      'UPA CAMPO GRANDE II': 'UPACG2',
+      'UPA MARECHAL HERMES': 'UPAMH'
+    };
+
     const SUPPLY_FIELDS = [
-      { key: 'ETIQUETA VISITANTE', label: 'Etiqueta Visitante', canvasId: 'chart-visitante' },
-      { key: 'ETIQUETA DE UNITARIZAÇÃO VERMELHA', label: 'Etiqueta Vermelha', canvasId: 'chart-vermelha' },
-      { key: 'ETIQUETA DE UNITARIZAÇÃO BRANCA', label: 'Etiqueta Branca', canvasId: 'chart-branca' },
       { key: 'PULSEIRAS', label: 'Pulseiras', canvasId: 'chart-pulseiras' },
+      { key: 'ETIQUETA DE UNITARIZAÇÃO BRANCA', label: 'Etiqueta Branca', canvasId: 'chart-branca' },
+      { key: 'ETIQUETA DE UNITARIZAÇÃO VERMELHA', label: 'Etiqueta Vermelha', canvasId: 'chart-vermelha' },
       { key: 'RIBBON', label: 'Ribbon', canvasId: 'chart-ribbon' },
-      { key: 'TEMPO DE ARMAZENAMENTO', label: 'Tempo de armazenamento CFTV', canvasId: 'chart-cftvtempo' },
-      { key: 'Tonner', label: 'Tonner', canvasId: 'chart-tonner' }
+      { key: 'Tonner', label: 'Tonner', canvasId: 'chart-tonner' },
+      { key: 'TEMPO DE ARMAZENAMENTO', label: 'Tempo de Armazenamento', canvasId: 'chart-cftv' },
+      { key: 'ETIQUETA VISITANTE', label: 'Etiqueta Visitante', canvasId: 'chart-visitante' }
     ];
 
     let allRows = [];
@@ -113,8 +115,18 @@
       return new Date(year, month - 1, day, hour, minute, second);
     }
 
+    function formatDateTime(value) {
+      const d = parseBrazilDateTime(value);
+      if (!d || isNaN(d)) return '-';
+      return d.toLocaleString('pt-BR');
+    }
+
     function getUnit(row) {
       return row['Qual Sua unidade?'] || 'Sem unidade';
+    }
+
+    function getUnitShort(name) {
+      return UNIT_SHORT[name] || name;
     }
 
     function toNumber(value) {
@@ -122,18 +134,14 @@
       return Number.isFinite(n) ? n : null;
     }
 
-    function formatDateTime(value) {
-      const d = parseBrazilDateTime(value);
-      if (!d || isNaN(d)) return '-';
-      return d.toLocaleString('pt-BR');
-    }
-
     function fillUnitFilter() {
       const select = document.getElementById('unitFilter');
       const units = [...new Set(allRows.map(getUnit).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR'));
+
       select.innerHTML =
         '<option value="__ALL__">Todas as unidades</option>' +
         units.map(unit => `<option value="${unit}">${unit}</option>`).join('');
+
       select.addEventListener('change', renderAll);
     }
 
@@ -150,6 +158,7 @@
     function getRowsLastHours(hours) {
       const now = new Date();
       const cutoff = new Date(now.getTime() - hours * 60 * 60 * 1000);
+
       return allRows
         .filter(row => {
           const dt = parseBrazilDateTime(row['Carimbo de data/hora']);
@@ -167,12 +176,13 @@
     }
 
     function qtyHtml(value) {
-      const cls = qtyClass(value);
-      return `<span class="qty-box ${cls}">${value ?? '-'}</span>`;
+      const display = value ?? '-';
+      return `<span class="qty-square ${qtyClass(value)}">${display}</span>`;
     }
 
     function renderTable(rows) {
       const tbody = document.getElementById('supplyBody');
+
       if (!rows.length) {
         tbody.innerHTML = `<tr><td colspan="9" style="background:#fff;color:#6b7280;padding:18px;">Nenhum registro encontrado nas últimas 10 horas.</td></tr>`;
         return;
@@ -180,7 +190,7 @@
 
       tbody.innerHTML = rows.map(row => `
         <tr>
-          <td class="col-unit">${getUnit(row)}</td>
+          <td class="col-unit">${getUnitShort(getUnit(row))}</td>
           <td class="col-datetime">${formatDateTime(row['Carimbo de data/hora'])}</td>
           <td>${qtyHtml(row['ETIQUETA VISITANTE'])}</td>
           <td>${qtyHtml(row['ETIQUETA DE UNITARIZAÇÃO VERMELHA'])}</td>
@@ -191,23 +201,6 @@
           <td>${qtyHtml(row['Tonner'])}</td>
         </tr>
       `).join('');
-    }
-
-    function updateKpis(rows) {
-      let alerts = 0;
-      let criticals = 0;
-
-      rows.forEach(row => {
-        SUPPLY_FIELDS.forEach(field => {
-          const n = toNumber(row[field.key]);
-          if (n !== null && n < 10) alerts += 1;
-          if (n !== null && n < 5) criticals += 1;
-        });
-      });
-
-      document.getElementById('kpiRegistros').textContent = rows.length;
-      document.getElementById('kpiAlertas').textContent = alerts;
-      document.getElementById('kpiCriticos').textContent = criticals;
     }
 
     function buildDailyMinSeries(rows, fieldKey) {
@@ -226,8 +219,10 @@
       rows.forEach(row => {
         const dt = parseBrazilDateTime(row['Carimbo de data/hora']);
         if (!dt || dt < start || dt > now) return;
+
         const n = toNumber(row[fieldKey]);
         if (n === null) return;
+
         const dayKey = dt.toISOString().slice(0, 10);
         if (valuesByDay[dayKey] === null || n < valuesByDay[dayKey]) {
           valuesByDay[dayKey] = n;
@@ -237,6 +232,55 @@
       return {
         labels,
         values: Object.values(valuesByDay)
+      };
+    }
+
+    function chartOptions() {
+      return {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+          mode: 'index',
+          intersect: false
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            enabled: true
+          }
+        },
+        elements: {
+          point: {
+            radius: 2.5,
+            hoverRadius: 4
+          },
+          line: {
+            tension: 0.2,
+            borderWidth: 2
+          }
+        },
+        scales: {
+          x: {
+            grid: {
+              color: '#eef2f6'
+            },
+            ticks: {
+              maxTicksLimit: 8,
+              color: '#6b7a8c',
+              font: { size: 10 }
+            }
+          },
+          y: {
+            beginAtZero: true,
+            grid: {
+              color: '#e7edf4'
+            },
+            ticks: {
+              color: '#6b7a8c',
+              font: { size: 10 }
+            }
+          }
+        }
       };
     }
 
@@ -254,23 +298,14 @@
           data: {
             labels: series.labels,
             datasets: [{
-              label: 'Menor valor do dia',
+              label: field.label,
               data: series.values,
-              borderWidth: 2,
-              tension: 0.25,
+              borderColor: '#183a5a',
+              backgroundColor: '#183a5a',
               fill: false
             }]
           },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: { display: false }
-            },
-            scales: {
-              y: { beginAtZero: true }
-            }
-          }
+          options: chartOptions()
         });
       });
     }
@@ -278,16 +313,18 @@
     function renderAll() {
       const recentRows = filterRowsByUnit(getRowsLastHours(10));
       const last30Rows = filterRowsByUnit(allRows);
+
       renderTable(recentRows);
-      updateKpis(recentRows);
       renderCharts(last30Rows);
     }
 
     async function loadData() {
       const response = await fetch('./data/dados.json?_=' + Date.now());
       if (!response.ok) throw new Error('Não foi possível carregar o JSON.');
+
       const payload = await response.json();
       allRows = Array.isArray(payload.dados) ? payload.dados : [];
+
       fillUnitFilter();
       renderAll();
     }

@@ -1,15 +1,18 @@
 :root {
-  --azul-principal: #163a63;
-  --azul-secundario: #244b77;
-  --fundo: #f5f7fa;
+  --azul-principal: #173a5e;
+  --azul-secundario: #254d78;
+  --azul-texto: #173a5e;
+  --fundo: #f4f6f8;
   --branco: #ffffff;
-  --texto: #1f2937;
-  --texto-claro: #667085;
-  --verde: #41a853;
+  --texto: #233243;
+  --texto-claro: #6b7a8c;
+  --borda: #dbe3ec;
+  --linha: #e8edf3;
+  --header-tabela: #f3f6fa;
+  --coluna-fixa: #f8fafc;
+  --verde: #43a047;
   --vermelho: #ef4b3f;
-  --cinza-borda: #d8e0ea;
-  --cinza-tabela: #f8fafc;
-  --cinza-header: #edf2f7;
+  --amarelo: #f3c64d;
   --sombra: 0 6px 18px rgba(15, 23, 42, 0.06);
   --raio: 14px;
   --largura: 1700px;
@@ -114,21 +117,22 @@ a {
 .table-box,
 .resume-box,
 .unit-status-wrap,
+.chart-box,
 .empty-state {
   background: var(--branco);
-  border: 1px solid var(--cinza-borda);
+  border: 1px solid var(--borda);
   border-radius: var(--raio);
   box-shadow: var(--sombra);
 }
 
 .hero-card {
-  padding: 22px;
-  margin-bottom: 16px;
+  padding: 20px 22px;
+  margin-bottom: 14px;
 }
 
 .hero-card h2 {
-  color: var(--azul-principal);
-  font-size: 24px;
+  color: var(--azul-texto);
+  font-size: 23px;
   margin-bottom: 8px;
 }
 
@@ -138,14 +142,14 @@ a {
 }
 
 .section-title {
-  color: var(--azul-principal);
+  color: var(--azul-texto);
   font-size: 20px;
   font-weight: 700;
   margin: 18px 0 10px;
 }
 
 .card {
-  padding: 16px;
+  padding: 14px 16px;
 }
 
 .toolbar {
@@ -159,36 +163,37 @@ a {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  min-width: 230px;
+  min-width: 240px;
 }
 
 .field-group label {
-  color: var(--azul-principal);
+  color: var(--azul-texto);
   font-size: 13px;
   font-weight: 700;
 }
 
 .select-input {
-  height: 42px;
+  height: 40px;
   border: 1px solid #cfd8e3;
   border-radius: 10px;
   padding: 0 12px;
   font-size: 14px;
   background: #fff;
+  color: var(--texto);
 }
 
 .kpi-row {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
-  margin-top: 14px;
+  margin-top: 12px;
 }
 
 .kpi-card {
   background: #fafcff;
-  border: 1px solid #d9e4ef;
+  border: 1px solid #dde6ef;
   border-radius: 12px;
-  padding: 16px;
+  padding: 14px 16px;
 }
 
 .kpi-card span {
@@ -200,13 +205,12 @@ a {
 }
 
 .kpi-card strong {
-  font-size: 30px;
-  color: var(--azul-principal);
+  font-size: 28px;
+  color: var(--azul-texto);
 }
 
 .unit-status-wrap {
   padding: 14px;
-  margin-bottom: 14px;
 }
 
 .unit-legend {
@@ -235,12 +239,17 @@ a {
   height: 14px;
 }
 
+.status-dot {
+  width: 14px;
+  height: 14px;
+}
+
 .dot-green { background: var(--verde); }
 .dot-red { background: var(--vermelho); }
 
 .unit-status-grid {
   display: grid;
-  grid-template-columns: repeat(11, minmax(0, 1fr));
+  grid-template-columns: repeat(14, minmax(0, 1fr));
   gap: 8px;
 }
 
@@ -251,16 +260,17 @@ a {
 }
 
 .unit-status-name {
-  color: var(--azul-principal);
+  color: var(--azul-texto);
   margin-bottom: 6px;
-  min-height: 30px;
+  min-height: 16px;
   line-height: 1.2;
+  white-space: nowrap;
 }
 
 .unit-status-bar {
   height: 16px;
   border-radius: 4px;
-  background: #d8dee6;
+  background: #d9e1ea;
 }
 
 .unit-status-bar.present { background: var(--verde); }
@@ -277,20 +287,20 @@ a {
 }
 
 .data-table th {
-  background: var(--cinza-header);
-  color: var(--azul-principal);
-  font-size: 12px;
-  padding: 10px 6px;
-  border: 1px solid var(--cinza-borda);
+  background: var(--header-tabela);
+  color: var(--azul-texto);
+  font-size: 11px;
+  padding: 10px 4px;
+  border: 1px solid var(--borda);
   text-align: center;
   font-weight: 700;
 }
 
 .data-table td {
-  border: 1px solid var(--cinza-borda);
-  padding: 8px 6px;
+  border: 1px solid var(--borda);
+  padding: 8px 4px;
   text-align: center;
-  font-size: 12px;
+  font-size: 11px;
   background: var(--branco);
   vertical-align: middle;
 }
@@ -298,37 +308,33 @@ a {
 .data-table td.col-unit,
 .data-table td.col-tech,
 .data-table td.col-datetime {
-  background: var(--cinza-tabela);
+  background: var(--coluna-fixa);
   color: var(--texto);
   font-weight: 700;
 }
 
 .data-table td.col-unit {
   text-align: left;
-  width: 180px;
+  width: 160px;
 }
 
 .data-table td.col-tech {
-  width: 180px;
+  width: 160px;
 }
 
 .data-table td.col-datetime {
-  width: 120px;
+  width: 118px;
 }
 
 .status-cell {
-  width: 72px;
-}
-
-.status-dot {
-  width: 14px;
-  height: 14px;
+  width: 62px;
 }
 
 .na-text {
   color: var(--texto-claro);
   font-weight: 700;
-  font-size: 11px;
+  font-size: 10px;
+  line-height: 1.2;
 }
 
 .resume-box {
@@ -357,7 +363,7 @@ a {
 
 .resume-chip {
   background: #edf3f8;
-  color: var(--azul-principal);
+  color: var(--azul-texto);
   border-radius: 999px;
   padding: 5px 10px;
   font-size: 12px;
@@ -375,6 +381,52 @@ a {
   padding: 18px;
   text-align: center;
   color: var(--texto-claro);
+}
+
+/* INSUMOS */
+.qty-square {
+  width: 42px;
+  height: 32px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  background: transparent;
+  color: var(--texto);
+}
+
+.qty-warn {
+  background: var(--amarelo);
+  color: #5b4300;
+}
+
+.qty-critical {
+  background: var(--vermelho);
+  color: #ffffff;
+}
+
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.chart-box {
+  padding: 10px 12px;
+}
+
+.chart-box h3 {
+  color: var(--azul-texto);
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.chart-box canvas {
+  width: 100% !important;
+  height: 170px !important;
 }
 
 .grid-2,
@@ -411,21 +463,22 @@ a {
   text-align: center;
 }
 
-@media (max-width: 1500px) {
+@media (max-width: 1600px) {
   .unit-status-grid {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-columns: repeat(10, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1300px) {
   .kpi-row,
   .grid-2,
-  .grid-3 {
+  .grid-3,
+  .chart-grid {
     grid-template-columns: 1fr;
   }
 
   .unit-status-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(6, minmax(0, 1fr));
   }
 
   .table-box {
@@ -433,7 +486,7 @@ a {
   }
 
   .data-table {
-    min-width: 1400px;
+    min-width: 1380px;
   }
 }
 
@@ -444,6 +497,6 @@ a {
   }
 
   .unit-status-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
