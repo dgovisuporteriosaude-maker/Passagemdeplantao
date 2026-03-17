@@ -278,17 +278,19 @@
     function renderResumeSummaries(rows) {
       const container = document.getElementById('resumeList');
 
-      const entries = rows
-        .filter(row => String(row['Resumo do plantao'] || '').trim())
-        .map(row => ({
+      const entries = rows.map(row => {
+        const resumoBruto = String(row['Resumo do plantao'] || '').trim();
+
+        return {
           unit: getUnitShort(getUnit(row)),
           tech: getTech(row),
           date: formatDateTime(row['Carimbo de data/hora']),
-          resumo: String(row['Resumo do plantao'] || '').trim()
-        }));
+          resumo: resumoBruto || 'Plantão sem pendências relatadas'
+        };
+      });
 
       if (!entries.length) {
-        container.innerHTML = `<div class="empty-state">Nenhum resumo encontrado nos últimos 3 dias para o filtro selecionado.</div>`;
+        container.innerHTML = `<div class="empty-state">Nenhum registro encontrado nos últimos 3 dias para o filtro selecionado.</div>`;
         return;
       }
 
