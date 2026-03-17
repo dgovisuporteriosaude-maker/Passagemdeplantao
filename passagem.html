@@ -14,7 +14,7 @@
       </div>
       <div class="title-box">
         <h1>Passagem de Plantão</h1>
-        <p>Checklist operacional das últimas 10 horas e pendências recentes por unidade</p>
+        <p>Checklist operacional das últimas 10 horas e resumo de plantão dos últimos 3 dias</p>
       </div>
     </div>
 
@@ -30,7 +30,7 @@
   <main class="page-wrap">
     <section class="hero-card">
       <h2>Checklist operacional</h2>
-      <p>Visualização compacta por unidade, com presença do técnico nas últimas 10 horas e resumo dos problemas relatados quando o status foi marcado como não operante.</p>
+      <p>Visualização compacta por unidade, com presença do técnico nas últimas 10 horas e exibição direta do campo “Resumo do plantao”.</p>
     </section>
 
     <section class="card">
@@ -51,8 +51,8 @@
           <strong id="kpiAusentes">0</strong>
         </div>
         <div class="kpi-card">
-          <span>Problemas relatados</span>
-          <strong id="kpiProblemas">0</strong>
+          <span>Resumos encontrados</span>
+          <strong id="kpiResumos">0</strong>
         </div>
       </div>
     </section>
@@ -87,14 +87,14 @@
             <th>COMPUTADORES</th>
             <th>IMPRESSORAS</th>
             <th>CFTV</th>
-            <th>BOTÃO DE PÂNICO</th>
+            <th>BOTÃO PÂNICO</th>
           </tr>
         </thead>
         <tbody id="checklistBody"></tbody>
       </table>
     </section>
 
-    <h2 class="section-title">Pendências relatadas - últimos 3 dias</h2>
+    <h2 class="section-title">Resumo do plantão - últimos 3 dias</h2>
     <section class="resume-box">
       <div id="resumeList" class="resume-list"></div>
     </section>
@@ -116,20 +116,20 @@
     ];
 
     const CHECK_FIELDS = [
-      { label: 'TIMED', statusKey: 'TIMED', problemKey: 'Qual problema encontrado no TIMED?' },
-      { label: 'OVIYAM', statusKey: 'OVIYAM & INTEGRAÇÃO', problemKey: 'Qual problema encontrado no OVIYAM?' },
-      { label: 'LABORATÓRIO', statusKey: 'INTEGRAÇÃO DE LABORATÓRIO', problemKey: 'Qual problema encontrado na integração de laboratório?' },
-      { label: 'INTERNET', statusKey: 'INTERNET', problemKey: 'Qual problema com a internet?' },
-      { label: 'PPD', statusKey: 'PPD', problemKey: null },
-      { label: 'GLPI', statusKey: 'GLPI', problemKey: null },
-      { label: 'SERVIDORES', statusKey: 'SERVIDORES', problemKey: 'Qual problema com os servidores?' },
-      { label: 'PAINEL CHAMADOS', statusKey: 'PAINEL DE CHAMADOS', problemKey: 'Qual problema com o painel de chamados?' },
-      { label: 'PAINEL ESCALA', statusKey: 'PAINEL DE ESCALA', problemKey: 'Qual problema com o painel de escala?' },
-      { label: 'TOTEM', statusKey: 'TOTEM', problemKey: 'Qual problema com o totem?' },
-      { label: 'COMPUTADORES', statusKey: 'COMPUTADORES', problemKey: 'Qual problema com computadores?' },
-      { label: 'IMPRESSORAS', statusKey: 'IMPRESSORAS', problemKey: 'Qual problema com impressoras?' },
-      { label: 'CFTV', statusKey: 'CFTV', problemKey: 'Qual problema com CFTV?' },
-      { label: 'BOTÃO DE PÂNICO', statusKey: 'BOTAO DE PANICO', problemKey: null }
+      { label: 'TIMED', statusKey: 'TIMED' },
+      { label: 'OVIYAM', statusKey: 'OVIYAM & INTEGRAÇÃO' },
+      { label: 'LABORATÓRIO', statusKey: 'INTEGRAÇÃO DE LABORATÓRIO' },
+      { label: 'INTERNET', statusKey: 'INTERNET' },
+      { label: 'PPD', statusKey: 'PPD' },
+      { label: 'GLPI', statusKey: 'GLPI' },
+      { label: 'SERVIDORES', statusKey: 'SERVIDORES' },
+      { label: 'PAINEL CHAMADOS', statusKey: 'PAINEL DE CHAMADOS' },
+      { label: 'PAINEL ESCALA', statusKey: 'PAINEL DE ESCALA' },
+      { label: 'TOTEM', statusKey: 'TOTEM' },
+      { label: 'COMPUTADORES', statusKey: 'COMPUTADORES' },
+      { label: 'IMPRESSORAS', statusKey: 'IMPRESSORAS' },
+      { label: 'CFTV', statusKey: 'CFTV' },
+      { label: 'BOTÃO PÂNICO', statusKey: 'BOTAO DE PANICO' }
     ];
 
     let allRows = [];
@@ -192,6 +192,7 @@
     function getRowsLastHours(hours) {
       const now = new Date();
       const cutoff = new Date(now.getTime() - hours * 60 * 60 * 1000);
+
       return allRows
         .filter(row => {
           const dt = parseBrazilDateTime(row['Carimbo de data/hora']);
@@ -203,6 +204,7 @@
     function getRowsLastDays(days) {
       const now = new Date();
       const cutoff = new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
+
       return allRows
         .filter(row => {
           const dt = parseBrazilDateTime(row['Carimbo de data/hora']);
@@ -213,10 +215,14 @@
 
     function fillUnitFilter() {
       const select = document.getElementById('unitFilter');
-      const units = [...new Set([...ALL_UNITS, ...allRows.map(getUnit)])].filter(Boolean).sort((a, b) => a.localeCompare(b, 'pt-BR'));
+      const units = [...new Set([...ALL_UNITS, ...allRows.map(getUnit)])]
+        .filter(Boolean)
+        .sort((a, b) => a.localeCompare(b, 'pt-BR'));
+
       select.innerHTML =
         '<option value="__ALL__">Todas as unidades</option>' +
         units.map(unit => `<option value="${unit}">${unit}</option>`).join('');
+
       select.addEventListener('change', renderAll);
     }
 
@@ -233,9 +239,11 @@
     function buildPresenceMap(recentRows) {
       const map = {};
       ALL_UNITS.forEach(unit => map[unit] = false);
+
       recentRows.forEach(row => {
         map[getUnit(row)] = true;
       });
+
       return map;
     }
 
@@ -260,13 +268,14 @@
 
     function renderChecklistTable(rows) {
       const tbody = document.getElementById('checklistBody');
+
       if (!rows.length) {
         tbody.innerHTML = `<tr><td colspan="17" style="background:#fff;color:#6b7280;padding:18px;">Nenhum checklist encontrado nas últimas 10 horas.</td></tr>`;
         return;
       }
 
       tbody.innerHTML = rows.map(row => {
-        const cells = CHECK_FIELDS.map(field => `
+        const statusCells = CHECK_FIELDS.map(field => `
           <td class="status-cell">${renderStatusCell(row[field.statusKey])}</td>
         `).join('');
 
@@ -275,50 +284,28 @@
             <td class="col-unit">${getUnit(row)}</td>
             <td class="col-tech">${getTech(row)}</td>
             <td class="col-datetime">${formatDateTime(row['Carimbo de data/hora'])}</td>
-            ${cells}
+            ${statusCells}
           </tr>
         `;
       }).join('');
     }
 
-    function collectProblemEntries(rows) {
-      const entries = [];
-
-      rows.forEach(row => {
-        const problems = [];
-
-        CHECK_FIELDS.forEach(field => {
-          const value = row[field.statusKey];
-          if (isNaoOperante(value)) {
-            const problemText = field.problemKey ? String(row[field.problemKey] || '').trim() : '';
-            problems.push({
-              item: field.label,
-              detail: problemText || 'Problema não detalhado.'
-            });
-          }
-        });
-
-        if (problems.length) {
-          entries.push({
-            unit: getUnit(row),
-            tech: getTech(row),
-            date: formatDateTime(row['Carimbo de data/hora']),
-            problems
-          });
-        }
-      });
-
-      return entries;
-    }
-
-    function renderProblemSummaries(rows) {
+    function renderResumeSummaries(rows) {
       const container = document.getElementById('resumeList');
-      const entries = collectProblemEntries(rows);
-      document.getElementById('kpiProblemas').textContent =
-        entries.reduce((acc, item) => acc + item.problems.length, 0);
+
+      const entries = rows
+        .filter(row => String(row['Resumo do plantao'] || '').trim())
+        .map(row => ({
+          unit: getUnit(row),
+          tech: getTech(row),
+          date: formatDateTime(row['Carimbo de data/hora']),
+          resumo: String(row['Resumo do plantao'] || '').trim()
+        }));
+
+      document.getElementById('kpiResumos').textContent = entries.length;
 
       if (!entries.length) {
-        container.innerHTML = `<div class="empty-state">Nenhuma pendência relatada nos últimos 3 dias para o filtro selecionado.</div>`;
+        container.innerHTML = `<div class="empty-state">Nenhum resumo encontrado nos últimos 3 dias para o filtro selecionado.</div>`;
         return;
       }
 
@@ -329,26 +316,28 @@
             <span class="resume-chip">${entry.tech}</span>
             <span class="resume-chip">${entry.date}</span>
           </div>
-          <ul class="resume-problem-list">
-            ${entry.problems.map(problem => `<li><strong>${problem.item}:</strong> ${problem.detail}</li>`).join('')}
-          </ul>
+          <div class="resume-text">${entry.resumo}</div>
         </article>
       `).join('');
     }
 
     function renderAll() {
-      const recentRows = filterRowsBySelectedUnit(getRowsLastHours(10));
-      const last3Days = filterRowsBySelectedUnit(getRowsLastDays(3));
-      renderUnitStatus(getRowsLastHours(10));
-      renderChecklistTable(recentRows);
-      renderProblemSummaries(last3Days);
+      const last10hAll = getRowsLastHours(10);
+      const last10hFiltered = filterRowsBySelectedUnit(last10hAll);
+      const last3dFiltered = filterRowsBySelectedUnit(getRowsLastDays(3));
+
+      renderUnitStatus(last10hAll);
+      renderChecklistTable(last10hFiltered);
+      renderResumeSummaries(last3dFiltered);
     }
 
     async function loadData() {
       const response = await fetch('./data/dados.json?_=' + Date.now());
       if (!response.ok) throw new Error('Não foi possível carregar o JSON.');
+
       const payload = await response.json();
       allRows = Array.isArray(payload.dados) ? payload.dados : [];
+
       fillUnitFilter();
       renderAll();
     }
@@ -356,6 +345,7 @@
     loadData().catch(error => {
       document.getElementById('checklistBody').innerHTML =
         `<tr><td colspan="17" style="background:#fff;color:#c62828;padding:18px;">Erro ao carregar os dados: ${error.message}</td></tr>`;
+
       document.getElementById('resumeList').innerHTML =
         `<div class="empty-state">Erro ao carregar os dados.</div>`;
     });
