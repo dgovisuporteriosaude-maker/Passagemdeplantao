@@ -14,7 +14,7 @@
       </div>
       <div class="title-box">
         <h1>Passagem de Plantão</h1>
-        <p>Pendências das últimas 10 horas e resumo do plantão dos últimos 3 dias</p>
+        <p>Checklist operacional das últimas 10 horas e resumo do plantão dos últimos 3 dias</p>
       </div>
     </div>
 
@@ -29,8 +29,8 @@
 
   <main class="page-wrap">
     <section class="hero-card">
-      <h2>Painel de pendências operacionais</h2>
-      <p>Exibe o status das unidades e resume apenas o que está não operante. Quando não houver pendências, a unidade aparece como sem pendências relatadas.</p>
+      <h2>Checklist operacional</h2>
+      <p>Visualização compacta por unidade, mostrando todas as unidades no status superior, mesmo quando não houve preenchimento nas últimas 10 horas.</p>
     </section>
 
     <section class="card">
@@ -51,7 +51,7 @@
       <div id="unitStatusGrid" class="unit-status-grid"></div>
     </section>
 
-    <h2 class="section-title">Situação por unidade - últimas 10 horas</h2>
+    <h2 class="section-title">Checklist das últimas 10 horas</h2>
     <section class="table-box">
       <table class="data-table">
         <thead>
@@ -59,12 +59,23 @@
             <th>Unidade</th>
             <th>Técnico</th>
             <th>Data/Hora</th>
-            <th>Situação</th>
-            <th>Itens não operantes</th>
-            <th>Detalhamento</th>
+            <th>TIMED</th>
+            <th>OVIYAM</th>
+            <th>LAB</th>
+            <th>INTERNET</th>
+            <th>PPD</th>
+            <th>GLPI</th>
+            <th>SERV.</th>
+            <th>PAINEL CH.</th>
+            <th>PAINEL ESC.</th>
+            <th>TOTEM</th>
+            <th>COMP.</th>
+            <th>IMPRES.</th>
+            <th>CFTV</th>
+            <th>PÂNICO</th>
           </tr>
         </thead>
-        <tbody id="pendingBody"></tbody>
+        <tbody id="checklistBody"></tbody>
       </table>
     </section>
 
@@ -75,25 +86,41 @@
   </main>
 
   <script>
+    const ALL_UNITS = [
+      { full: 'UPA CIDADE DE DEUS', short: 'UPACDD' },
+      { full: 'UPA JOAO XXIII', short: 'UPAJ23' },
+      { full: 'UPA MAGALHÃES BASTOS', short: 'UPAMB' },
+      { full: 'MATERNIDADE DA ROCINHA', short: 'MATROC' },
+      { full: 'UPA COSTA BARROS', short: 'UPACB' },
+      { full: 'UPA DEL CASTILHO', short: 'UPADC' },
+      { full: 'UPA ENGENHO DE DENTRO', short: 'UPAED' },
+      { full: 'UPA MADUREIRA', short: 'UPAMAD' },
+      { full: 'UPA SENADOR CAMARÁ', short: 'UPASC' },
+      { full: 'UPA SEPETIBA', short: 'UPASEP' },
+      { full: 'UPA VILA KENNEDY', short: 'UPAVK' },
+      { full: 'CERBARRA', short: 'CERBARRA' },
+      { full: 'UPA CAMPO GRANDE II', short: 'UPACG2' },
+      { full: 'UPA MARECHAL HERMES', short: 'UPAMH' }
+    ];
+
     const CHECK_FIELDS = [
-      { label: 'TIMED', statusKey: 'TIMED', problemKey: 'Qual problema encontrado no TIMED?' },
-      { label: 'OVIYAM & INTEGRAÇÃO', statusKey: 'OVIYAM & INTEGRAÇÃO', problemKey: 'Qual problema encontrado no OVIYAM?' },
-      { label: 'INTEGRAÇÃO DE LABORATÓRIO', statusKey: 'INTEGRAÇÃO DE LABORATÓRIO', problemKey: 'Qual problema encontrado na integração de laboratório?' },
-      { label: 'INTERNET', statusKey: 'INTERNET', problemKey: 'Qual problema com a internet?' },
-      { label: 'PPD', statusKey: 'PPD', problemKey: null },
-      { label: 'GLPI', statusKey: 'GLPI', problemKey: null },
-      { label: 'SERVIDORES', statusKey: 'SERVIDORES', problemKey: 'Qual problema com os servidores?' },
-      { label: 'PAINEL DE CHAMADOS', statusKey: 'PAINEL DE CHAMADOS', problemKey: 'Qual problema com o painel de chamados?' },
-      { label: 'PAINEL DE ESCALA', statusKey: 'PAINEL DE ESCALA', problemKey: 'Qual problema com o painel de escala?' },
-      { label: 'TOTEM', statusKey: 'TOTEM', problemKey: 'Qual problema com o totem?' },
-      { label: 'COMPUTADORES', statusKey: 'COMPUTADORES', problemKey: 'Qual problema com computadores?' },
-      { label: 'IMPRESSORAS', statusKey: 'IMPRESSORAS', problemKey: 'Qual problema com impressoras?' },
-      { label: 'CFTV', statusKey: 'CFTV', problemKey: 'Qual problema com CFTV?' },
-      { label: 'BOTAO DE PANICO', statusKey: 'BOTAO DE PANICO', problemKey: null }
+      { label: 'TIMED', statusKey: 'TIMED' },
+      { label: 'OVIYAM', statusKey: 'OVIYAM & INTEGRAÇÃO' },
+      { label: 'LAB', statusKey: 'INTEGRAÇÃO DE LABORATÓRIO' },
+      { label: 'INTERNET', statusKey: 'INTERNET' },
+      { label: 'PPD', statusKey: 'PPD' },
+      { label: 'GLPI', statusKey: 'GLPI' },
+      { label: 'SERV.', statusKey: 'SERVIDORES' },
+      { label: 'PAINEL CH.', statusKey: 'PAINEL DE CHAMADOS' },
+      { label: 'PAINEL ESC.', statusKey: 'PAINEL DE ESCALA' },
+      { label: 'TOTEM', statusKey: 'TOTEM' },
+      { label: 'COMP.', statusKey: 'COMPUTADORES' },
+      { label: 'IMPRES.', statusKey: 'IMPRESSORAS' },
+      { label: 'CFTV', statusKey: 'CFTV' },
+      { label: 'PÂNICO', statusKey: 'BOTAO DE PANICO' }
     ];
 
     let allRows = [];
-    let knownUnits = [];
 
     function normalizeText(value) {
       return String(value || '')
@@ -119,11 +146,16 @@
     }
 
     function getUnit(row) {
-      return String(row['Qual Sua unidade?'] || '').trim();
+      return row['Qual Sua unidade?'] || 'Sem unidade';
+    }
+
+    function getUnitShort(fullName) {
+      const found = ALL_UNITS.find(item => normalizeText(item.full) === normalizeText(fullName));
+      return found ? found.short : fullName;
     }
 
     function getTech(row) {
-      return String(row['Técnico Pantonista'] || '-').trim();
+      return row['Técnico Pantonista'] || '-';
     }
 
     function isOperante(value) {
@@ -140,57 +172,16 @@
       return !!v && !isOperante(value) && !isNaoSeAplica(value);
     }
 
-    function shortUnitName(name) {
-      const raw = normalizeText(name);
-
-      const manual = {
-        'UPA MAGALHAES BASTOS': 'UPAMB',
-        'UPA JOAO XXIII': 'UPAJ23',
-        'UPA CIDADE DE DEUS': 'UPACDD',
-        'UPA COSTA BARROS': 'UPACB',
-        'UPA DEL CASTILHO': 'UPADC',
-        'UPA ENGENHO DE DENTRO': 'UPAED',
-        'UPA MADUREIRA': 'UPAMAD',
-        'UPA SENADOR CAMARA': 'UPASC',
-        'UPA SEPETIBA': 'UPASEP',
-        'UPA VILA KENNEDY': 'UPAVK',
-        'MATERNIDADE DA ROCINHA': 'MATROC',
-        'CERBARRA': 'CERBARRA'
-      };
-
-      if (manual[raw]) return manual[raw];
-
-      const cleaned = raw
-        .replace(/\bDA\b|\bDE\b|\bDO\b|\bDAS\b|\bDOS\b/g, '')
-        .replace(/\s+/g, ' ')
-        .trim();
-
-      if (/^UPA /.test(cleaned)) {
-        const rest = cleaned.replace(/^UPA\s+/, '').split(' ').filter(Boolean);
-        return 'UPA' + rest.map(part => {
-          if (/^\d+$/.test(part)) return part;
-          if (/^XXIII$/i.test(part)) return 'J23';
-          return part[0];
-        }).join('');
-      }
-
-      return cleaned.split(' ').map(p => p[0]).join('').slice(0, 8);
-    }
-
-    function getRowsLastDays(days) {
-      const now = new Date();
-      const cutoff = new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
-      return allRows
-        .filter(row => {
-          const dt = parseBrazilDateTime(row['Carimbo de data/hora']);
-          return dt && dt >= cutoff && dt <= now;
-        })
-        .sort((a, b) => parseBrazilDateTime(b['Carimbo de data/hora']) - parseBrazilDateTime(a['Carimbo de data/hora']));
+    function renderStatusCell(value) {
+      if (isOperante(value)) return '<span class="status-dot dot-green"></span>';
+      if (isNaoOperante(value)) return '<span class="status-dot dot-red"></span>';
+      return '<span class="na-text">Não se aplica</span>';
     }
 
     function getRowsLastHours(hours) {
       const now = new Date();
       const cutoff = new Date(now.getTime() - hours * 60 * 60 * 1000);
+
       return allRows
         .filter(row => {
           const dt = parseBrazilDateTime(row['Carimbo de data/hora']);
@@ -199,17 +190,28 @@
         .sort((a, b) => parseBrazilDateTime(b['Carimbo de data/hora']) - parseBrazilDateTime(a['Carimbo de data/hora']));
     }
 
-    function buildKnownUnitsFromFiveDays() {
-      const rows = getRowsLastDays(5);
-      knownUnits = [...new Set(rows.map(getUnit).filter(Boolean))]
-        .sort((a, b) => a.localeCompare(b, 'pt-BR'));
+    function getRowsLastDays(days) {
+      const now = new Date();
+      const cutoff = new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
+
+      return allRows
+        .filter(row => {
+          const dt = parseBrazilDateTime(row['Carimbo de data/hora']);
+          return dt && dt >= cutoff && dt <= now;
+        })
+        .sort((a, b) => parseBrazilDateTime(b['Carimbo de data/hora']) - parseBrazilDateTime(a['Carimbo de data/hora']));
     }
 
     function fillUnitFilter() {
       const select = document.getElementById('unitFilter');
+      const units = [...new Set([...ALL_UNITS.map(x => x.full), ...allRows.map(getUnit)])]
+        .filter(Boolean)
+        .sort((a, b) => a.localeCompare(b, 'pt-BR'));
+
       select.innerHTML =
         '<option value="__ALL__">Todas as unidades</option>' +
-        knownUnits.map(unit => `<option value="${unit}">${unit}</option>`).join('');
+        units.map(unit => `<option value="${unit}">${unit}</option>`).join('');
+
       select.addEventListener('change', renderAll);
     }
 
@@ -217,103 +219,57 @@
       return document.getElementById('unitFilter').value;
     }
 
-    function filterUnits(units) {
+    function filterRowsBySelectedUnit(rows) {
       const unit = selectedUnit();
-      if (!unit || unit === '__ALL__') return units;
-      return units.filter(u => u === unit);
+      if (!unit || unit === '__ALL__') return rows;
+      return rows.filter(row => getUnit(row) === unit);
+    }
+
+    function buildPresenceMap(recentRows) {
+      const map = {};
+      ALL_UNITS.forEach(unit => map[unit.full] = false);
+
+      recentRows.forEach(row => {
+        map[getUnit(row)] = true;
+      });
+
+      return map;
     }
 
     function renderUnitStatus(recentRows) {
       const grid = document.getElementById('unitStatusGrid');
-      const latestByUnit = new Map();
-
-      recentRows.forEach(row => {
-        const unit = getUnit(row);
-        if (!latestByUnit.has(unit)) latestByUnit.set(unit, row);
-      });
-
-      const unitsToShow = filterUnits(knownUnits);
+      const map = buildPresenceMap(recentRows);
+      const unitsToShow = selectedUnit() === '__ALL__'
+        ? ALL_UNITS
+        : [{ full: selectedUnit(), short: getUnitShort(selectedUnit()) }];
 
       grid.innerHTML = unitsToShow.map(unit => `
         <div class="unit-status-item">
-          <div class="unit-status-name">${shortUnitName(unit)}</div>
-          <div class="unit-status-bar ${latestByUnit.has(unit) ? 'present' : 'absent'}"></div>
+          <div class="unit-status-name">${unit.short}</div>
+          <div class="unit-status-bar ${map[unit.full] ? 'present' : 'absent'}"></div>
         </div>
       `).join('');
     }
 
-    function collectNonOperantItems(row) {
-      const items = [];
+    function renderChecklistTable(rows) {
+      const tbody = document.getElementById('checklistBody');
 
-      CHECK_FIELDS.forEach(field => {
-        const value = row[field.statusKey];
-        if (isNaoOperante(value)) {
-          const detail = field.problemKey ? String(row[field.problemKey] || '').trim() : '';
-          items.push({
-            label: field.label,
-            detail: detail || 'Problema não detalhado.'
-          });
-        }
-      });
-
-      return items;
-    }
-
-    function renderPendingTable(recentRows) {
-      const tbody = document.getElementById('pendingBody');
-      const latestByUnit = new Map();
-
-      recentRows.forEach(row => {
-        const unit = getUnit(row);
-        if (!latestByUnit.has(unit)) latestByUnit.set(unit, row);
-      });
-
-      const unitsToShow = filterUnits(knownUnits);
-
-      if (!unitsToShow.length) {
-        tbody.innerHTML = `<tr><td colspan="6" style="background:#fff;color:#6b7280;padding:18px;">Nenhuma unidade encontrada.</td></tr>`;
+      if (!rows.length) {
+        tbody.innerHTML = `<tr><td colspan="17" style="background:#fff;color:#6b7280;padding:18px;">Nenhum checklist encontrado nas últimas 10 horas.</td></tr>`;
         return;
       }
 
-      tbody.innerHTML = unitsToShow.map(unit => {
-        const row = latestByUnit.get(unit);
-
-        if (!row) {
-          return `
-            <tr>
-              <td class="col-unit">${shortUnitName(unit)}</td>
-              <td class="col-tech">-</td>
-              <td class="col-datetime">-</td>
-              <td>Técnico ausente</td>
-              <td>Unidade sem checklist recente</td>
-              <td>Não houve preenchimento nas últimas 10 horas.</td>
-            </tr>
-          `;
-        }
-
-        const issues = collectNonOperantItems(row);
-
-        if (!issues.length) {
-          return `
-            <tr>
-              <td class="col-unit">${shortUnitName(unit)}</td>
-              <td class="col-tech">${getTech(row)}</td>
-              <td class="col-datetime">${formatDateTime(row['Carimbo de data/hora'])}</td>
-              <td>Sem pendências</td>
-              <td>Passagem de plantão sem pendências</td>
-              <td>Unidade sem pendências relatadas.</td>
-            </tr>
-          `;
-        }
+      tbody.innerHTML = rows.map(row => {
+        const statusCells = CHECK_FIELDS.map(field => `
+          <td class="status-cell">${renderStatusCell(row[field.statusKey])}</td>
+        `).join('');
 
         return `
           <tr>
-            <td class="col-unit">${shortUnitName(unit)}</td>
+            <td class="col-unit">${getUnitShort(getUnit(row))}</td>
             <td class="col-tech">${getTech(row)}</td>
             <td class="col-datetime">${formatDateTime(row['Carimbo de data/hora'])}</td>
-            <td>Com pendências</td>
-            <td>${issues.map(i => i.label).join(', ')}</td>
-            <td>${issues.map(i => `${i.label}: ${i.detail}`).join(' | ')}</td>
+            ${statusCells}
           </tr>
         `;
       }).join('');
@@ -321,17 +277,11 @@
 
     function renderResumeSummaries(rows) {
       const container = document.getElementById('resumeList');
-      const unit = selectedUnit();
 
       const entries = rows
-        .filter(row => {
-          const hasResumo = String(row['Resumo do plantao'] || '').trim();
-          if (!hasResumo) return false;
-          if (!unit || unit === '__ALL__') return true;
-          return getUnit(row) === unit;
-        })
+        .filter(row => String(row['Resumo do plantao'] || '').trim())
         .map(row => ({
-          unit: shortUnitName(getUnit(row)),
+          unit: getUnitShort(getUnit(row)),
           tech: getTech(row),
           date: formatDateTime(row['Carimbo de data/hora']),
           resumo: String(row['Resumo do plantao'] || '').trim()
@@ -355,12 +305,13 @@
     }
 
     function renderAll() {
-      const last10h = getRowsLastHours(10);
-      const last3d = getRowsLastDays(3);
+      const last10hAll = getRowsLastHours(10);
+      const last10hFiltered = filterRowsBySelectedUnit(last10hAll);
+      const last3dFiltered = filterRowsBySelectedUnit(getRowsLastDays(3));
 
-      renderUnitStatus(last10h);
-      renderPendingTable(last10h);
-      renderResumeSummaries(last3d);
+      renderUnitStatus(last10hAll);
+      renderChecklistTable(last10hFiltered);
+      renderResumeSummaries(last3dFiltered);
     }
 
     async function loadData() {
@@ -370,14 +321,13 @@
       const payload = await response.json();
       allRows = Array.isArray(payload.dados) ? payload.dados : [];
 
-      buildKnownUnitsFromFiveDays();
       fillUnitFilter();
       renderAll();
     }
 
     loadData().catch(error => {
-      document.getElementById('pendingBody').innerHTML =
-        `<tr><td colspan="6" style="background:#fff;color:#c62828;padding:18px;">Erro ao carregar os dados: ${error.message}</td></tr>`;
+      document.getElementById('checklistBody').innerHTML =
+        `<tr><td colspan="17" style="background:#fff;color:#c62828;padding:18px;">Erro ao carregar os dados: ${error.message}</td></tr>`;
       document.getElementById('resumeList').innerHTML =
         `<div class="empty-state">Erro ao carregar os dados.</div>`;
     });
