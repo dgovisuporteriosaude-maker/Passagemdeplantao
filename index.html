@@ -6,6 +6,11 @@
   <title>Avisos | Passagem de Plantão</title>
   <link rel="stylesheet" href="style.css">
   <style>
+    .logo-box img {
+      max-height: 44px;
+      width: auto;
+    }
+
     .notice-hero {
       display: grid;
       grid-template-columns: 1.15fr 0.85fr;
@@ -163,6 +168,7 @@
       border: 1px solid #dbe3ec;
       background: #ffffff;
       box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+      padding-bottom: 16px;
     }
 
     .ticker-head {
@@ -185,16 +191,21 @@
       font-size: 13px;
     }
 
-    .ticker-track {
-      display: flex;
-      width: max-content;
-      gap: 14px;
-      padding: 16px 14px;
-      animation: tickerMove 38s linear infinite;
+    .notice-carousel {
+      padding: 16px 14px 0;
     }
 
-    .ticker-wrap:hover .ticker-track {
-      animation-play-state: paused;
+    .notice-carousel-viewport {
+      overflow: hidden;
+      width: 100%;
+    }
+
+    .ticker-track {
+      display: flex;
+      gap: 14px;
+      width: max-content;
+      transition: transform 0.45s ease;
+      will-change: transform;
     }
 
     .ticker-card {
@@ -251,6 +262,30 @@
       color: #fff;
       font-size: 13px;
       font-weight: 700;
+    }
+
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .carousel-dot {
+      width: 10px;
+      height: 10px;
+      border: none;
+      border-radius: 999px;
+      background: #c9d4df;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      padding: 0;
+    }
+
+    .carousel-dot.active {
+      width: 24px;
+      background: #173a5e;
     }
 
     .history-grid {
@@ -323,15 +358,6 @@
       color: #6b7a8c;
     }
 
-    @keyframes tickerMove {
-      0% {
-        transform: translateX(0);
-      }
-      100% {
-        transform: translateX(calc(-50%));
-      }
-    }
-
     @media (max-width: 1200px) {
       .notice-hero,
       .history-grid {
@@ -356,14 +382,14 @@
       </div>
 
       <div class="title-box">
-        <h1>Passagem de Plantão</h1>
+        <h1>Comunicados internos - Suporte técnico DGOVI.</h1>
         <p>Painel interno de avisos, checklist operacional e controle de insumos</p>
       </div>
     </div>
 
     <nav class="top-nav">
       <div class="top-nav-inner">
-        <a href="index.html" class="nav-link active">Avisos</a>
+        <a href="index.html" class="nav-link active">Comunicados</a>
         <a href="passagem.html" class="nav-link">Passagem de Plantão</a>
         <a href="insumos.html" class="nav-link">Insumos</a>
       </div>
@@ -372,14 +398,16 @@
 
   <main class="page-wrap">
     <section class="hero-card">
-      <h2>Central de Avisos</h2>
-      <p>O aviso mais recente fica em destaque e os demais seguem em faixa automática. Cada comunicado possui link para confirmação de ciência.</p>
+      <h2>Atenção</h2>
+      <p>Antes de iniciar a passagem, verifique se há novos comunicados e registre a ciência dos avisos pendentes.</p>
     </section>
 
     <section id="avisosContainer"></section>
   </main>
 
   <script>
+    let avisosInterval = null;
+
     function parseAvisoDate(value) {
       if (!value) return new Date(0);
 
@@ -413,6 +441,95 @@
         .replaceAll("'", '&#039;');
     }
 
+    function setupCarousel() {
+      const viewport = document.querySelector('.notice-carousel-viewport');
+      const track = document.querySelector('.ticker-track');
+      const dotsWrap = document.querySelector('.carousel-dots');
+
+      if (!viewport || !track || !dotsWrap) return;
+
+      const cards = Array.from(track.querySelectorAll('.ticker-card'));
+      if (!cards.length) return;
+
+      let currentIndex = 0;
+
+      function getStep() {
+        if (cards.length < 2) return cards[0]?.offsetWidth || 294;
+        return cards[1].offsetLeft - cards[0].offsetLeft;
+      }
+
+      function getVisibleCount() {
+        const step = getStep();
+        return Math.max(1, Math.round(viewport.clientWidth / step));
+      }
+
+      function getMaxIndex() {
+        return Math.max(0, cards.length - getVisibleCount());
+      }
+
+      function renderDots() {
+        const total = getMaxIndex() + 1;
+        dotsWrap.innerHTML = Array.from({ length: total }, (_, i) => `
+          <button class="carousel-dot ${i === currentIndex ? 'active' : ''}" data-index="${i}" aria-label="Ir para posição ${i + 1}"></button>
+        `).join('');
+
+        dotsWrap.querySelectorAll('.carousel-dot').forEach(dot => {
+          dot.addEventListener('click', () => {
+            currentIndex = Number(dot.dataset.index || 0);
+            updateCarousel();
+            restartAuto();
+          });
+        });
+      }
+
+      function updateCarousel() {
+        const step = getStep();
+        const maxIndex = getMaxIndex();
+        if (currentIndex > maxIndex) currentIndex = 0;
+
+        track.style.transform = `translateX(-${currentIndex * step}px)`;
+
+        dotsWrap.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+          dot.classList.toggle('active', i === currentIndex);
+        });
+      }
+
+      function nextSlide() {
+        const maxIndex = getMaxIndex();
+        currentIndex = currentIndex >= maxIndex ? 0 : currentIndex + 1;
+        updateCarousel();
+      }
+
+      function startAuto() {
+        if ((getMaxIndex() + 1) <= 1) return;
+        avisosInterval = setInterval(nextSlide, 4000);
+      }
+
+      function stopAuto() {
+        if (avisosInterval) {
+          clearInterval(avisosInterval);
+          avisosInterval = null;
+        }
+      }
+
+      function restartAuto() {
+        stopAuto();
+        startAuto();
+      }
+
+      renderDots();
+      updateCarousel();
+      startAuto();
+
+      viewport.addEventListener('mouseenter', stopAuto);
+      viewport.addEventListener('mouseleave', startAuto);
+
+      window.addEventListener('resize', () => {
+        renderDots();
+        updateCarousel();
+      });
+    }
+
     function renderAvisos(avisos) {
       const container = document.getElementById('avisosContainer');
 
@@ -428,7 +545,6 @@
       const sorted = [...avisos].sort((a, b) => parseAvisoDate(b.data) - parseAvisoDate(a.data));
       const destaque = sorted[0];
       const restantes = sorted.slice(1);
-      const tickerItems = restantes.length ? [...restantes, ...restantes] : [];
 
       container.innerHTML = `
         <section class="notice-hero">
@@ -475,40 +591,41 @@
         ${restantes.length ? `
           <section class="ticker-wrap">
             <div class="ticker-head">
-              <h3>Outros avisos</h3>
+              <h3>Comunicados anteriores</h3>
               <span>Passe o mouse para pausar a faixa</span>
             </div>
-            <div class="ticker-track">
-              ${tickerItems.map(item => `
-                <article class="ticker-card">
-                  <img src="${escapeHtml(item.imagem)}" alt="${escapeHtml(item.titulo)}">
-                  <div class="ticker-card-body">
-                    <div class="ticker-date">${formatAvisoDate(item.data)}</div>
-                    <h4>${escapeHtml(item.titulo)}</h4>
-                    <p>${escapeHtml(item.mensagem)}</p>
-                    <a href="${escapeHtml(item.link_forms)}" target="_blank" rel="noopener noreferrer">Confirmar ciência</a>
-                  </div>
-                </article>
-              `).join('')}
+
+            <div class="notice-carousel">
+              <div class="notice-carousel-viewport">
+                <div class="ticker-track">
+                  ${restantes.map(item => `
+                    <article class="ticker-card">
+                      <img src="${escapeHtml(item.imagem)}" alt="${escapeHtml(item.titulo)}">
+                      <div class="ticker-card-body">
+                        <div class="ticker-date">${formatAvisoDate(item.data)}</div>
+                        <h4>${escapeHtml(item.titulo)}</h4>
+                        <p>${escapeHtml(item.mensagem)}</p>
+                        <a href="${escapeHtml(item.link_forms)}" target="_blank" rel="noopener noreferrer">Confirmar ciência</a>
+                      </div>
+                    </article>
+                  `).join('')}
+                </div>
+              </div>
+
+              <div class="carousel-dots"></div>
             </div>
           </section>
         ` : ''}
-
-        <h2 class="section-title">Histórico de avisos</h2>
-        <section class="history-grid">
-          ${sorted.map(item => `
-            <article class="history-card">
-              <img src="${escapeHtml(item.imagem)}" alt="${escapeHtml(item.titulo)}">
-              <div class="history-body">
-                <div class="history-date">${formatAvisoDate(item.data)}</div>
-                <h4>${escapeHtml(item.titulo)}</h4>
-                <p>${escapeHtml(item.mensagem)}</p>
-                <a href="${escapeHtml(item.link_forms)}" target="_blank" rel="noopener noreferrer">Confirmar ciência</a>
-              </div>
-            </article>
-          `).join('')}
-        </section>
       `;
+
+      if (avisosInterval) {
+        clearInterval(avisosInterval);
+        avisosInterval = null;
+      }
+
+      if (restantes.length) {
+        setupCarousel();
+      }
     }
 
     async function loadAvisos() {
