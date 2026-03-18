@@ -1,6 +1,6 @@
 {
-  "atualizadoEm": "2026-03-18T22:14:30.810Z",
-  "total": 4681,
+  "atualizadoEm": "2026-03-18T22:24:30.452Z",
+  "total": 4682,
   "dados": [
     {
       "Carimbo de data/hora": "25/08/2025 18:43:21",
@@ -191922,6 +191922,47 @@
       "MONITOR MULTIPARAMETRO - PAINEL": "OPERANTE",
       "Descreva o problema encontrado com  MONITOR MULTIPARAMETRO - PAINEL": "",
       "Resumo do plantao": "OUTRAS DEMANDAS: Realizado treinamento no aprazamento da Coordenadora de Enfermagem (Simone), Enfermeira de Rotina (Maria) e Gerente da Unidade (Werneck)."
+    },
+    {
+      "Carimbo de data/hora": "18/03/2026 19:19:40",
+      "Técnico Pantonista": "ALINE FÁTIMA DE OLIVEIRA",
+      "Qual Sua unidade?": "CER BARRA DA TIJUCA",
+      "TIMED": "OPERANTE",
+      "Qual problema encontrado no TIMED?": "",
+      "OVIYAM & INTEGRAÇÃO": "OPERANTE",
+      "Qual problema encontrado no OVIYAM?": "",
+      "INTEGRAÇÃO DE LABORATÓRIO": "OPERANTE",
+      "Qual problema encontrado na integração de laboratório?": "",
+      "INTERNET": "OPERANTE",
+      "Qual problema com a internet?": "",
+      "PPD": "OPERANTE",
+      "GLPI": "OPERANTE",
+      "SERVIDORES": "OPERANTE",
+      "Qual problema com os servidores?": "",
+      "PAINEL DE CHAMADOS": "OPERANTE",
+      "Qual problema com o painel de chamados?": "",
+      "PAINEL DE ESCALA": "OPERANTE",
+      "Qual problema com o painel de escala?": "",
+      "TOTEM": "OPERANTE",
+      "Qual problema com o totem?": "",
+      "COMPUTADORES": "OPERANTE",
+      "Qual problema com computadores?": "",
+      "IMPRESSORAS": "OPERANTE",
+      "Qual problema com impressoras?": "",
+      "CFTV": "OPERANTE",
+      "TEMPO DE ARMAZENAMENTO": "30",
+      "Qual problema com CFTV?": "",
+      "PULSEIRAS": "4",
+      "RIBBON": "24",
+      "ETIQUETA VISITANTE": "132",
+      "ETIQUETA DE UNITARIZAÇÃO BRANCA": "19",
+      "ETIQUETA DE UNITARIZAÇÃO VERMELHA": "1",
+      "Tonner": "18",
+      "Descreva outras demandas em andamento ou pendências": "- (#1125-000840) - Hotfix 23022: Erro ao abrir PDF exportado do livro de controlados\n    - (#0326-001280) - Pedido de Clonazepan não aparece na Farmacia",
+      "Endereço de e-mail": "alinefatima.riosaude@gmail.com",
+      "MONITOR MULTIPARAMETRO - PAINEL": "OPERANTE",
+      "Descreva o problema encontrado com  MONITOR MULTIPARAMETRO - PAINEL": "",
+      "Resumo do plantao": "OUTRAS DEMANDAS: - (#1125-000840) - Hotfix 23022: Erro ao abrir PDF exportado do livro de controlados\n    - (#0326-001280) - Pedido de Clonazepan não aparece na Farmacia"
     }
   ]
 }
