@@ -1,6 +1,6 @@
 {
-  "atualizadoEm": "2026-03-18T18:54:32.227Z",
-  "total": 4672,
+  "atualizadoEm": "2026-03-18T19:04:30.682Z",
+  "total": 4673,
   "dados": [
     {
       "Carimbo de data/hora": "25/08/2025 18:43:21",
@@ -191553,6 +191553,47 @@
       "MONITOR MULTIPARAMETRO - PAINEL": "NÃO SE APLICA",
       "Descreva o problema encontrado com  MONITOR MULTIPARAMETRO - PAINEL": "",
       "Resumo do plantao": "OUTRAS DEMANDAS: Sem demandas no momento."
+    },
+    {
+      "Carimbo de data/hora": "18/03/2026 16:02:07",
+      "Técnico Pantonista": "ROMULO FERREIRA",
+      "Qual Sua unidade?": "UPA CIDADE DE DEUS",
+      "TIMED": "OPERANTE",
+      "Qual problema encontrado no TIMED?": "",
+      "OVIYAM & INTEGRAÇÃO": "OPERANTE",
+      "Qual problema encontrado no OVIYAM?": "",
+      "INTEGRAÇÃO DE LABORATÓRIO": "OPERANTE",
+      "Qual problema encontrado na integração de laboratório?": "",
+      "INTERNET": "OPERANTE",
+      "Qual problema com a internet?": "",
+      "PPD": "NÃO OPERANTE",
+      "GLPI": "OPERANTE",
+      "SERVIDORES": "OPERANTE",
+      "Qual problema com os servidores?": "",
+      "PAINEL DE CHAMADOS": "OPERANTE",
+      "Qual problema com o painel de chamados?": "",
+      "PAINEL DE ESCALA": "OPERANTE",
+      "Qual problema com o painel de escala?": "",
+      "TOTEM": "OPERANTE",
+      "Qual problema com o totem?": "",
+      "COMPUTADORES": "PARCIALMENTE OPERANTE",
+      "Qual problema com computadores?": "Computador da admistração se encontra em manutenção",
+      "IMPRESSORAS": "OPERANTE",
+      "Qual problema com impressoras?": "",
+      "CFTV": "OPERANTE",
+      "TEMPO DE ARMAZENAMENTO": "75",
+      "Qual problema com CFTV?": "",
+      "PULSEIRAS": "5",
+      "RIBBON": "2",
+      "ETIQUETA VISITANTE": "50",
+      "ETIQUETA DE UNITARIZAÇÃO BRANCA": "2",
+      "ETIQUETA DE UNITARIZAÇÃO VERMELHA": "8",
+      "Tonner": "16",
+      "Descreva outras demandas em andamento ou pendências": "Sem mais pendências.",
+      "Endereço de e-mail": "romulocosta.riosaude@gmail.com",
+      "MONITOR MULTIPARAMETRO - PAINEL": "NÃO SE APLICA",
+      "Descreva o problema encontrado com  MONITOR MULTIPARAMETRO - PAINEL": "",
+      "Resumo do plantao": "COMPUTADORES: Computador da admistração se encontra em manutenção\n\nOUTRAS DEMANDAS: Sem mais pendências."
     }
   ]
 }
