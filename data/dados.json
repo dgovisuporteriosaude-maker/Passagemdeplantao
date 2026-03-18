@@ -1,6 +1,6 @@
 {
-  "atualizadoEm": "2026-03-18T20:34:30.481Z",
-  "total": 4676,
+  "atualizadoEm": "2026-03-18T20:44:31.514Z",
+  "total": 4677,
   "dados": [
     {
       "Carimbo de data/hora": "25/08/2025 18:43:21",
@@ -191717,6 +191717,47 @@
       "MONITOR MULTIPARAMETRO - PAINEL": "NÃO SE APLICA",
       "Descreva o problema encontrado com  MONITOR MULTIPARAMETRO - PAINEL": "",
       "Resumo do plantao": "OUTRAS DEMANDAS: Sem pendencias no momento."
+    },
+    {
+      "Carimbo de data/hora": "18/03/2026 17:39:45",
+      "Técnico Pantonista": "VINICIUS TEIXEIRA",
+      "Qual Sua unidade?": "UPA SENADOR CAMARÁ",
+      "TIMED": "OPERANTE",
+      "Qual problema encontrado no TIMED?": "",
+      "OVIYAM & INTEGRAÇÃO": "OPERANTE",
+      "Qual problema encontrado no OVIYAM?": "",
+      "INTEGRAÇÃO DE LABORATÓRIO": "OPERANTE",
+      "Qual problema encontrado na integração de laboratório?": "",
+      "INTERNET": "OPERANTE",
+      "Qual problema com a internet?": "",
+      "PPD": "OPERANTE",
+      "GLPI": "OPERANTE",
+      "SERVIDORES": "OPERANTE",
+      "Qual problema com os servidores?": "",
+      "PAINEL DE CHAMADOS": "OPERANTE",
+      "Qual problema com o painel de chamados?": "",
+      "PAINEL DE ESCALA": "OPERANTE",
+      "Qual problema com o painel de escala?": "",
+      "TOTEM": "OPERANTE",
+      "Qual problema com o totem?": "",
+      "COMPUTADORES": "OPERANTE",
+      "Qual problema com computadores?": "",
+      "IMPRESSORAS": "OPERANTE",
+      "Qual problema com impressoras?": "",
+      "CFTV": "OPERANTE",
+      "TEMPO DE ARMAZENAMENTO": "28",
+      "Qual problema com CFTV?": "",
+      "PULSEIRAS": "0",
+      "RIBBON": "22",
+      "ETIQUETA VISITANTE": "151",
+      "ETIQUETA DE UNITARIZAÇÃO BRANCA": "57",
+      "ETIQUETA DE UNITARIZAÇÃO VERMELHA": "8",
+      "Tonner": "11",
+      "Descreva outras demandas em andamento ou pendências": "Continuidade de treinamento\nOrganização dos setores\n5 PACOTES DE PULSEIRAS BRANCAS",
+      "Endereço de e-mail": "viniciustexeira.riosaude@gmail.com",
+      "MONITOR MULTIPARAMETRO - PAINEL": "NÃO SE APLICA",
+      "Descreva o problema encontrado com  MONITOR MULTIPARAMETRO - PAINEL": "",
+      "Resumo do plantao": "OUTRAS DEMANDAS: Continuidade de treinamento\nOrganização dos setores\n5 PACOTES DE PULSEIRAS BRANCAS"
     }
   ]
 }
