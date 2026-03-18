@@ -1,0 +1,16 @@
+[
+  {
+    "data": "2026-03-18 09:00",
+    "titulo": "Atualização de rotina",
+    "mensagem": "A partir de hoje, o checklist deve ser conferido antes da troca de plantão.",
+    "imagem": "assets/avisos/aviso1.png",
+    "link_forms": "https://forms.gle/xxxxx"
+  },
+  {
+    "data": "2026-03-17 14:30",
+    "titulo": "Comunicado interno",
+    "mensagem": "Nova orientação para abertura de chamados de infraestrutura.",
+    "imagem": "assets/avisos/aviso2.png",
+    "link_forms": "https://forms.gle/yyyyy"
+  }
+]
