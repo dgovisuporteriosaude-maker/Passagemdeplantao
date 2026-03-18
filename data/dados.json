@@ -1,6 +1,6 @@
 {
-  "atualizadoEm": "2026-03-18T20:24:31.145Z",
-  "total": 4675,
+  "atualizadoEm": "2026-03-18T20:34:30.481Z",
+  "total": 4676,
   "dados": [
     {
       "Carimbo de data/hora": "25/08/2025 18:43:21",
@@ -191676,6 +191676,47 @@
       "MONITOR MULTIPARAMETRO - PAINEL": "OPERANTE",
       "Descreva o problema encontrado com  MONITOR MULTIPARAMETRO - PAINEL": "",
       "Resumo do plantao": "SERVIDORES: - Aguardando retorno da infra da vitai para verificar fonte de alimenta do Pfsense.\n\nOUTRAS DEMANDAS: - Aguardando retorno da infra da vitai para verificar fonte de alimenta do Pfsense."
+    },
+    {
+      "Carimbo de data/hora": "18/03/2026 17:27:53",
+      "Técnico Pantonista": "GABRIEL VIEIRA GALVÃO TEIXEIRA",
+      "Qual Sua unidade?": "UPA ROCHA MIRANDA",
+      "TIMED": "OPERANTE",
+      "Qual problema encontrado no TIMED?": "",
+      "OVIYAM & INTEGRAÇÃO": "OPERANTE",
+      "Qual problema encontrado no OVIYAM?": "",
+      "INTEGRAÇÃO DE LABORATÓRIO": "OPERANTE",
+      "Qual problema encontrado na integração de laboratório?": "",
+      "INTERNET": "OPERANTE",
+      "Qual problema com a internet?": "",
+      "PPD": "OPERANTE",
+      "GLPI": "OPERANTE",
+      "SERVIDORES": "OPERANTE",
+      "Qual problema com os servidores?": "",
+      "PAINEL DE CHAMADOS": "OPERANTE",
+      "Qual problema com o painel de chamados?": "",
+      "PAINEL DE ESCALA": "OPERANTE",
+      "Qual problema com o painel de escala?": "",
+      "TOTEM": "OPERANTE",
+      "Qual problema com o totem?": "",
+      "COMPUTADORES": "OPERANTE",
+      "Qual problema com computadores?": "",
+      "IMPRESSORAS": "OPERANTE",
+      "Qual problema com impressoras?": "",
+      "CFTV": "OPERANTE",
+      "TEMPO DE ARMAZENAMENTO": "60",
+      "Qual problema com CFTV?": "",
+      "PULSEIRAS": "5",
+      "RIBBON": "30",
+      "ETIQUETA VISITANTE": "130",
+      "ETIQUETA DE UNITARIZAÇÃO BRANCA": "37",
+      "ETIQUETA DE UNITARIZAÇÃO VERMELHA": "7",
+      "Tonner": "8",
+      "Descreva outras demandas em andamento ou pendências": "Sem pendencias no momento.",
+      "Endereço de e-mail": "gabrielvieira.riosaude@gmail.com",
+      "MONITOR MULTIPARAMETRO - PAINEL": "NÃO SE APLICA",
+      "Descreva o problema encontrado com  MONITOR MULTIPARAMETRO - PAINEL": "",
+      "Resumo do plantao": "OUTRAS DEMANDAS: Sem pendencias no momento."
     }
   ]
 }
