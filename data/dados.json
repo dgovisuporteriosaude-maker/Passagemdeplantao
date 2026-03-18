@@ -1,6 +1,6 @@
 {
-  "atualizadoEm": "2026-03-18T22:34:31.029Z",
-  "total": 4682,
+  "atualizadoEm": "2026-03-18T22:44:30.866Z",
+  "total": 4683,
   "dados": [
     {
       "Carimbo de data/hora": "25/08/2025 18:43:21",
@@ -191963,6 +191963,47 @@
       "MONITOR MULTIPARAMETRO - PAINEL": "OPERANTE",
       "Descreva o problema encontrado com  MONITOR MULTIPARAMETRO - PAINEL": "",
       "Resumo do plantao": "OUTRAS DEMANDAS: - (#1125-000840) - Hotfix 23022: Erro ao abrir PDF exportado do livro de controlados\n    - (#0326-001280) - Pedido de Clonazepan não aparece na Farmacia"
+    },
+    {
+      "Carimbo de data/hora": "18/03/2026 19:35:05",
+      "Técnico Pantonista": "JUDSON DA SILVA GONÇALVES",
+      "Qual Sua unidade?": "UPA SEPETIBA",
+      "TIMED": "OPERANTE",
+      "Qual problema encontrado no TIMED?": "",
+      "OVIYAM & INTEGRAÇÃO": "OPERANTE",
+      "Qual problema encontrado no OVIYAM?": "",
+      "INTEGRAÇÃO DE LABORATÓRIO": "OPERANTE",
+      "Qual problema encontrado na integração de laboratório?": "",
+      "INTERNET": "OPERANTE",
+      "Qual problema com a internet?": "",
+      "PPD": "OPERANTE",
+      "GLPI": "OPERANTE",
+      "SERVIDORES": "OPERANTE",
+      "Qual problema com os servidores?": "",
+      "PAINEL DE CHAMADOS": "OPERANTE",
+      "Qual problema com o painel de chamados?": "",
+      "PAINEL DE ESCALA": "OPERANTE",
+      "Qual problema com o painel de escala?": "",
+      "TOTEM": "OPERANTE",
+      "Qual problema com o totem?": "",
+      "COMPUTADORES": "OPERANTE",
+      "Qual problema com computadores?": "",
+      "IMPRESSORAS": "OPERANTE",
+      "Qual problema com impressoras?": "",
+      "CFTV": "OPERANTE",
+      "TEMPO DE ARMAZENAMENTO": "34",
+      "Qual problema com CFTV?": "",
+      "PULSEIRAS": "9",
+      "RIBBON": "29",
+      "ETIQUETA VISITANTE": "149",
+      "ETIQUETA DE UNITARIZAÇÃO BRANCA": "37",
+      "ETIQUETA DE UNITARIZAÇÃO VERMELHA": "10",
+      "Tonner": "15",
+      "Descreva outras demandas em andamento ou pendências": "NADA.",
+      "Endereço de e-mail": "judsongoncalves.riosaude@gmail.com",
+      "MONITOR MULTIPARAMETRO - PAINEL": "OPERANTE",
+      "Descreva o problema encontrado com  MONITOR MULTIPARAMETRO - PAINEL": "",
+      "Resumo do plantao": "OUTRAS DEMANDAS: NADA."
     }
   ]
 }
