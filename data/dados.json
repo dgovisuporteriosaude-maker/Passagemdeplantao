@@ -1,6 +1,6 @@
 {
-  "atualizadoEm": "2026-03-19T10:44:33.383Z",
-  "total": 4689,
+  "atualizadoEm": "2026-03-19T10:54:31.899Z",
+  "total": 4690,
   "dados": [
     {
       "Carimbo de data/hora": "25/08/2025 18:43:21",
@@ -192250,6 +192250,47 @@
       "MONITOR MULTIPARAMETRO - PAINEL": "NÃO SE APLICA",
       "Descreva o problema encontrado com  MONITOR MULTIPARAMETRO - PAINEL": "",
       "Resumo do plantao": "OUTRAS DEMANDAS: Continuidade nos treinamentos\nOrganização dos setores\n5 PACOTES DE PULSEIRAS BRANCAS\nInstalação de TV"
+    },
+    {
+      "Carimbo de data/hora": "19/03/2026 07:45:40",
+      "Técnico Pantonista": "MATHEUS LYRA PEDRO",
+      "Qual Sua unidade?": "CER BARRA DA TIJUCA",
+      "TIMED": "OPERANTE",
+      "Qual problema encontrado no TIMED?": "",
+      "OVIYAM & INTEGRAÇÃO": "OPERANTE",
+      "Qual problema encontrado no OVIYAM?": "",
+      "INTEGRAÇÃO DE LABORATÓRIO": "OPERANTE",
+      "Qual problema encontrado na integração de laboratório?": "",
+      "INTERNET": "OPERANTE",
+      "Qual problema com a internet?": "",
+      "PPD": "OPERANTE",
+      "GLPI": "OPERANTE",
+      "SERVIDORES": "OPERANTE",
+      "Qual problema com os servidores?": "",
+      "PAINEL DE CHAMADOS": "OPERANTE",
+      "Qual problema com o painel de chamados?": "",
+      "PAINEL DE ESCALA": "OPERANTE",
+      "Qual problema com o painel de escala?": "",
+      "TOTEM": "PARCIALMENTE OPERANTE",
+      "Qual problema com o totem?": "Alguns pacientes estão relatando dificuldade no uso do touch do monitor para preenchimento.\n",
+      "COMPUTADORES": "OPERANTE",
+      "Qual problema com computadores?": "",
+      "IMPRESSORAS": "OPERANTE",
+      "Qual problema com impressoras?": "",
+      "CFTV": "OPERANTE",
+      "TEMPO DE ARMAZENAMENTO": "30",
+      "Qual problema com CFTV?": "",
+      "PULSEIRAS": "4",
+      "RIBBON": "24",
+      "ETIQUETA VISITANTE": "132",
+      "ETIQUETA DE UNITARIZAÇÃO BRANCA": "19",
+      "ETIQUETA DE UNITARIZAÇÃO VERMELHA": "1",
+      "Tonner": "18",
+      "Descreva outras demandas em andamento ou pendências": "- OUTROS RELATOS\n⚠️ Pendências e agendamentos:\n                                                                                      \n  \n    - (#1125-000840) - Hotfix 23022: Erro ao abrir PDF exportado do livro de controlados\n    - (#0326-001280) - Pedido de Clonazepan não aparece na Farmacia\n",
+      "Endereço de e-mail": "matheuslyra.riosaude@gmail.com",
+      "MONITOR MULTIPARAMETRO - PAINEL": "PARCIALMENTE OPERANTE",
+      "Descreva o problema encontrado com  MONITOR MULTIPARAMETRO - PAINEL": "O monitor multiparâmetro do painel da sala vermelha encontra-se com funcionamento parcial, sendo que apenas 1 dos 4 equipamentos está ligado e com o software devidamente instalado em um computador.",
+      "Resumo do plantao": "TOTEM: Alguns pacientes estão relatando dificuldade no uso do touch do monitor para preenchimento.\n\n\nP.MULTIPARAMETRO: O monitor multiparâmetro do painel da sala vermelha encontra-se com funcionamento parcial, sendo que apenas 1 dos 4 equipamentos está ligado e com o software devidamente instalado em um computador.\n\nOUTRAS DEMANDAS: - OUTROS RELATOS\n⚠️ Pendências e agendamentos:\n                                                                                      \n  \n    - (#1125-000840) - Hotfix 23022: Erro ao abrir PDF exportado do livro de controlados\n    - (#0326-001280) - Pedido de Clonazepan não aparece na Farmacia\n"
     }
   ]
 }
