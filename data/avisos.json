@@ -1,16 +1,23 @@
 [
   {
-    "data": "2026-03-18 09:00",
-    "titulo": "Atualização de rotina",
-    "mensagem": "A partir de hoje, o checklist deve ser conferido antes da troca de plantão.",
+    "data": "2026-03-19 08:00",
+    "titulo": "🎥 Canal DGOVI Ensina",
+    "mensagem": "Conheça o *DGOVI Ensina*! 💡\n\nVídeos rápidos e explicativos para você aprender, na prática, como utilizar as funcionalidades do prontuário eletrônico.\n\n👉 Acesse, assista e aprimore seu dia a dia!",
     "imagem": "assets/avisos/aviso1.png",
-    "link_forms": "https://forms.gle/xxxxx"
+    "link_forms": "https://www.youtube.com/@DGOVIENSINA"
   },
   {
     "data": "2026-03-17 14:30",
-    "titulo": "Comunicado interno",
-    "mensagem": "Nova orientação para abertura de chamados de infraestrutura.",
+    "titulo": "Treinamentos em dia",
+    "mensagem": "Acompanhe os treinamento resliazdo por você e outros técnicos através do painel gerencial de treinamento",
     "imagem": "assets/avisos/aviso2.png",
-    "link_forms": "https://forms.gle/yyyyy"
+    "link_forms": "https://lookerstudio.google.com/reporting/c099f1dc-c51f-49f2-b37c-2d9e2cf87134"
+  },
+  {
+    "data": "2026-03-17 14:10",
+    "titulo": "Lançamento de treinamentos",
+    "mensagem": "Precisou reforçar ou treinar funcionalidades do sistema com um ou mais colaboradores?\n\n👉 Não esqueça de registrá-lo na plataforma de treinamentos.\n\nO registro é essencial para possíveis auditorias, contabilização da produção e também serve como respaldo em futuros questionamentos.\n\nMantenha seus registros sempre atualizados!",
+    "imagem": "assets/avisos/aviso3.png",
+    "link_forms": "https://linktr.ee/dgovi.registrodetreinamentos"
   }
 ]
