@@ -1,6 +1,6 @@
 {
-  "atualizadoEm": "2026-03-19T11:44:31.394Z",
-  "total": 4693,
+  "atualizadoEm": "2026-03-19T11:54:31.288Z",
+  "total": 4694,
   "dados": [
     {
       "Carimbo de data/hora": "25/08/2025 18:43:21",
@@ -192414,6 +192414,47 @@
       "MONITOR MULTIPARAMETRO - PAINEL": "NÃO SE APLICA",
       "Descreva o problema encontrado com  MONITOR MULTIPARAMETRO - PAINEL": "",
       "Resumo do plantao": "OUTRAS DEMANDAS: sem demandas no momento "
+    },
+    {
+      "Carimbo de data/hora": "19/03/2026 08:51:53",
+      "Técnico Pantonista": "WALLACE GUIMARAES DOS SANTOS",
+      "Qual Sua unidade?": "UPA ENGENHO DE DENTRO",
+      "TIMED": "OPERANTE",
+      "Qual problema encontrado no TIMED?": "",
+      "OVIYAM & INTEGRAÇÃO": "OPERANTE",
+      "Qual problema encontrado no OVIYAM?": "",
+      "INTEGRAÇÃO DE LABORATÓRIO": "OPERANTE",
+      "Qual problema encontrado na integração de laboratório?": "",
+      "INTERNET": "OPERANTE",
+      "Qual problema com a internet?": "",
+      "PPD": "OPERANTE",
+      "GLPI": "OPERANTE",
+      "SERVIDORES": "OPERANTE",
+      "Qual problema com os servidores?": "",
+      "PAINEL DE CHAMADOS": "OPERANTE",
+      "Qual problema com o painel de chamados?": "",
+      "PAINEL DE ESCALA": "OPERANTE",
+      "Qual problema com o painel de escala?": "",
+      "TOTEM": "OPERANTE",
+      "Qual problema com o totem?": "",
+      "COMPUTADORES": "OPERANTE",
+      "Qual problema com computadores?": "",
+      "IMPRESSORAS": "OPERANTE",
+      "Qual problema com impressoras?": "",
+      "CFTV": "OPERANTE",
+      "TEMPO DE ARMAZENAMENTO": "22",
+      "Qual problema com CFTV?": "",
+      "PULSEIRAS": "5",
+      "RIBBON": "2",
+      "ETIQUETA VISITANTE": "9",
+      "ETIQUETA DE UNITARIZAÇÃO BRANCA": "2",
+      "ETIQUETA DE UNITARIZAÇÃO VERMELHA": "1",
+      "Tonner": "5",
+      "Descreva outras demandas em andamento ou pendências": "não se aplica",
+      "Endereço de e-mail": "wallace.santos.riosaude@gmail.com",
+      "MONITOR MULTIPARAMETRO - PAINEL": "NÃO SE APLICA",
+      "Descreva o problema encontrado com  MONITOR MULTIPARAMETRO - PAINEL": "",
+      "Resumo do plantao": "OUTRAS DEMANDAS: não se aplica"
     }
   ]
 }
