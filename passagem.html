@@ -566,7 +566,9 @@
       const pendencias = [];
 
       STATUS_CONFIG.forEach(item => {
-        const status = row[item.key];
+        const status = String(row[item.key] || '').trim();
+
+        if (!status) return;
         if (!isPendencia(status)) return;
 
         const problemText = item.problemKey ? String(row[item.problemKey] || '').trim() : '';
@@ -574,7 +576,7 @@
         if (problemText) {
           pendencias.push(`${item.key}: ${problemText}`);
         } else {
-          pendencias.push(`${item.key}: Não operante`);
+          pendencias.push(`${item.key}: ${status}`);
         }
       });
 
