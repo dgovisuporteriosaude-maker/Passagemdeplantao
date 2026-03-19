@@ -567,21 +567,17 @@
 
       STATUS_CONFIG.forEach(item => {
         const status = String(row[item.key] || '').trim();
+        const problemText = item.problemKey ? String(row[item.problemKey] || '').trim() : '';
 
         if (!status) return;
         if (!isPendencia(status)) return;
+        if (!problemText) return;
 
-        const problemText = item.problemKey ? String(row[item.problemKey] || '').trim() : '';
-
-        if (problemText) {
-          pendencias.push(`${item.key}: ${problemText}`);
-        } else {
-          pendencias.push(`${item.key}: ${status}`);
-        }
+        pendencias.push(`${item.key}: ${problemText}`);
       });
 
       const outras = String(row['Descreva outras demandas em andamento ou pendências'] || '').trim();
-      if (!isDemandTextMeaningNone(outras)) {
+      if (outras && !isDemandTextMeaningNone(outras)) {
         pendencias.push(`Outras demandas: ${outras}`);
       }
 
