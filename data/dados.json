@@ -1,6 +1,6 @@
 {
-  "atualizadoEm": "2026-03-19T11:54:31.288Z",
-  "total": 4694,
+  "atualizadoEm": "2026-03-19T12:04:33.193Z",
+  "total": 4695,
   "dados": [
     {
       "Carimbo de data/hora": "25/08/2025 18:43:21",
@@ -192455,6 +192455,47 @@
       "MONITOR MULTIPARAMETRO - PAINEL": "NÃO SE APLICA",
       "Descreva o problema encontrado com  MONITOR MULTIPARAMETRO - PAINEL": "",
       "Resumo do plantao": "OUTRAS DEMANDAS: não se aplica"
+    },
+    {
+      "Carimbo de data/hora": "19/03/2026 08:57:53",
+      "Técnico Pantonista": "EDUARDO ALMEIDA",
+      "Qual Sua unidade?": "MATERNIDADE DA ROCINHA",
+      "TIMED": "OPERANTE",
+      "Qual problema encontrado no TIMED?": "",
+      "OVIYAM & INTEGRAÇÃO": "NÃO SE APLICA",
+      "Qual problema encontrado no OVIYAM?": "",
+      "INTEGRAÇÃO DE LABORATÓRIO": "NÃO SE APLICA",
+      "Qual problema encontrado na integração de laboratório?": "",
+      "INTERNET": "OPERANTE",
+      "Qual problema com a internet?": "",
+      "PPD": "OPERANTE",
+      "GLPI": "OPERANTE",
+      "SERVIDORES": "OPERANTE",
+      "Qual problema com os servidores?": "",
+      "PAINEL DE CHAMADOS": "OPERANTE",
+      "Qual problema com o painel de chamados?": "",
+      "PAINEL DE ESCALA": "NÃO SE APLICA",
+      "Qual problema com o painel de escala?": "nao possuimos",
+      "TOTEM": "OPERANTE",
+      "Qual problema com o totem?": "",
+      "COMPUTADORES": "OPERANTE",
+      "Qual problema com computadores?": "",
+      "IMPRESSORAS": "OPERANTE",
+      "Qual problema com impressoras?": "",
+      "CFTV": "OPERANTE",
+      "TEMPO DE ARMAZENAMENTO": "18",
+      "Qual problema com CFTV?": "",
+      "PULSEIRAS": "4",
+      "RIBBON": "2",
+      "ETIQUETA VISITANTE": "30",
+      "ETIQUETA DE UNITARIZAÇÃO BRANCA": "6",
+      "ETIQUETA DE UNITARIZAÇÃO VERMELHA": "7",
+      "Tonner": "5",
+      "Descreva outras demandas em andamento ou pendências": "sem pendencias",
+      "Endereço de e-mail": "eduardoalmeida.riosaude@gmail.com",
+      "MONITOR MULTIPARAMETRO - PAINEL": "NÃO SE APLICA",
+      "Descreva o problema encontrado com  MONITOR MULTIPARAMETRO - PAINEL": "",
+      "Resumo do plantao": "PAINEL DE ESCALA: nao possuimos\n\nOUTRAS DEMANDAS: sem pendencias"
     }
   ]
 }
