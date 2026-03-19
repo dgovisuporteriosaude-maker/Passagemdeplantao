@@ -56,7 +56,8 @@
             <th>Pulseiras</th>
             <th>Ribbon</th>
             <th>Tempo Armaz. CFTV</th>
-            <th>Tonner</th>
+            <th>Tonner CHADA</th>
+            <th>Tonner SIMPRESS</th>
           </tr>
         </thead>
         <tbody id="supplyBody"></tbody>
@@ -69,7 +70,8 @@
       <div class="chart-box"><h3>Etiqueta Branca</h3><canvas id="chart-branca"></canvas></div>
       <div class="chart-box"><h3>Etiqueta Vermelha</h3><canvas id="chart-vermelha"></canvas></div>
       <div class="chart-box"><h3>Ribbon</h3><canvas id="chart-ribbon"></canvas></div>
-      <div class="chart-box"><h3>Tonner</h3><canvas id="chart-tonner"></canvas></div>
+      <div class="chart-box"><h3>Tonner CHADA</h3><canvas id="chart-tonner-chada"></canvas></div>
+      <div class="chart-box"><h3>Tonner SIMPRESS</h3><canvas id="chart-tonner-simpress"></canvas></div>
       <div class="chart-box"><h3>Tempo de Armazenamento</h3><canvas id="chart-cftv"></canvas></div>
       <div class="chart-box"><h3>Etiqueta Visitante</h3><canvas id="chart-visitante"></canvas></div>
     </section>
@@ -98,7 +100,8 @@
       { key: 'ETIQUETA DE UNITARIZAÇÃO BRANCA', label: 'Etiqueta Branca', canvasId: 'chart-branca' },
       { key: 'ETIQUETA DE UNITARIZAÇÃO VERMELHA', label: 'Etiqueta Vermelha', canvasId: 'chart-vermelha' },
       { key: 'RIBBON', label: 'Ribbon', canvasId: 'chart-ribbon' },
-      { key: 'Tonner', label: 'Tonner', canvasId: 'chart-tonner' },
+      { key: 'Tonner CHADA', label: 'Tonner CHADA', canvasId: 'chart-tonner-chada' },
+      { key: 'Tonner SIMPRESS', label: 'Tonner SIMPRESS', canvasId: 'chart-tonner-simpress' },
       { key: 'TEMPO DE ARMAZENAMENTO', label: 'Tempo de Armazenamento', canvasId: 'chart-cftv' },
       { key: 'ETIQUETA VISITANTE', label: 'Etiqueta Visitante', canvasId: 'chart-visitante' }
     ];
@@ -188,7 +191,7 @@
       const tbody = document.getElementById('supplyBody');
 
       if (!rows.length) {
-        tbody.innerHTML = `<tr><td colspan="9" style="background:#fff;color:#6b7280;padding:18px;">Nenhum registro encontrado nas últimas 10 horas.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="10" style="background:#fff;color:#6b7280;padding:18px;">Nenhum registro encontrado nas últimas 10 horas.</td></tr>`;
         return;
       }
 
@@ -202,7 +205,8 @@
           <td>${qtyHtml(row['PULSEIRAS'])}</td>
           <td>${qtyHtml(row['RIBBON'])}</td>
           <td>${qtyHtml(row['TEMPO DE ARMAZENAMENTO'])}</td>
-          <td>${qtyHtml(row['Tonner'])}</td>
+          <td>${qtyHtml(row['Tonner CHADA'])}</td>
+          <td>${qtyHtml(row['Tonner SIMPRESS'])}</td>
         </tr>
       `).join('');
     }
@@ -346,7 +350,7 @@
 
     loadData().catch(error => {
       document.getElementById('supplyBody').innerHTML =
-        `<tr><td colspan="9" style="background:#fff;color:#c62828;padding:18px;">Erro ao carregar os dados: ${error.message}</td></tr>`;
+        `<tr><td colspan="10" style="background:#fff;color:#c62828;padding:18px;">Erro ao carregar os dados: ${error.message}</td></tr>`;
     });
   </script>
 </body>
