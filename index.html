@@ -1,541 +1,844 @@
-:root {
-  --azul-principal: #0a1f36;
-  --azul-secundario: #123252;
-  --azul-destaque: #2f7fd1;
-  --azul-texto: #173a5e;
-  --fundo: #f4f6f8;
-  --branco: #ffffff;
-  --texto: #233243;
-  --texto-claro: #6b7a8c;
-  --borda: #dbe3ec;
-  --linha: #e8edf3;
-  --header-tabela: #f3f6fa;
-  --coluna-fixa: #f8fafc;
-  --verde: #43a047;
-  --vermelho: #ef4b3f;
-  --amarelo: #f3c64d;
-  --sombra: 0 6px 18px rgba(15, 23, 42, 0.06);
-  --raio: 14px;
-  --largura: 1700px;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html, body {
-  font-family: Arial, Helvetica, sans-serif;
-  background: var(--fundo);
-  color: var(--texto);
-}
-
-body {
-  min-height: 100vh;
-}
-
-a {
-  text-decoration: none;
-}
-
-/* HEADER TECH ESCURO */
-.site-header {
-  position: relative;
-  overflow: hidden;
-  background:
-    radial-gradient(circle at top right, rgba(69, 155, 255, 0.16), transparent 26%),
-    radial-gradient(circle at left center, rgba(88, 180, 255, 0.08), transparent 22%),
-    linear-gradient(135deg, #071625 0%, #0a1f36 42%, #123252 100%);
-  color: var(--branco);
-  box-shadow: 0 10px 24px rgba(7, 22, 37, 0.24);
-}
-
-.site-header::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(90deg, transparent 0%, rgba(105, 190, 255, 0.14) 8%, transparent 9%) 0 0 / 240px 100%,
-    linear-gradient(0deg, transparent 0%, rgba(105, 190, 255, 0.10) 12%, transparent 13%) 0 0 / 100% 120px,
-    linear-gradient(90deg, transparent 0 18%, rgba(140, 210, 255, 0.08) 18% 19%, transparent 19% 100%) 0 0 / 320px 100%,
-    linear-gradient(0deg, transparent 0 22%, rgba(140, 210, 255, 0.06) 22% 23%, transparent 23% 100%) 0 0 / 100% 180px;
-  opacity: 0.9;
-  pointer-events: none;
-}
-
-.site-header::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle, rgba(130, 210, 255, 0.42) 0 2px, transparent 3px) 90px 28px / 220px 120px repeat,
-    radial-gradient(circle, rgba(130, 210, 255, 0.22) 0 1.5px, transparent 2.5px) 180px 80px / 260px 140px repeat;
-  opacity: 0.55;
-  pointer-events: none;
-}
-
-.header-inner {
-  position: relative;
-  z-index: 1;
-  max-width: var(--largura);
-  margin: 0 auto;
-  padding: 16px 22px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.logo-box img {
-  height: 44px;
-  width: auto;
-  display: block;
-}
-
-.title-box {
-  flex: 1;
-}
-
-.title-box h1 {
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--branco);
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.18);
-}
-
-.title-box p {
-  margin-top: 6px;
-  font-size: 14px;
-  color: rgba(255,255,255,.84);
-}
-
-/* NAVEGAÇÃO */
-.top-nav {
-  position: relative;
-  z-index: 1;
-  background: rgba(255,255,255,.05);
-  border-top: 1px solid rgba(255,255,255,.12);
-  backdrop-filter: blur(4px);
-}
-
-.top-nav-inner {
-  max-width: var(--largura);
-  margin: 0 auto;
-  padding: 0 22px;
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.nav-link {
-  color: var(--branco);
-  padding: 13px 16px;
-  border-radius: 10px 10px 0 0;
-  font-weight: 700;
-  font-size: 14px;
-  transition: background .2s ease, color .2s ease;
-}
-
-.nav-link:hover {
-  background: rgba(255,255,255,.10);
-}
-
-.nav-link.active {
-  background: var(--branco);
-  color: var(--azul-principal);
-}
-
-.page-wrap {
-  max-width: var(--largura);
-  margin: 18px auto 32px;
-  padding: 0 22px;
-}
-
-.hero-card,
-.card,
-.table-box,
-.resume-box,
-.unit-status-wrap,
-.chart-box,
-.empty-state {
-  background: var(--branco);
-  border: 1px solid var(--borda);
-  border-radius: var(--raio);
-  box-shadow: var(--sombra);
-}
-
-.hero-card {
-  padding: 20px 22px;
-  margin-bottom: 14px;
-}
-
-.hero-card h2 {
-  color: var(--azul-texto);
-  font-size: 23px;
-  margin-bottom: 8px;
-}
-
-.hero-card p {
-  color: var(--texto-claro);
-  line-height: 1.5;
-}
-
-.section-title {
-  color: var(--azul-texto);
-  font-size: 20px;
-  font-weight: 700;
-  margin: 18px 0 10px;
-}
-
-.card {
-  padding: 14px 16px;
-}
-
-.toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  align-items: end;
-}
-
-.field-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  min-width: 240px;
-}
-
-.field-group label {
-  color: var(--azul-texto);
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.select-input {
-  height: 40px;
-  border: 1px solid #cfd8e3;
-  border-radius: 10px;
-  padding: 0 12px;
-  font-size: 14px;
-  background: #fff;
-  color: var(--texto);
-}
-
-.kpi-row {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: 12px;
-}
-
-.kpi-card {
-  background: #fafcff;
-  border: 1px solid #dde6ef;
-  border-radius: 12px;
-  padding: 14px 16px;
-}
-
-.kpi-card span {
-  display: block;
-  font-size: 12px;
-  color: var(--texto-claro);
-  margin-bottom: 6px;
-  text-transform: uppercase;
-}
-
-.kpi-card strong {
-  font-size: 28px;
-  color: var(--azul-texto);
-}
-
-.unit-status-wrap {
-  padding: 14px;
-}
-
-.unit-legend {
-  display: flex;
-  gap: 18px;
-  align-items: center;
-  margin-bottom: 10px;
-  flex-wrap: wrap;
-  font-size: 13px;
-}
-
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.legend-dot,
-.status-dot {
-  border-radius: 999px;
-  display: inline-block;
-}
-
-.legend-dot {
-  width: 14px;
-  height: 14px;
-}
-
-.status-dot {
-  width: 14px;
-  height: 14px;
-}
-
-.dot-green { background: var(--verde); }
-.dot-red { background: var(--vermelho); }
-
-.unit-status-grid {
-  display: grid;
-  grid-template-columns: repeat(14, minmax(0, 1fr));
-  gap: 8px;
-}
-
-.unit-status-item {
-  text-align: center;
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.unit-status-name {
-  color: var(--azul-texto);
-  margin-bottom: 6px;
-  min-height: 16px;
-  line-height: 1.2;
-  white-space: nowrap;
-}
-
-.unit-status-bar {
-  height: 16px;
-  border-radius: 4px;
-  background: #d9e1ea;
-}
-
-.unit-status-bar.present { background: var(--verde); }
-.unit-status-bar.absent { background: var(--vermelho); }
-
-.table-box {
-  overflow: visible;
-}
-
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed;
-}
-
-.data-table th {
-  background: var(--header-tabela);
-  color: var(--azul-texto);
-  font-size: 11px;
-  padding: 10px 4px;
-  border: 1px solid var(--borda);
-  text-align: center;
-  font-weight: 700;
-}
-
-.data-table td {
-  border: 1px solid var(--borda);
-  padding: 8px 4px;
-  text-align: center;
-  font-size: 11px;
-  background: var(--branco);
-  vertical-align: middle;
-}
-
-.data-table td.col-unit,
-.data-table td.col-tech,
-.data-table td.col-datetime {
-  background: var(--coluna-fixa);
-  color: var(--texto);
-  font-weight: 700;
-}
-
-.data-table td.col-unit {
-  text-align: left;
-  width: 160px;
-}
-
-.data-table td.col-tech {
-  width: 160px;
-}
-
-.data-table td.col-datetime {
-  width: 118px;
-}
-
-.status-cell {
-  width: 62px;
-}
-
-.na-text {
-  color: var(--texto-claro);
-  font-weight: 700;
-  font-size: 10px;
-  line-height: 1.2;
-}
-
-.resume-box {
-  padding: 14px;
-}
-
-.resume-list {
-  display: grid;
-  gap: 10px;
-}
-
-.resume-item {
-  border: 1px solid #dde5ee;
-  border-radius: 12px;
-  padding: 12px;
-  background: #fafcff;
-}
-
-.resume-head {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 8px;
-  align-items: center;
-}
-
-.resume-chip {
-  background: #edf3f8;
-  color: var(--azul-texto);
-  border-radius: 999px;
-  padding: 5px 10px;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.resume-text {
-  color: #334155;
-  font-size: 13px;
-  line-height: 1.5;
-  white-space: pre-wrap;
-}
-
-.empty-state {
-  padding: 18px;
-  text-align: center;
-  color: var(--texto-claro);
-}
-
-/* INSUMOS */
-.qty-square {
-  width: 42px;
-  height: 32px;
-  border-radius: 8px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  font-weight: 700;
-  background: transparent;
-  color: var(--texto);
-}
-
-.qty-warn {
-  background: var(--amarelo);
-  color: #5b4300;
-}
-
-.qty-critical {
-  background: var(--vermelho);
-  color: #ffffff;
-}
-
-.chart-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: 12px;
-}
-
-.chart-box {
-  padding: 10px 12px;
-}
-
-.chart-box h3 {
-  color: var(--azul-texto);
-  font-size: 14px;
-  margin-bottom: 6px;
-}
-
-.chart-box canvas {
-  width: 100% !important;
-  height: 170px !important;
-}
-
-.grid-2,
-.grid-3 {
-  display: grid;
-  gap: 14px;
-}
-
-.grid-2 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.grid-3 {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.badge {
-  display: inline-block;
-  padding: 7px 12px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.badge.ok {
-  background: rgba(67, 160, 71, 0.14);
-  color: #2e7d32;
-}
-
-.footer-note {
-  margin-top: 18px;
-  color: var(--texto-claro);
-  font-size: 12px;
-  text-align: center;
-}
-
-@media (max-width: 1600px) {
-  .unit-status-grid {
-    grid-template-columns: repeat(10, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 1300px) {
-  .kpi-row,
-  .grid-2,
-  .grid-3,
-  .chart-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .unit-status-grid {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-  }
-
-  .table-box {
-    overflow-x: auto;
-  }
-
-  .data-table {
-    min-width: 1380px;
-  }
-}
-
-@media (max-width: 900px) {
-  .header-inner {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .unit-status-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Passagem de Plantão</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .passagem-shell {
+      display: grid;
+      gap: 18px;
+    }
+
+    .tech-alert {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 18px;
+      border-radius: 16px;
+      border: 1px solid #eadfbe;
+      background: linear-gradient(180deg, #fffaf0 0%, #fff6df 100%);
+      color: #7b5a12;
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.05);
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .tech-alert strong {
+      color: #9a6a00;
+    }
+
+    .tech-alert .alert-list {
+      font-weight: 600;
+      color: #6b7280;
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    .alert-unit-badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 0 12px;
+      border-radius: 999px;
+      background: #fff1f0;
+      border: 1px solid #ef4b3f;
+      color: #c53c34;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1;
+      box-shadow: inset 0 0 0 1px rgba(239, 75, 63, 0.08);
+    }
+
+    .passagem-controls {
+      display: flex;
+      gap: 14px;
+      align-items: end;
+      flex-wrap: wrap;
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: #ffffff;
+      border: 1px solid #e3e8ef;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
+    }
+
+    .passagem-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .unit-card {
+      background: #ffffff;
+      border: 1px solid #dde5ef;
+      border-radius: 20px;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .unit-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 3px;
+      background: linear-gradient(90deg, #dbe7f3 0%, #b7d4f5 55%, #dbe7f3 100%);
+    }
+
+    .unit-card.card-danger::before {
+      background: linear-gradient(90deg, #ffb4ae 0%, #ef4b3f 55%, #ffb4ae 100%);
+    }
+
+    .unit-card.card-warning::before {
+      background: linear-gradient(90deg, #ffe7a6 0%, #f4c542 55%, #ffe7a6 100%);
+    }
+
+    .unit-card.card-ok::before {
+      background: linear-gradient(90deg, #bfe7c7 0%, #43a047 55%, #bfe7c7 100%);
+    }
+
+    .unit-card-top {
+      padding: 18px 18px 12px;
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .unit-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #183a5a;
+      letter-spacing: 0.02em;
+    }
+
+    .unit-meta {
+      padding: 0 18px 14px;
+      display: grid;
+      gap: 6px;
+      color: #526171;
+      font-size: 14px;
+    }
+
+    .unit-status-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 30px;
+      border-radius: 999px;
+      padding: 0 12px;
+      font-size: 12px;
+      font-weight: 800;
+      width: fit-content;
+      margin: 0 18px 14px;
+      border: 1px solid transparent;
+    }
+
+    .chip-danger {
+      background: #fff1f0;
+      color: #c53c34;
+      border-color: #ffd1cd;
+    }
+
+    .chip-warning {
+      background: #fff8e6;
+      color: #9a6a00;
+      border-color: #f5df9b;
+    }
+
+    .chip-ok {
+      background: #eef9f0;
+      color: #2f7d39;
+      border-color: #cfe8d4;
+    }
+
+    .chip-muted {
+      background: #f3f6f9;
+      color: #667085;
+      border-color: #d9e2ec;
+    }
+
+    .unit-summary {
+      padding: 0 18px 14px;
+      min-height: 102px;
+      display: grid;
+      gap: 8px;
+      align-content: start;
+    }
+
+    .summary-item {
+      display: flex;
+      gap: 8px;
+      align-items: start;
+      color: #334155;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .summary-bullet {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #ef4b3f;
+      margin-top: 6px;
+      flex: 0 0 auto;
+    }
+
+    .summary-empty {
+      color: #667085;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .unit-actions {
+      padding: 0 18px 18px;
+    }
+
+    .expand-btn {
+      width: 100%;
+      min-height: 42px;
+      border: 1px solid #d9e3ee;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      border-radius: 12px;
+      color: #183a5a;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .expand-btn:hover {
+      background: linear-gradient(180deg, #f7fbff 0%, #edf5ff 100%);
+      border-color: #bfd4ec;
+    }
+
+    .drawer {
+      display: none;
+      border-top: 1px solid #e6edf5;
+      background: linear-gradient(180deg, #fbfdff 0%, #f6f9fc 100%);
+      padding: 16px 18px 18px;
+    }
+
+    .drawer.open {
+      display: block;
+    }
+
+    .drawer-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: #183a5a;
+      margin-bottom: 12px;
+    }
+
+    .history-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .history-entry {
+      background: #ffffff;
+      border: 1px solid #e4ebf2;
+      border-radius: 14px;
+      padding: 12px;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.03);
+    }
+
+    .history-head {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .history-chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: #eef4fb;
+      color: #183a5a;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .history-pendencias {
+      display: grid;
+      gap: 6px;
+    }
+
+    .history-item {
+      color: #334155;
+      font-size: 13px;
+      line-height: 1.45;
+      display: flex;
+      gap: 8px;
+      align-items: start;
+    }
+
+    .history-item .history-bullet {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #183a5a;
+      margin-top: 7px;
+      flex: 0 0 auto;
+    }
+
+    .history-empty {
+      color: #667085;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .passagem-empty {
+      background: #ffffff;
+      border: 1px dashed #cfd9e4;
+      border-radius: 18px;
+      padding: 28px;
+      text-align: center;
+      color: #667085;
+    }
+
+    .tech-bg-lines {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tech-bg-lines::before,
+    .tech-bg-lines::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.18;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    .tech-bg-lines::before {
+      background-image:
+        linear-gradient(90deg, transparent 0 8%, #cfe0f2 8% 8.1%, transparent 8.1% 100%),
+        linear-gradient(90deg, transparent 0 24%, #d8e6f4 24% 24.1%, transparent 24.1% 100%),
+        linear-gradient(90deg, transparent 0 68%, #d8e6f4 68% 68.1%, transparent 68.1% 100%);
+      transform: translateY(22px);
+    }
+
+    .tech-bg-lines::after {
+      background-image:
+        radial-gradient(circle at 14% 22%, #bdd8f1 0 3px, transparent 4px),
+        radial-gradient(circle at 31% 67%, #bdd8f1 0 3px, transparent 4px),
+        radial-gradient(circle at 79% 28%, #bdd8f1 0 3px, transparent 4px),
+        radial-gradient(circle at 88% 76%, #bdd8f1 0 3px, transparent 4px);
+    }
+
+    @media (max-width: 1400px) {
+      .passagem-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 860px) {
+      .passagem-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo-box">
+        <img src="assets/logo.png" alt="Logo">
+      </div>
+
+      <div class="title-box">
+        <h1>Passagem de Plantão</h1>
+        <p>Pendências operacionais e últimas passagens por unidade</p>
+      </div>
+    </div>
+
+    <nav class="top-nav">
+      <div class="top-nav-inner">
+        <a href="index.html" class="nav-link">Comunicados</a>
+        <a href="passagem.html" class="nav-link active">Passagem de Plantão</a>
+        <a href="insumos.html" class="nav-link">Insumos</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="page-wrap tech-bg-lines">
+    <section class="hero-card">
+      <h2></h2>
+      <p>Visão focada em exceções: unidades sem checklist nas últimas 10 horas, pendências da última passagem e histórico expansível por unidade.</p>
+    </section>
+
+    <div id="alertContainer"></div>
+
+    <section class="passagem-controls">
+      <div class="field-group">
+        <label for="unitFilter">Filtrar por unidade</label>
+        <select id="unitFilter" class="select-input"></select>
+      </div>
+    </section>
+
+    <section id="cardsContainer" class="passagem-shell"></section>
+  </main>
+
+  <script>
+    const STATUS_CONFIG = [
+      { key: 'TIMED', problemKey: 'Qual problema encontrado no TIMED?' },
+      { key: 'OVIYAM & INTEGRAÇÃO', problemKey: 'Qual problema encontrado no OVIYAM?' },
+      { key: 'INTEGRAÇÃO DE LABORATÓRIO', problemKey: 'Qual problema encontrado na integração de laboratório?' },
+      { key: 'INTERNET', problemKey: 'Qual problema com a internet?' },
+      { key: 'PPD', problemKey: null },
+      { key: 'GLPI', problemKey: null },
+      { key: 'SERVIDORES', problemKey: 'Qual problema com os servidores?' },
+      { key: 'PAINEL DE CHAMADOS', problemKey: 'Qual problema com o painel de chamados?' },
+      { key: 'PAINEL DE ESCALA', problemKey: 'Qual problema com o painel de escala?' },
+      { key: 'TOTEM', problemKey: 'Qual problema com o totem?' },
+      { key: 'COMPUTADORES', problemKey: 'Qual problema com computadores?' },
+      { key: 'IMPRESSORAS', problemKey: 'Qual problema com impressoras?' },
+      { key: 'CFTV', problemKey: 'Qual problema com CFTV?' },
+      { key: 'MONITOR MULTIPARAMETRO - PAINEL', problemKey: 'Descreva o problema encontrado com  MONITOR MULTIPARAMETRO - PAINEL' }
+    ];
+
+    let allRows = [];
+    let knownUnits = [];
+    let unitFilterInitialized = false;
+
+    function normalizeText(value) {
+      return String(value || '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .trim()
+        .toUpperCase();
+    }
+
+    function parseBrazilDateTime(value) {
+      if (!value) return null;
+      const [datePart, timePart = '00:00:00'] = String(value).trim().split(' ');
+      const [day, month, year] = datePart.split('/').map(Number);
+      const [hour = 0, minute = 0, second = 0] = timePart.split(':').map(Number);
+      if (!day || !month || !year) return null;
+      return new Date(year, month - 1, day, hour, minute, second);
+    }
+
+    function formatDateTime(value) {
+      const d = parseBrazilDateTime(value);
+      if (!d || isNaN(d)) return '-';
+      return d.toLocaleString('pt-BR');
+    }
+
+    function getUnit(row) {
+      return String(row['Qual Sua unidade?'] || '').trim();
+    }
+
+    function getTech(row) {
+      return String(row['Técnico Pantonista'] || '-').trim();
+    }
+
+    function getRowsLastDays(days) {
+      const now = new Date();
+      const cutoff = new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
+
+      return allRows
+        .filter(row => {
+          const dt = parseBrazilDateTime(row['Carimbo de data/hora']);
+          return dt && dt >= cutoff && dt <= now;
+        })
+        .sort((a, b) => parseBrazilDateTime(b['Carimbo de data/hora']) - parseBrazilDateTime(a['Carimbo de data/hora']));
+    }
+
+    function getRowsLastHours(hours) {
+      const now = new Date();
+      const cutoff = new Date(now.getTime() - hours * 60 * 60 * 1000);
+
+      return allRows
+        .filter(row => {
+          const dt = parseBrazilDateTime(row['Carimbo de data/hora']);
+          return dt && dt >= cutoff && dt <= now;
+        })
+        .sort((a, b) => parseBrazilDateTime(b['Carimbo de data/hora']) - parseBrazilDateTime(a['Carimbo de data/hora']));
+    }
+
+    function buildKnownUnitsFromFiveDays() {
+      const rows = getRowsLastDays(5);
+      knownUnits = [...new Set(rows.map(getUnit).filter(Boolean))]
+        .sort((a, b) => a.localeCompare(b, 'pt-BR'));
+    }
+
+    function shortUnitName(name) {
+      const raw = normalizeText(name);
+
+      const manual = {
+        'UPA MAGALHAES BASTOS': 'UPAMB',
+        'UPA JOAO XXIII': 'UPAJ23',
+        'UPA CIDADE DE DEUS': 'UPACDD',
+        'UPA COSTA BARROS': 'UPACB',
+        'UPA DEL CASTILHO': 'UPADC',
+        'UPA ENGENHO DE DENTRO': 'UPAED',
+        'UPA MADUREIRA': 'UPAMAD',
+        'UPA SENADOR CAMARA': 'UPASC',
+        'UPA SEPETIBA': 'UPASEP',
+        'UPA VILA KENNEDY': 'UPAVK',
+        'MATERNIDADE DA ROCINHA': 'MAT.ROCINHA',
+        'CERBARRA': 'CER BARRA',
+        'CER BARRA DA TIJUCA': 'CER BARRA'
+      };
+
+      if (manual[raw]) return manual[raw];
+
+      const cleaned = raw
+        .replace(/\bDA\b|\bDE\b|\bDO\b|\bDAS\b|\bDOS\b/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+
+      if (/^UPA /.test(cleaned)) {
+        const rest = cleaned.replace(/^UPA\s+/, '').split(' ').filter(Boolean);
+        return 'UPA' + rest.map(part => {
+          if (/^\d+$/.test(part)) return part;
+          if (/^XXIII$/i.test(part)) return 'J23';
+          return part[0];
+        }).join('');
+      }
+
+      return cleaned.split(' ').map(p => p[0]).join('').slice(0, 8);
+    }
+
+    function isOperante(value) {
+      return normalizeText(value) === 'OPERANTE';
+    }
+
+    function isNaoSeAplica(value) {
+      const v = normalizeText(value);
+      return v === 'NAO SE APLICA' || v === 'NÃO SE APLICA';
+    }
+
+    function isPendencia(value) {
+      const v = normalizeText(value);
+      if (!v) return false;
+      if (isOperante(value)) return false;
+      if (isNaoSeAplica(value)) return false;
+      return true;
+    }
+
+    function isDemandTextMeaningNone(text) {
+      const v = normalizeText(text);
+      return [
+        '',
+        'NAO',
+        'NÃO',
+        'NENHUMA',
+        'SEM PENDENCIAS',
+        'SEM PENDÊNCIA',
+        'SEM PENDENCIAS.',
+        'SEM PENDENCIA',
+        'SEM INTERCORRENCIA',
+        'SEM INTERCORRENCIAS',
+        'SEM INTERCORRÊNCIA',
+        'SEM INTERCORRÊNCIAS',
+        'SEM OCORRENCIA',
+        'SEM OCORRENCIAS',
+        'SEM OCORRÊNCIA',
+        'SEM OCORRÊNCIAS',
+        'SEM OBSERVACAO',
+        'SEM OBSERVACOES',
+        'SEM OBSERVAÇÃO',
+        'SEM OBSERVAÇÕES',
+        'SEM DEMANDAS',
+        'NO MOMENTO TUDO OK',
+        'NO MOMENTO TUDO OK.',
+        'TUDO OK',
+        'SEM MAIS OBSERVACOES',
+        'SEM MAIS OBSERVAÇÕES',
+        'SEM MAIS OCORRENCIAS',
+        'SEM MAIS OCORRÊNCIAS'
+      ].includes(v);
+    }
+
+    function collectPendencias(row) {
+      const pendencias = [];
+
+      STATUS_CONFIG.forEach(item => {
+        const status = row[item.key];
+        if (!isPendencia(status)) return;
+
+        const problemText = item.problemKey ? String(row[item.problemKey] || '').trim() : '';
+
+        if (problemText) {
+          pendencias.push(`${item.key}: ${problemText}`);
+        } else {
+          pendencias.push(`${item.key}: Não operante`);
+        }
+      });
+
+      const outras = String(row['Descreva outras demandas em andamento ou pendências'] || '').trim();
+      if (!isDemandTextMeaningNone(outras)) {
+        pendencias.push(`Outras demandas: ${outras}`);
+      }
+
+      return pendencias;
+    }
+
+    function getLatestRowByUnit(rows) {
+      const map = new Map();
+      rows.forEach(row => {
+        const unit = getUnit(row);
+        if (!map.has(unit)) {
+          map.set(unit, row);
+        }
+      });
+      return map;
+    }
+
+    function getHistoryByUnit(unit, days = 3, limit = 4) {
+      const rows = getRowsLastDays(days)
+        .filter(row => getUnit(row) === unit)
+        .slice(0, limit);
+
+      return rows.map(row => {
+        const pendencias = collectPendencias(row);
+        return {
+          tecnico: getTech(row),
+          dataHora: formatDateTime(row['Carimbo de data/hora']),
+          pendencias: pendencias.length ? pendencias : ['Sem dados informados']
+        };
+      });
+    }
+
+    function fillUnitFilter() {
+      const select = document.getElementById('unitFilter');
+      const currentValue = select.value || '__ALL__';
+
+      select.innerHTML =
+        '<option value="__ALL__">Todas</option>' +
+        knownUnits.map(unit => `<option value="${unit}">${unit}</option>`).join('');
+
+      if ([...select.options].some(option => option.value === currentValue)) {
+        select.value = currentValue;
+      } else {
+        select.value = '__ALL__';
+      }
+
+      if (!unitFilterInitialized) {
+        select.addEventListener('change', renderAll);
+        unitFilterInitialized = true;
+      }
+    }
+
+    function selectedUnit() {
+      return document.getElementById('unitFilter').value;
+    }
+
+    function filterUnits(units) {
+      const unit = selectedUnit();
+      if (!unit || unit === '__ALL__') return units;
+      return units.filter(u => u === unit);
+    }
+
+    function renderAlert(recentRows) {
+      const container = document.getElementById('alertContainer');
+      const latestMap = getLatestRowByUnit(recentRows);
+      const pendingUnits = knownUnits.filter(unit => !latestMap.has(unit));
+
+      if (!pendingUnits.length) {
+        container.innerHTML = '';
+        return;
+      }
+
+      const shortList = pendingUnits
+        .map(unit => `<span class="alert-unit-badge">${shortUnitName(unit)}</span>`)
+        .join('');
+
+      container.innerHTML = `
+        <div class="tech-alert">
+          <span>⚠️</span>
+          <div>
+            <strong>Unidades sem checklist nas últimas 10 horas:</strong>
+            <span class="alert-list">${shortList}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function buildCardStatus(row) {
+      if (!row) {
+        return {
+          chipClass: 'chip-danger',
+          chipText: 'Checklist não enviado',
+          cardClass: 'card-danger',
+          sortGroup: 2
+        };
+      }
+
+      const pendencias = collectPendencias(row);
+
+      if (!pendencias.length) {
+        return {
+          chipClass: 'chip-ok',
+          chipText: 'Sem pendências',
+          cardClass: 'card-ok',
+          sortGroup: 3
+        };
+      }
+
+      return {
+        chipClass: 'chip-warning',
+        chipText: `${pendencias.length} pendência${pendencias.length > 1 ? 's' : ''}`,
+        cardClass: 'card-warning',
+        sortGroup: 1
+      };
+    }
+
+    function renderCards(recentRows) {
+      const container = document.getElementById('cardsContainer');
+      const latestMap = getLatestRowByUnit(recentRows);
+      const unitsToShow = filterUnits(knownUnits);
+
+      if (!unitsToShow.length) {
+        container.innerHTML = `<div class="passagem-empty">Nenhuma unidade encontrada para o filtro selecionado.</div>`;
+        return;
+      }
+
+      const orderedUnits = [...unitsToShow].sort((a, b) => {
+        const statusA = buildCardStatus(latestMap.get(a));
+        const statusB = buildCardStatus(latestMap.get(b));
+
+        if (statusA.sortGroup !== statusB.sortGroup) {
+          return statusA.sortGroup - statusB.sortGroup;
+        }
+
+        return a.localeCompare(b, 'pt-BR');
+      });
+
+      container.innerHTML = `
+        <section class="passagem-grid">
+          ${orderedUnits.map((unit, index) => {
+            const row = latestMap.get(unit);
+            const status = buildCardStatus(row);
+            const pendencias = row ? collectPendencias(row) : [];
+            const resumoCurto = !row
+              ? 'Unidade sem checklist recente.'
+              : pendencias.length
+                ? pendencias.slice(0, 3).map(text => `
+                    <div class="summary-item">
+                      <span class="summary-bullet"></span>
+                      <span>${text}</span>
+                    </div>
+                  `).join('')
+                : `<div class="summary-empty">Sem pendências relatadas.</div>`;
+
+            const history = getHistoryByUnit(unit, 3, 4);
+
+            return `
+              <article class="unit-card ${status.cardClass}">
+                <div class="unit-card-top">
+                  <div class="unit-title">${shortUnitName(unit)}</div>
+                </div>
+
+                <div class="unit-meta">
+                  <div><strong>Técnico:</strong> ${row ? getTech(row) : '-'}</div>
+                  <div><strong>Último checklist:</strong> ${row ? formatDateTime(row['Carimbo de data/hora']) : '-'}</div>
+                </div>
+
+                <div class="unit-status-chip ${status.chipClass}">
+                  ${status.chipText}
+                </div>
+
+                <div class="unit-summary">
+                  ${resumoCurto}
+                </div>
+
+                <div class="unit-actions">
+                  <button class="expand-btn" data-target="drawer-${index}">
+                    Ver últimas passagens
+                  </button>
+                </div>
+
+                <div id="drawer-${index}" class="drawer">
+                  <div class="drawer-title">Últimas passagens da unidade</div>
+                  <div class="history-list">
+                    ${history.length ? history.map(item => `
+                      <div class="history-entry">
+                        <div class="history-head">
+                          <span class="history-chip">${item.dataHora}</span>
+                          <span class="history-chip">${item.tecnico}</span>
+                        </div>
+                        <div class="history-pendencias">
+                          ${item.pendencias.map(text => `
+                            <div class="history-item">
+                              <span class="history-bullet"></span>
+                              <span>${text}</span>
+                            </div>
+                          `).join('')}
+                        </div>
+                      </div>
+                    `).join('') : `
+                      <div class="history-entry">
+                        <div class="history-empty">Sem dados informados</div>
+                      </div>
+                    `}
+                  </div>
+                </div>
+              </article>
+            `;
+          }).join('')}
+        </section>
+      `;
+
+      container.querySelectorAll('.expand-btn').forEach(button => {
+        button.addEventListener('click', () => {
+          const targetId = button.getAttribute('data-target');
+          const drawer = document.getElementById(targetId);
+          const isOpen = drawer.classList.contains('open');
+
+          container.querySelectorAll('.drawer').forEach(d => d.classList.remove('open'));
+          container.querySelectorAll('.expand-btn').forEach(b => b.textContent = 'Ver últimas passagens');
+
+          if (!isOpen) {
+            drawer.classList.add('open');
+            button.textContent = 'Ocultar passagens';
+          }
+        });
+      });
+    }
+
+    function renderAll() {
+      const last10h = getRowsLastHours(10);
+      renderAlert(last10h);
+      renderCards(last10h);
+    }
+
+    async function loadData() {
+      const response = await fetch('./data/dados.json?_=' + Date.now());
+      if (!response.ok) throw new Error('Não foi possível carregar o JSON.');
+
+      const payload = await response.json();
+      allRows = Array.isArray(payload.dados) ? payload.dados : [];
+
+      buildKnownUnitsFromFiveDays();
+      fillUnitFilter();
+      renderAll();
+    }
+
+    loadData().catch(error => {
+      document.getElementById('cardsContainer').innerHTML = `
+        <div class="passagem-empty">
+          Erro ao carregar os dados: ${error.message}
+        </div>
+      `;
+    });
+
+    setInterval(() => {
+      loadData().catch(error => {
+        console.error('Erro ao atualizar dados:', error);
+      });
+    }, 120000);
+  </script>
+</body>
+</html>
