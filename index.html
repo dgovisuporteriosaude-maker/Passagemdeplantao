@@ -1,350 +1,375 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Passagem de Plantão</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avisos | Passagem de Plantão</title>
+  <link rel="stylesheet" href="style.css">
   <style>
-    .passagem-shell {
+    .logo-box img {
+      max-height: 44px;
+      width: auto;
+    }
+
+    .notice-hero {
       display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
       gap: 18px;
+      align-items: stretch;
     }
 
-    .tech-alert {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 14px 18px;
-      border-radius: 16px;
-      border: 1px solid #eadfbe;
-      background: linear-gradient(180deg, #fffaf0 0%, #fff6df 100%);
-      color: #7b5a12;
-      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.05);
-      font-size: 15px;
-      font-weight: 700;
-    }
-
-    .tech-alert strong {
-      color: #9a6a00;
-    }
-
-    .tech-alert .alert-list {
-      font-weight: 600;
-      color: #6b7280;
-      display: inline-flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-left: 6px;
-      vertical-align: middle;
-    }
-
-    .alert-unit-badge {
-      display: inline-flex;
-      align-items: center;
-      min-height: 30px;
-      padding: 0 12px;
-      border-radius: 999px;
-      background: #fff1f0;
-      border: 1px solid #ef4b3f;
-      color: #c53c34;
-      font-size: 12px;
-      font-weight: 800;
-      line-height: 1;
-      box-shadow: inset 0 0 0 1px rgba(239, 75, 63, 0.08);
-    }
-
-    .passagem-controls {
-      display: flex;
-      gap: 14px;
-      align-items: end;
-      flex-wrap: wrap;
-      padding: 16px 18px;
+    .notice-main {
+      background: linear-gradient(135deg, #173a5e, #274c73);
+      color: #fff;
       border-radius: 18px;
-      background: #ffffff;
-      border: 1px solid #e3e8ef;
-      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
-    }
-
-    .passagem-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .unit-card {
-      background: #ffffff;
-      border: 1px solid #dde5ef;
-      border-radius: 20px;
-      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
       overflow: hidden;
-      position: relative;
-    }
-
-    .unit-card::before {
-      content: "";
-      position: absolute;
-      inset: 0 0 auto 0;
-      height: 3px;
-      background: linear-gradient(90deg, #dbe7f3 0%, #b7d4f5 55%, #dbe7f3 100%);
-    }
-
-    .unit-card.card-danger::before {
-      background: linear-gradient(90deg, #ffb4ae 0%, #ef4b3f 55%, #ffb4ae 100%);
-    }
-
-    .unit-card.card-warning::before {
-      background: linear-gradient(90deg, #ffe7a6 0%, #f4c542 55%, #ffe7a6 100%);
-    }
-
-    .unit-card.card-ok::before {
-      background: linear-gradient(90deg, #bfe7c7 0%, #43a047 55%, #bfe7c7 100%);
-    }
-
-    .unit-card-top {
-      padding: 18px 18px 12px;
-      display: flex;
-      align-items: start;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .unit-title {
-      font-size: 18px;
-      font-weight: 800;
-      color: #183a5a;
-      letter-spacing: 0.02em;
-    }
-
-    .unit-meta {
-      padding: 0 18px 14px;
+      box-shadow: 0 10px 28px rgba(23, 58, 94, 0.18);
+      min-height: 420px;
       display: grid;
-      gap: 6px;
-      color: #526171;
-      font-size: 14px;
+      grid-template-columns: 1fr 1fr;
     }
 
-    .unit-status-chip {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 30px;
-      border-radius: 999px;
-      padding: 0 12px;
-      font-size: 12px;
-      font-weight: 800;
-      width: fit-content;
-      margin: 0 18px 14px;
-      border: 1px solid transparent;
+    .notice-main-image {
+      background: rgba(255,255,255,0.08);
+      min-height: 420px;
     }
 
-    .chip-danger {
-      background: #fff1f0;
-      color: #c53c34;
-      border-color: #ffd1cd;
-    }
-
-    .chip-warning {
-      background: #fff8e6;
-      color: #9a6a00;
-      border-color: #f5df9b;
-    }
-
-    .chip-ok {
-      background: #eef9f0;
-      color: #2f7d39;
-      border-color: #cfe8d4;
-    }
-
-    .chip-muted {
-      background: #f3f6f9;
-      color: #667085;
-      border-color: #d9e2ec;
-    }
-
-    .unit-summary {
-      padding: 0 18px 14px;
-      min-height: 102px;
-      display: grid;
-      gap: 8px;
-      align-content: start;
-    }
-
-    .summary-item {
-      display: flex;
-      gap: 8px;
-      align-items: start;
-      color: #334155;
-      font-size: 13px;
-      line-height: 1.45;
-    }
-
-    .summary-bullet {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: #ef4b3f;
-      margin-top: 6px;
-      flex: 0 0 auto;
-    }
-
-    .summary-empty {
-      color: #667085;
-      font-size: 13px;
-      line-height: 1.45;
-    }
-
-    .unit-actions {
-      padding: 0 18px 18px;
-    }
-
-    .expand-btn {
+    .notice-main-image img {
       width: 100%;
-      min-height: 42px;
-      border: 1px solid #d9e3ee;
-      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
-      border-radius: 12px;
-      color: #183a5a;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: 0.2s ease;
-    }
-
-    .expand-btn:hover {
-      background: linear-gradient(180deg, #f7fbff 0%, #edf5ff 100%);
-      border-color: #bfd4ec;
-    }
-
-    .drawer {
-      display: none;
-      border-top: 1px solid #e6edf5;
-      background: linear-gradient(180deg, #fbfdff 0%, #f6f9fc 100%);
-      padding: 16px 18px 18px;
-    }
-
-    .drawer.open {
+      height: 100%;
+      object-fit: cover;
       display: block;
     }
 
-    .drawer-title {
-      font-size: 14px;
-      font-weight: 800;
-      color: #183a5a;
+    .notice-main-content {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .notice-tag {
+      display: inline-block;
+      align-self: flex-start;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.16);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 999px;
+      padding: 7px 12px;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .notice-main-content h2 {
+      font-size: 30px;
+      line-height: 1.12;
       margin-bottom: 12px;
     }
 
-    .history-list {
-      display: grid;
-      gap: 10px;
+    .notice-date {
+      font-size: 13px;
+      color: rgba(255,255,255,0.82);
+      margin-bottom: 14px;
+      font-weight: 700;
     }
 
-    .history-entry {
+    .notice-main-content p {
+      font-size: 15px;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 18px;
+    }
+
+    .notice-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 16px;
+      border-radius: 10px;
       background: #ffffff;
-      border: 1px solid #e4ebf2;
-      border-radius: 14px;
-      padding: 12px;
-      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.03);
+      color: #173a5e;
+      font-size: 14px;
+      font-weight: 700;
+      width: fit-content;
     }
 
-    .history-head {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+    .notice-side {
+      display: grid;
+      gap: 14px;
+    }
+
+    .mini-panel {
+      background: #ffffff;
+      border: 1px solid #dbe3ec;
+      border-radius: 16px;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+      padding: 18px;
+    }
+
+    .mini-panel h3 {
+      font-size: 18px;
+      color: #173a5e;
       margin-bottom: 8px;
     }
 
-    .history-chip {
+    .mini-panel p {
+      color: #6b7a8c;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .mini-status {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .mini-status-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: #f8fafc;
+      border: 1px solid #e6edf5;
+      font-size: 13px;
+    }
+
+    .mini-pill {
       display: inline-flex;
       align-items: center;
-      min-height: 28px;
-      padding: 0 10px;
+      justify-content: center;
+      min-width: 88px;
+      height: 28px;
       border-radius: 999px;
-      background: #eef4fb;
-      color: #183a5a;
       font-size: 12px;
       font-weight: 700;
     }
 
-    .history-pendencias {
-      display: grid;
-      gap: 6px;
+    .mini-pill.recent {
+      background: rgba(67, 160, 71, 0.14);
+      color: #2e7d32;
     }
 
-    .history-item {
-      color: #334155;
-      font-size: 13px;
-      line-height: 1.45;
-      display: flex;
-      gap: 8px;
-      align-items: start;
+    .mini-pill.total {
+      background: rgba(23, 58, 94, 0.10);
+      color: #173a5e;
     }
 
-    .history-item .history-bullet {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: #183a5a;
-      margin-top: 7px;
-      flex: 0 0 auto;
-    }
-
-    .history-empty {
-      color: #667085;
-      font-size: 13px;
-      line-height: 1.45;
-    }
-
-    .passagem-empty {
-      background: #ffffff;
-      border: 1px dashed #cfd9e4;
-      border-radius: 18px;
-      padding: 28px;
-      text-align: center;
-      color: #667085;
-    }
-
-    .tech-bg-lines {
-      position: relative;
+    .ticker-wrap {
+      margin-top: 18px;
       overflow: hidden;
+      border-radius: 16px;
+      border: 1px solid #dbe3ec;
+      background: #ffffff;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+      padding-bottom: 16px;
     }
 
-    .tech-bg-lines::before,
-    .tech-bg-lines::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      opacity: 0.18;
-      background-repeat: no-repeat;
-      background-size: cover;
+    .ticker-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid #e8edf4;
+      background: #f8fafc;
     }
 
-    .tech-bg-lines::before {
-      background-image:
-        linear-gradient(90deg, transparent 0 8%, #cfe0f2 8% 8.1%, transparent 8.1% 100%),
-        linear-gradient(90deg, transparent 0 24%, #d8e6f4 24% 24.1%, transparent 24.1% 100%),
-        linear-gradient(90deg, transparent 0 68%, #d8e6f4 68% 68.1%, transparent 68.1% 100%);
-      transform: translateY(22px);
+    .ticker-head h3 {
+      color: #173a5e;
+      font-size: 18px;
     }
 
-    .tech-bg-lines::after {
-      background-image:
-        radial-gradient(circle at 14% 22%, #bdd8f1 0 3px, transparent 4px),
-        radial-gradient(circle at 31% 67%, #bdd8f1 0 3px, transparent 4px),
-        radial-gradient(circle at 79% 28%, #bdd8f1 0 3px, transparent 4px),
-        radial-gradient(circle at 88% 76%, #bdd8f1 0 3px, transparent 4px);
+    .ticker-head span {
+      color: #6b7a8c;
+      font-size: 13px;
     }
 
-    @media (max-width: 1400px) {
-      .passagem-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
+    .notice-carousel {
+      padding: 16px 14px 0;
     }
 
-    @media (max-width: 860px) {
-      .passagem-grid {
+    .notice-carousel-viewport {
+      overflow: hidden;
+      width: 100%;
+    }
+
+    .ticker-track {
+      display: flex;
+      gap: 14px;
+      width: max-content;
+      transition: transform 0.45s ease;
+      will-change: transform;
+    }
+
+    .ticker-card {
+      width: 280px;
+      flex: 0 0 auto;
+      background: #ffffff;
+      border: 1px solid #dbe3ec;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+    }
+
+    .ticker-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      display: block;
+      background: #edf3f8;
+    }
+
+    .ticker-card-body {
+      padding: 14px;
+    }
+
+    .ticker-card-body h4 {
+      font-size: 15px;
+      color: #173a5e;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .ticker-card-body .ticker-date {
+      font-size: 12px;
+      color: #6b7a8c;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .ticker-card-body p {
+      color: #516273;
+      font-size: 13px;
+      line-height: 1.45;
+      margin-bottom: 12px;
+    }
+
+    .ticker-card-body a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 36px;
+      padding: 0 12px;
+      border-radius: 10px;
+      background: #173a5e;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .carousel-dot {
+      width: 10px;
+      height: 10px;
+      border: none;
+      border-radius: 999px;
+      background: #c9d4df;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      padding: 0;
+    }
+
+    .carousel-dot.active {
+      width: 24px;
+      background: #173a5e;
+    }
+
+    .history-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .history-card {
+      background: #ffffff;
+      border: 1px solid #dbe3ec;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+    }
+
+    .history-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      display: block;
+      background: #edf3f8;
+    }
+
+    .history-body {
+      padding: 14px;
+    }
+
+    .history-body h4 {
+      color: #173a5e;
+      font-size: 16px;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .history-body .history-date {
+      color: #6b7a8c;
+      font-size: 12px;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .history-body p {
+      color: #516273;
+      font-size: 13px;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .history-body a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 36px;
+      padding: 0 12px;
+      border-radius: 10px;
+      background: #173a5e;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .empty-avisos {
+      background: #fff;
+      border: 1px dashed #cfd9e4;
+      border-radius: 16px;
+      padding: 30px;
+      text-align: center;
+      color: #6b7a8c;
+    }
+
+    @media (max-width: 1200px) {
+      .notice-hero,
+      .history-grid {
         grid-template-columns: 1fr;
+      }
+
+      .notice-main {
+        grid-template-columns: 1fr;
+      }
+
+      .notice-main-image {
+        min-height: 240px;
       }
     }
   </style>
@@ -357,488 +382,267 @@
       </div>
 
       <div class="title-box">
-        <h1>Passagem de Plantão</h1>
-        <p>Pendências operacionais e últimas passagens por unidade</p>
+        <h1>Comunicados internos - Suporte técnico DGOVI.</h1>
+        <p>Painel interno de avisos, checklist operacional e controle de insumos</p>
       </div>
     </div>
 
     <nav class="top-nav">
       <div class="top-nav-inner">
-        <a href="index.html" class="nav-link">Comunicados</a>
-        <a href="passagem.html" class="nav-link active">Passagem de Plantão</a>
+        <a href="index.html" class="nav-link active">Comunicados</a>
+        <a href="passagem.html" class="nav-link">Passagem de Plantão</a>
         <a href="insumos.html" class="nav-link">Insumos</a>
       </div>
     </nav>
   </header>
 
-  <main class="page-wrap tech-bg-lines">
+  <main class="page-wrap">
     <section class="hero-card">
-      <h2></h2>
-      <p>Visão focada em exceções: unidades sem checklist nas últimas 10 horas, pendências da última passagem e histórico expansível por unidade.</p>
+      <h2>Atenção</h2>
+      <p>Antes de iniciar a passagem, verifique se há novos comunicados e registre a ciência dos avisos pendentes.</p>
     </section>
 
-    <div id="alertContainer"></div>
-
-    <section class="passagem-controls">
-      <div class="field-group">
-        <label for="unitFilter">Filtrar por unidade</label>
-        <select id="unitFilter" class="select-input"></select>
-      </div>
-    </section>
-
-    <section id="cardsContainer" class="passagem-shell"></section>
+    <section id="avisosContainer"></section>
   </main>
 
   <script>
-    const STATUS_CONFIG = [
-      { key: 'TIMED', problemKey: 'Qual problema encontrado no TIMED?' },
-      { key: 'OVIYAM & INTEGRAÇÃO', problemKey: 'Qual problema encontrado no OVIYAM?' },
-      { key: 'INTEGRAÇÃO DE LABORATÓRIO', problemKey: 'Qual problema encontrado na integração de laboratório?' },
-      { key: 'INTERNET', problemKey: 'Qual problema com a internet?' },
-      { key: 'PPD', problemKey: null },
-      { key: 'GLPI', problemKey: null },
-      { key: 'SERVIDORES', problemKey: 'Qual problema com os servidores?' },
-      { key: 'PAINEL DE CHAMADOS', problemKey: 'Qual problema com o painel de chamados?' },
-      { key: 'PAINEL DE ESCALA', problemKey: 'Qual problema com o painel de escala?' },
-      { key: 'TOTEM', problemKey: 'Qual problema com o totem?' },
-      { key: 'COMPUTADORES', problemKey: 'Qual problema com computadores?' },
-      { key: 'IMPRESSORAS', problemKey: 'Qual problema com impressoras?' },
-      { key: 'CFTV', problemKey: 'Qual problema com CFTV?' },
-      { key: 'MONITOR MULTIPARAMETRO - PAINEL', problemKey: 'Descreva o problema encontrado com  MONITOR MULTIPARAMETRO - PAINEL' }
-    ];
+    let avisosInterval = null;
 
-    let allRows = [];
-    let knownUnits = [];
-    let unitFilterInitialized = false;
+    function parseAvisoDate(value) {
+      if (!value) return new Date(0);
 
-    function normalizeText(value) {
-      return String(value || '')
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .trim()
-        .toUpperCase();
+      const isoLike = String(value).replace(' ', 'T');
+      const direct = new Date(isoLike);
+      if (!isNaN(direct)) return direct;
+
+      const [datePart, timePart = '00:00'] = String(value).trim().split(' ');
+      const [year, month, day] = datePart.includes('-')
+        ? datePart.split('-').map(Number)
+        : [0, 0, 0];
+
+      const [hour = 0, minute = 0] = timePart.split(':').map(Number);
+      if (!year || !month || !day) return new Date(0);
+
+      return new Date(year, month - 1, day, hour, minute, 0);
     }
 
-    function parseBrazilDateTime(value) {
-      if (!value) return null;
-      const [datePart, timePart = '00:00:00'] = String(value).trim().split(' ');
-      const [day, month, year] = datePart.split('/').map(Number);
-      const [hour = 0, minute = 0, second = 0] = timePart.split(':').map(Number);
-      if (!day || !month || !year) return null;
-      return new Date(year, month - 1, day, hour, minute, second);
-    }
-
-    function formatDateTime(value) {
-      const d = parseBrazilDateTime(value);
+    function formatAvisoDate(value) {
+      const d = parseAvisoDate(value);
       if (!d || isNaN(d)) return '-';
       return d.toLocaleString('pt-BR');
     }
 
-    function getUnit(row) {
-      return String(row['Qual Sua unidade?'] || '').trim();
+    function escapeHtml(text) {
+      return String(text ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
     }
 
-    function getTech(row) {
-      return String(row['Técnico Pantonista'] || '-').trim();
-    }
+    function setupCarousel() {
+      const viewport = document.querySelector('.notice-carousel-viewport');
+      const track = document.querySelector('.ticker-track');
+      const dotsWrap = document.querySelector('.carousel-dots');
 
-    function getRowsLastDays(days) {
-      const now = new Date();
-      const cutoff = new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
+      if (!viewport || !track || !dotsWrap) return;
 
-      return allRows
-        .filter(row => {
-          const dt = parseBrazilDateTime(row['Carimbo de data/hora']);
-          return dt && dt >= cutoff && dt <= now;
-        })
-        .sort((a, b) => parseBrazilDateTime(b['Carimbo de data/hora']) - parseBrazilDateTime(a['Carimbo de data/hora']));
-    }
+      const cards = Array.from(track.querySelectorAll('.ticker-card'));
+      if (!cards.length) return;
 
-    function getRowsLastHours(hours) {
-      const now = new Date();
-      const cutoff = new Date(now.getTime() - hours * 60 * 60 * 1000);
+      let currentIndex = 0;
 
-      return allRows
-        .filter(row => {
-          const dt = parseBrazilDateTime(row['Carimbo de data/hora']);
-          return dt && dt >= cutoff && dt <= now;
-        })
-        .sort((a, b) => parseBrazilDateTime(b['Carimbo de data/hora']) - parseBrazilDateTime(a['Carimbo de data/hora']));
-    }
-
-    function buildKnownUnitsFromFiveDays() {
-      const rows = getRowsLastDays(5);
-      knownUnits = [...new Set(rows.map(getUnit).filter(Boolean))]
-        .sort((a, b) => a.localeCompare(b, 'pt-BR'));
-    }
-
-    function shortUnitName(name) {
-      const raw = normalizeText(name);
-
-      const manual = {
-        'UPA MAGALHAES BASTOS': 'UPAMB',
-        'UPA JOAO XXIII': 'UPAJ23',
-        'UPA CIDADE DE DEUS': 'UPACDD',
-        'UPA COSTA BARROS': 'UPACB',
-        'UPA DEL CASTILHO': 'UPADC',
-        'UPA ENGENHO DE DENTRO': 'UPAED',
-        'UPA MADUREIRA': 'UPAMAD',
-        'UPA SENADOR CAMARA': 'UPASC',
-        'UPA SEPETIBA': 'UPASEP',
-        'UPA VILA KENNEDY': 'UPAVK',
-        'MATERNIDADE DA ROCINHA': 'MAT.ROCINHA',
-        'CERBARRA': 'CER BARRA',
-        'CER BARRA DA TIJUCA': 'CER BARRA'
-      };
-
-      if (manual[raw]) return manual[raw];
-
-      const cleaned = raw
-        .replace(/\bDA\b|\bDE\b|\bDO\b|\bDAS\b|\bDOS\b/g, '')
-        .replace(/\s+/g, ' ')
-        .trim();
-
-      if (/^UPA /.test(cleaned)) {
-        const rest = cleaned.replace(/^UPA\s+/, '').split(' ').filter(Boolean);
-        return 'UPA' + rest.map(part => {
-          if (/^\d+$/.test(part)) return part;
-          if (/^XXIII$/i.test(part)) return 'J23';
-          return part[0];
-        }).join('');
+      function getStep() {
+        if (cards.length < 2) return cards[0]?.offsetWidth || 294;
+        return cards[1].offsetLeft - cards[0].offsetLeft;
       }
 
-      return cleaned.split(' ').map(p => p[0]).join('').slice(0, 8);
-    }
-
-    function isOperante(value) {
-      return normalizeText(value) === 'OPERANTE';
-    }
-
-    function isNaoSeAplica(value) {
-      const v = normalizeText(value);
-      return v === 'NAO SE APLICA' || v === 'NÃO SE APLICA';
-    }
-
-    function isPendencia(value) {
-      const v = normalizeText(value);
-      if (!v) return false;
-      if (isOperante(value)) return false;
-      if (isNaoSeAplica(value)) return false;
-      return true;
-    }
-
-    function isDemandTextMeaningNone(text) {
-      const v = normalizeText(text);
-      return [
-        '',
-        'NAO',
-        'NÃO',
-        'NENHUMA',
-        'SEM PENDENCIAS',
-        'SEM PENDÊNCIA',
-        'SEM PENDENCIAS.',
-        'SEM PENDENCIA',
-        'SEM INTERCORRENCIA',
-        'SEM INTERCORRENCIAS',
-        'SEM INTERCORRÊNCIA',
-        'SEM INTERCORRÊNCIAS',
-        'SEM OCORRENCIA',
-        'SEM OCORRENCIAS',
-        'SEM OCORRÊNCIA',
-        'SEM OCORRÊNCIAS',
-        'SEM OBSERVACAO',
-        'SEM OBSERVACOES',
-        'SEM OBSERVAÇÃO',
-        'SEM OBSERVAÇÕES',
-        'SEM DEMANDAS',
-        'NO MOMENTO TUDO OK',
-        'NO MOMENTO TUDO OK.',
-        'TUDO OK',
-        'SEM MAIS OBSERVACOES',
-        'SEM MAIS OBSERVAÇÕES',
-        'SEM MAIS OCORRENCIAS',
-        'SEM MAIS OCORRÊNCIAS'
-      ].includes(v);
-    }
-
-    function collectPendencias(row) {
-      const pendencias = [];
-
-      STATUS_CONFIG.forEach(item => {
-        const status = row[item.key];
-        if (!isPendencia(status)) return;
-
-        const problemText = item.problemKey ? String(row[item.problemKey] || '').trim() : '';
-
-        if (problemText) {
-          pendencias.push(`${item.key}: ${problemText}`);
-        } else {
-          pendencias.push(`${item.key}: Não operante`);
-        }
-      });
-
-      const outras = String(row['Descreva outras demandas em andamento ou pendências'] || '').trim();
-      if (!isDemandTextMeaningNone(outras)) {
-        pendencias.push(`Outras demandas: ${outras}`);
+      function getVisibleCount() {
+        const step = getStep();
+        return Math.max(1, Math.round(viewport.clientWidth / step));
       }
 
-      return pendencias;
-    }
-
-    function getLatestRowByUnit(rows) {
-      const map = new Map();
-      rows.forEach(row => {
-        const unit = getUnit(row);
-        if (!map.has(unit)) {
-          map.set(unit, row);
-        }
-      });
-      return map;
-    }
-
-    function getHistoryByUnit(unit, days = 3, limit = 4) {
-      const rows = getRowsLastDays(days)
-        .filter(row => getUnit(row) === unit)
-        .slice(0, limit);
-
-      return rows.map(row => {
-        const pendencias = collectPendencias(row);
-        return {
-          tecnico: getTech(row),
-          dataHora: formatDateTime(row['Carimbo de data/hora']),
-          pendencias: pendencias.length ? pendencias : ['Sem dados informados']
-        };
-      });
-    }
-
-    function fillUnitFilter() {
-      const select = document.getElementById('unitFilter');
-      const currentValue = select.value || '__ALL__';
-
-      select.innerHTML =
-        '<option value="__ALL__">Todas</option>' +
-        knownUnits.map(unit => `<option value="${unit}">${unit}</option>`).join('');
-
-      if ([...select.options].some(option => option.value === currentValue)) {
-        select.value = currentValue;
-      } else {
-        select.value = '__ALL__';
+      function getMaxIndex() {
+        return Math.max(0, cards.length - getVisibleCount());
       }
 
-      if (!unitFilterInitialized) {
-        select.addEventListener('change', renderAll);
-        unitFilterInitialized = true;
-      }
-    }
+      function renderDots() {
+        const total = getMaxIndex() + 1;
+        dotsWrap.innerHTML = Array.from({ length: total }, (_, i) => `
+          <button class="carousel-dot ${i === currentIndex ? 'active' : ''}" data-index="${i}" aria-label="Ir para posição ${i + 1}"></button>
+        `).join('');
 
-    function selectedUnit() {
-      return document.getElementById('unitFilter').value;
-    }
-
-    function filterUnits(units) {
-      const unit = selectedUnit();
-      if (!unit || unit === '__ALL__') return units;
-      return units.filter(u => u === unit);
-    }
-
-    function renderAlert(recentRows) {
-      const container = document.getElementById('alertContainer');
-      const latestMap = getLatestRowByUnit(recentRows);
-      const pendingUnits = knownUnits.filter(unit => !latestMap.has(unit));
-
-      if (!pendingUnits.length) {
-        container.innerHTML = '';
-        return;
-      }
-
-      const shortList = pendingUnits
-        .map(unit => `<span class="alert-unit-badge">${shortUnitName(unit)}</span>`)
-        .join('');
-
-      container.innerHTML = `
-        <div class="tech-alert">
-          <span>⚠️</span>
-          <div>
-            <strong>Unidades sem checklist nas últimas 10 horas:</strong>
-            <span class="alert-list">${shortList}</span>
-          </div>
-        </div>
-      `;
-    }
-
-    function buildCardStatus(row) {
-      if (!row) {
-        return {
-          chipClass: 'chip-danger',
-          chipText: 'Checklist não enviado',
-          cardClass: 'card-danger',
-          sortGroup: 2
-        };
-      }
-
-      const pendencias = collectPendencias(row);
-
-      if (!pendencias.length) {
-        return {
-          chipClass: 'chip-ok',
-          chipText: 'Sem pendências',
-          cardClass: 'card-ok',
-          sortGroup: 3
-        };
-      }
-
-      return {
-        chipClass: 'chip-warning',
-        chipText: `${pendencias.length} pendência${pendencias.length > 1 ? 's' : ''}`,
-        cardClass: 'card-warning',
-        sortGroup: 1
-      };
-    }
-
-    function renderCards(recentRows) {
-      const container = document.getElementById('cardsContainer');
-      const latestMap = getLatestRowByUnit(recentRows);
-      const unitsToShow = filterUnits(knownUnits);
-
-      if (!unitsToShow.length) {
-        container.innerHTML = `<div class="passagem-empty">Nenhuma unidade encontrada para o filtro selecionado.</div>`;
-        return;
-      }
-
-      const orderedUnits = [...unitsToShow].sort((a, b) => {
-        const statusA = buildCardStatus(latestMap.get(a));
-        const statusB = buildCardStatus(latestMap.get(b));
-
-        if (statusA.sortGroup !== statusB.sortGroup) {
-          return statusA.sortGroup - statusB.sortGroup;
-        }
-
-        return a.localeCompare(b, 'pt-BR');
-      });
-
-      container.innerHTML = `
-        <section class="passagem-grid">
-          ${orderedUnits.map((unit, index) => {
-            const row = latestMap.get(unit);
-            const status = buildCardStatus(row);
-            const pendencias = row ? collectPendencias(row) : [];
-            const resumoCurto = !row
-              ? 'Unidade sem checklist recente.'
-              : pendencias.length
-                ? pendencias.slice(0, 3).map(text => `
-                    <div class="summary-item">
-                      <span class="summary-bullet"></span>
-                      <span>${text}</span>
-                    </div>
-                  `).join('')
-                : `<div class="summary-empty">Sem pendências relatadas.</div>`;
-
-            const history = getHistoryByUnit(unit, 3, 4);
-
-            return `
-              <article class="unit-card ${status.cardClass}">
-                <div class="unit-card-top">
-                  <div class="unit-title">${shortUnitName(unit)}</div>
-                </div>
-
-                <div class="unit-meta">
-                  <div><strong>Técnico:</strong> ${row ? getTech(row) : '-'}</div>
-                  <div><strong>Último checklist:</strong> ${row ? formatDateTime(row['Carimbo de data/hora']) : '-'}</div>
-                </div>
-
-                <div class="unit-status-chip ${status.chipClass}">
-                  ${status.chipText}
-                </div>
-
-                <div class="unit-summary">
-                  ${resumoCurto}
-                </div>
-
-                <div class="unit-actions">
-                  <button class="expand-btn" data-target="drawer-${index}">
-                    Ver últimas passagens
-                  </button>
-                </div>
-
-                <div id="drawer-${index}" class="drawer">
-                  <div class="drawer-title">Últimas passagens da unidade</div>
-                  <div class="history-list">
-                    ${history.length ? history.map(item => `
-                      <div class="history-entry">
-                        <div class="history-head">
-                          <span class="history-chip">${item.dataHora}</span>
-                          <span class="history-chip">${item.tecnico}</span>
-                        </div>
-                        <div class="history-pendencias">
-                          ${item.pendencias.map(text => `
-                            <div class="history-item">
-                              <span class="history-bullet"></span>
-                              <span>${text}</span>
-                            </div>
-                          `).join('')}
-                        </div>
-                      </div>
-                    `).join('') : `
-                      <div class="history-entry">
-                        <div class="history-empty">Sem dados informados</div>
-                      </div>
-                    `}
-                  </div>
-                </div>
-              </article>
-            `;
-          }).join('')}
-        </section>
-      `;
-
-      container.querySelectorAll('.expand-btn').forEach(button => {
-        button.addEventListener('click', () => {
-          const targetId = button.getAttribute('data-target');
-          const drawer = document.getElementById(targetId);
-          const isOpen = drawer.classList.contains('open');
-
-          container.querySelectorAll('.drawer').forEach(d => d.classList.remove('open'));
-          container.querySelectorAll('.expand-btn').forEach(b => b.textContent = 'Ver últimas passagens');
-
-          if (!isOpen) {
-            drawer.classList.add('open');
-            button.textContent = 'Ocultar passagens';
-          }
+        dotsWrap.querySelectorAll('.carousel-dot').forEach(dot => {
+          dot.addEventListener('click', () => {
+            currentIndex = Number(dot.dataset.index || 0);
+            updateCarousel();
+            restartAuto();
+          });
         });
+      }
+
+      function updateCarousel() {
+        const step = getStep();
+        const maxIndex = getMaxIndex();
+        if (currentIndex > maxIndex) currentIndex = 0;
+
+        track.style.transform = `translateX(-${currentIndex * step}px)`;
+
+        dotsWrap.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+          dot.classList.toggle('active', i === currentIndex);
+        });
+      }
+
+      function nextSlide() {
+        const maxIndex = getMaxIndex();
+        currentIndex = currentIndex >= maxIndex ? 0 : currentIndex + 1;
+        updateCarousel();
+      }
+
+      function startAuto() {
+        if ((getMaxIndex() + 1) <= 1) return;
+        avisosInterval = setInterval(nextSlide, 4000);
+      }
+
+      function stopAuto() {
+        if (avisosInterval) {
+          clearInterval(avisosInterval);
+          avisosInterval = null;
+        }
+      }
+
+      function restartAuto() {
+        stopAuto();
+        startAuto();
+      }
+
+      renderDots();
+      updateCarousel();
+      startAuto();
+
+      viewport.addEventListener('mouseenter', stopAuto);
+      viewport.addEventListener('mouseleave', startAuto);
+
+      window.addEventListener('resize', () => {
+        renderDots();
+        updateCarousel();
       });
     }
 
-    function renderAll() {
-      const last10h = getRowsLastHours(10);
-      renderAlert(last10h);
-      renderCards(last10h);
+    function renderAvisos(avisos) {
+      const container = document.getElementById('avisosContainer');
+
+      if (!avisos.length) {
+        container.innerHTML = `
+          <div class="empty-avisos">
+            Nenhum aviso encontrado em <strong>data/avisos.json</strong>.
+          </div>
+        `;
+        return;
+      }
+
+      const sorted = [...avisos].sort((a, b) => parseAvisoDate(b.data) - parseAvisoDate(a.data));
+      const destaque = sorted[0];
+      const restantes = sorted.slice(1);
+
+      container.innerHTML = `
+        <section class="notice-hero">
+          <article class="notice-main">
+            <div class="notice-main-image">
+              <img src="${escapeHtml(destaque.imagem)}" alt="${escapeHtml(destaque.titulo)}">
+            </div>
+
+            <div class="notice-main-content">
+              <span class="notice-tag">Aviso mais recente</span>
+              <div class="notice-date">${formatAvisoDate(destaque.data)}</div>
+              <h2>${escapeHtml(destaque.titulo)}</h2>
+              <p>${escapeHtml(destaque.mensagem)}</p>
+              <a class="notice-btn" href="${escapeHtml(destaque.link_forms)}" target="_blank" rel="noopener noreferrer">
+                Confirmar ciência
+              </a>
+            </div>
+          </article>
+
+          <aside class="notice-side">
+            <div class="mini-panel">
+              <h3>Painel de comunicados</h3>
+              <p>Os avisos ficam centralizados aqui, com destaque para o comunicado mais recente e confirmação individual de ciência.</p>
+
+              <div class="mini-status">
+                <div class="mini-status-item">
+                  <span>Total de avisos</span>
+                  <span class="mini-pill total">${sorted.length}</span>
+                </div>
+                <div class="mini-status-item">
+                  <span>Última atualização</span>
+                  <span class="mini-pill recent">${formatAvisoDate(destaque.data)}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="mini-panel">
+              <h3>Orientação</h3>
+              <p>Ao abrir um aviso, o colaborador deve acessar o link correspondente e registrar a ciência no formulário indicado.</p>
+            </div>
+          </aside>
+        </section>
+
+        ${restantes.length ? `
+          <section class="ticker-wrap">
+            <div class="ticker-head">
+              <h3>Comunicados anteriores</h3>
+              <span>Passe o mouse para pausar a faixa</span>
+            </div>
+
+            <div class="notice-carousel">
+              <div class="notice-carousel-viewport">
+                <div class="ticker-track">
+                  ${restantes.map(item => `
+                    <article class="ticker-card">
+                      <img src="${escapeHtml(item.imagem)}" alt="${escapeHtml(item.titulo)}">
+                      <div class="ticker-card-body">
+                        <div class="ticker-date">${formatAvisoDate(item.data)}</div>
+                        <h4>${escapeHtml(item.titulo)}</h4>
+                        <p>${escapeHtml(item.mensagem)}</p>
+                        <a href="${escapeHtml(item.link_forms)}" target="_blank" rel="noopener noreferrer">Confirmar ciência</a>
+                      </div>
+                    </article>
+                  `).join('')}
+                </div>
+              </div>
+
+              <div class="carousel-dots"></div>
+            </div>
+          </section>
+        ` : ''}
+      `;
+
+      if (avisosInterval) {
+        clearInterval(avisosInterval);
+        avisosInterval = null;
+      }
+
+      if (restantes.length) {
+        setupCarousel();
+      }
     }
 
-    async function loadData() {
-      const response = await fetch('./data/dados.json?_=' + Date.now());
-      if (!response.ok) throw new Error('Não foi possível carregar o JSON.');
+    async function loadAvisos() {
+      const response = await fetch('./data/avisos.json?_=' + Date.now());
+      if (!response.ok) throw new Error('Não foi possível carregar os avisos.');
 
-      const payload = await response.json();
-      allRows = Array.isArray(payload.dados) ? payload.dados : [];
-
-      buildKnownUnitsFromFiveDays();
-      fillUnitFilter();
-      renderAll();
+      const avisos = await response.json();
+      renderAvisos(Array.isArray(avisos) ? avisos : []);
     }
 
-    loadData().catch(error => {
-      document.getElementById('cardsContainer').innerHTML = `
-        <div class="passagem-empty">
-          Erro ao carregar os dados: ${error.message}
+    loadAvisos().catch(error => {
+      document.getElementById('avisosContainer').innerHTML = `
+        <div class="empty-avisos">
+          Erro ao carregar os avisos: ${escapeHtml(error.message)}
         </div>
       `;
     });
-
-    setInterval(() => {
-      loadData().catch(error => {
-        console.error('Erro ao atualizar dados:', error);
-      });
-    }, 120000);
   </script>
 </body>
 </html>
