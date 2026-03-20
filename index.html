@@ -12,26 +12,35 @@
     }
 
     .notice-hero {
-      display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 18px;
-      align-items: stretch;
+      display: block;
     }
 
     .notice-main {
-      background: linear-gradient(135deg, #173a5e, #274c73);
+      background:
+        linear-gradient(135deg, rgba(23, 58, 94, 0.96), rgba(39, 76, 115, 0.93)),
+        radial-gradient(circle at top right, rgba(255,255,255,0.12), transparent 35%);
       color: #fff;
-      border-radius: 18px;
+      border-radius: 22px;
       overflow: hidden;
-      box-shadow: 0 10px 28px rgba(23, 58, 94, 0.18);
-      min-height: 420px;
+      box-shadow: 0 14px 34px rgba(23, 58, 94, 0.18);
+      min-height: 460px;
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1.15fr 1fr;
+      border: 1px solid rgba(255,255,255,0.08);
     }
 
     .notice-main-image {
-      background: rgba(255,255,255,0.08);
-      min-height: 420px;
+      position: relative;
+      min-height: 460px;
+      background: rgba(255,255,255,0.06);
+    }
+
+    .notice-main-image::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(9, 20, 34, 0.08) 0%, rgba(9, 20, 34, 0.34) 100%);
+      pointer-events: none;
     }
 
     .notice-main-image img {
@@ -42,31 +51,36 @@
     }
 
     .notice-main-content {
-      padding: 28px;
+      padding: 34px 34px 30px;
       display: flex;
       flex-direction: column;
       justify-content: center;
+      gap: 0;
     }
 
     .notice-tag {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
       align-self: flex-start;
+      gap: 8px;
       background: rgba(255,255,255,0.14);
       border: 1px solid rgba(255,255,255,0.16);
       color: #fff;
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 800;
       border-radius: 999px;
-      padding: 7px 12px;
-      margin-bottom: 14px;
+      padding: 8px 14px;
+      margin-bottom: 16px;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.05em;
+      backdrop-filter: blur(4px);
     }
 
     .notice-main-content h2 {
-      font-size: 30px;
-      line-height: 1.12;
-      margin-bottom: 12px;
+      font-size: clamp(30px, 3vw, 42px);
+      line-height: 1.08;
+      margin: 0 0 14px;
+      letter-spacing: -0.02em;
     }
 
     .notice-date {
@@ -78,96 +92,81 @@
 
     .notice-main-content p {
       font-size: 15px;
-      line-height: 1.6;
+      line-height: 1.72;
       color: rgba(255,255,255,0.92);
-      margin-bottom: 18px;
+      margin: 0 0 22px;
+      max-width: 620px;
+    }
+
+    .notice-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 26px;
     }
 
     .notice-btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 42px;
-      padding: 0 16px;
-      border-radius: 10px;
-      background: #ffffff;
-      color: #173a5e;
-      font-size: 14px;
-      font-weight: 700;
-      width: fit-content;
-    }
-
-    .notice-side {
-      display: grid;
-      gap: 14px;
-    }
-
-    .mini-panel {
-      background: #ffffff;
-      border: 1px solid #dbe3ec;
-      border-radius: 16px;
-      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
-      padding: 18px;
-    }
-
-    .mini-panel h3 {
-      font-size: 18px;
-      color: #173a5e;
-      margin-bottom: 8px;
-    }
-
-    .mini-panel p {
-      color: #6b7a8c;
-      font-size: 14px;
-      line-height: 1.55;
-    }
-
-    .mini-status {
-      display: grid;
-      gap: 10px;
-      margin-top: 14px;
-    }
-
-    .mini-status-item {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: center;
-      padding: 10px 12px;
+      min-height: 46px;
+      padding: 0 18px;
       border-radius: 12px;
-      background: #f8fafc;
-      border: 1px solid #e6edf5;
-      font-size: 13px;
+      background: #ffffff;
+      color: #173a5e;
+      font-size: 14px;
+      font-weight: 800;
+      width: fit-content;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
     }
 
-    .mini-pill {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 88px;
-      height: 28px;
-      border-radius: 999px;
+    .notice-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2);
+    }
+
+    .notice-meta {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: auto;
+    }
+
+    .notice-meta-card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 16px;
+      padding: 14px 16px;
+      backdrop-filter: blur(5px);
+    }
+
+    .notice-meta-label {
+      display: block;
       font-size: 12px;
       font-weight: 700;
+      color: rgba(255,255,255,0.72);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
     }
 
-    .mini-pill.recent {
-      background: rgba(67, 160, 71, 0.14);
-      color: #2e7d32;
-    }
-
-    .mini-pill.total {
-      background: rgba(23, 58, 94, 0.10);
-      color: #173a5e;
+    .notice-meta-value {
+      display: block;
+      font-size: 15px;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.4;
     }
 
     .ticker-wrap {
-      margin-top: 18px;
+      margin-top: 22px;
       overflow: hidden;
-      border-radius: 16px;
+      border-radius: 18px;
       border: 1px solid #dbe3ec;
       background: #ffffff;
-      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
       padding-bottom: 16px;
     }
 
@@ -176,23 +175,25 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      padding: 14px 16px;
+      padding: 16px 18px;
       border-bottom: 1px solid #e8edf4;
-      background: #f8fafc;
+      background: linear-gradient(180deg, #fbfcfe 0%, #f6f9fc 100%);
     }
 
     .ticker-head h3 {
       color: #173a5e;
-      font-size: 18px;
+      font-size: 19px;
+      margin: 0;
     }
 
     .ticker-head span {
       color: #6b7a8c;
       font-size: 13px;
+      font-weight: 500;
     }
 
     .notice-carousel {
-      padding: 16px 14px 0;
+      padding: 18px 16px 0;
     }
 
     .notice-carousel-viewport {
@@ -202,61 +203,67 @@
 
     .ticker-track {
       display: flex;
-      gap: 14px;
+      gap: 16px;
       width: max-content;
       transition: transform 0.45s ease;
       will-change: transform;
     }
 
     .ticker-card {
-      width: 280px;
+      width: 300px;
       flex: 0 0 auto;
       background: #ffffff;
       border: 1px solid #dbe3ec;
-      border-radius: 16px;
+      border-radius: 18px;
       overflow: hidden;
-      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .ticker-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
     }
 
     .ticker-card img {
       width: 100%;
-      height: 150px;
+      height: 164px;
       object-fit: cover;
       display: block;
       background: #edf3f8;
     }
 
     .ticker-card-body {
-      padding: 14px;
+      padding: 16px;
     }
 
     .ticker-card-body h4 {
-      font-size: 15px;
+      font-size: 16px;
       color: #173a5e;
-      margin-bottom: 8px;
-      line-height: 1.3;
+      margin: 0 0 8px;
+      line-height: 1.35;
     }
 
     .ticker-card-body .ticker-date {
       font-size: 12px;
       color: #6b7a8c;
-      margin-bottom: 8px;
+      margin-bottom: 9px;
       font-weight: 700;
     }
 
     .ticker-card-body p {
       color: #516273;
       font-size: 13px;
-      line-height: 1.45;
-      margin-bottom: 12px;
+      line-height: 1.52;
+      margin: 0 0 14px;
     }
 
     .ticker-card-body a {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 36px;
-      padding: 0 12px;
+      min-height: 38px;
+      padding: 0 13px;
       border-radius: 10px;
       background: #173a5e;
       color: #fff;
@@ -288,67 +295,6 @@
       background: #173a5e;
     }
 
-    .history-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-      margin-top: 18px;
-    }
-
-    .history-card {
-      background: #ffffff;
-      border: 1px solid #dbe3ec;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
-    }
-
-    .history-card img {
-      width: 100%;
-      height: 160px;
-      object-fit: cover;
-      display: block;
-      background: #edf3f8;
-    }
-
-    .history-body {
-      padding: 14px;
-    }
-
-    .history-body h4 {
-      color: #173a5e;
-      font-size: 16px;
-      margin-bottom: 8px;
-      line-height: 1.3;
-    }
-
-    .history-body .history-date {
-      color: #6b7a8c;
-      font-size: 12px;
-      margin-bottom: 8px;
-      font-weight: 700;
-    }
-
-    .history-body p {
-      color: #516273;
-      font-size: 13px;
-      line-height: 1.5;
-      margin-bottom: 12px;
-    }
-
-    .history-body a {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 36px;
-      padding: 0 12px;
-      border-radius: 10px;
-      background: #173a5e;
-      color: #fff;
-      font-size: 13px;
-      font-weight: 700;
-    }
-
     .empty-avisos {
       background: #fff;
       border: 1px dashed #cfd9e4;
@@ -359,17 +305,35 @@
     }
 
     @media (max-width: 1200px) {
-      .notice-hero,
-      .history-grid {
-        grid-template-columns: 1fr;
-      }
-
       .notice-main {
         grid-template-columns: 1fr;
       }
 
       .notice-main-image {
-        min-height: 240px;
+        min-height: 260px;
+      }
+
+      .notice-main-content {
+        padding: 28px 24px 24px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .notice-main {
+        min-height: auto;
+      }
+
+      .notice-meta {
+        grid-template-columns: 1fr;
+      }
+
+      .ticker-head {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .ticker-card {
+        width: 280px;
       }
     }
   </style>
@@ -454,7 +418,7 @@
       let currentIndex = 0;
 
       function getStep() {
-        if (cards.length < 2) return cards[0]?.offsetWidth || 294;
+        if (cards.length < 2) return cards[0]?.offsetWidth || 316;
         return cards[1].offsetLeft - cards[0].offsetLeft;
       }
 
@@ -558,34 +522,25 @@
               <div class="notice-date">${formatAvisoDate(destaque.data)}</div>
               <h2>${escapeHtml(destaque.titulo)}</h2>
               <p>${escapeHtml(destaque.mensagem)}</p>
-              <a class="notice-btn" href="${escapeHtml(destaque.link_forms)}" target="_blank" rel="noopener noreferrer">
-                Confirmar ciência
-              </a>
-            </div>
-          </article>
 
-          <aside class="notice-side">
-            <div class="mini-panel">
-              <h3>Painel de comunicados</h3>
-              <p>Os avisos ficam centralizados aqui, com destaque para o comunicado mais recente e confirmação individual de ciência.</p>
+              <div class="notice-actions">
+                <a class="notice-btn" href="${escapeHtml(destaque.link_forms)}" target="_blank" rel="noopener noreferrer">
+                  Confirmar ciência
+                </a>
+              </div>
 
-              <div class="mini-status">
-                <div class="mini-status-item">
-                  <span>Total de avisos</span>
-                  <span class="mini-pill total">${sorted.length}</span>
+              <div class="notice-meta">
+                <div class="notice-meta-card">
+                  <span class="notice-meta-label">Total de comunicados</span>
+                  <span class="notice-meta-value">${sorted.length}</span>
                 </div>
-                <div class="mini-status-item">
-                  <span>Última atualização</span>
-                  <span class="mini-pill recent">${formatAvisoDate(destaque.data)}</span>
+                <div class="notice-meta-card">
+                  <span class="notice-meta-label">Última atualização</span>
+                  <span class="notice-meta-value">${formatAvisoDate(destaque.data)}</span>
                 </div>
               </div>
             </div>
-
-            <div class="mini-panel">
-              <h3>Orientação</h3>
-              <p>Ao abrir um aviso, o colaborador deve acessar o link correspondente e registrar a ciência no formulário indicado.</p>
-            </div>
-          </aside>
+          </article>
         </section>
 
         ${restantes.length ? `
