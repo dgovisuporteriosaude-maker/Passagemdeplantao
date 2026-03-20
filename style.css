@@ -1,6 +1,7 @@
 :root {
-  --azul-principal: #173a5e;
-  --azul-secundario: #254d78;
+  --azul-principal: #0a1f36;
+  --azul-secundario: #123252;
+  --azul-destaque: #2f7fd1;
   --azul-texto: #173a5e;
   --fundo: #f4f6f8;
   --branco: #ffffff;
@@ -38,13 +39,45 @@ a {
   text-decoration: none;
 }
 
+/* HEADER TECH ESCURO */
 .site-header {
-  background: linear-gradient(135deg, var(--azul-principal), var(--azul-secundario));
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top right, rgba(69, 155, 255, 0.16), transparent 26%),
+    radial-gradient(circle at left center, rgba(88, 180, 255, 0.08), transparent 22%),
+    linear-gradient(135deg, #071625 0%, #0a1f36 42%, #123252 100%);
   color: var(--branco);
-  box-shadow: var(--sombra);
+  box-shadow: 0 10px 24px rgba(7, 22, 37, 0.24);
+}
+
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, transparent 0%, rgba(105, 190, 255, 0.14) 8%, transparent 9%) 0 0 / 240px 100%,
+    linear-gradient(0deg, transparent 0%, rgba(105, 190, 255, 0.10) 12%, transparent 13%) 0 0 / 100% 120px,
+    linear-gradient(90deg, transparent 0 18%, rgba(140, 210, 255, 0.08) 18% 19%, transparent 19% 100%) 0 0 / 320px 100%,
+    linear-gradient(0deg, transparent 0 22%, rgba(140, 210, 255, 0.06) 22% 23%, transparent 23% 100%) 0 0 / 100% 180px;
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.site-header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle, rgba(130, 210, 255, 0.42) 0 2px, transparent 3px) 90px 28px / 220px 120px repeat,
+    radial-gradient(circle, rgba(130, 210, 255, 0.22) 0 1.5px, transparent 2.5px) 180px 80px / 260px 140px repeat;
+  opacity: 0.55;
+  pointer-events: none;
 }
 
 .header-inner {
+  position: relative;
+  z-index: 1;
   max-width: var(--largura);
   margin: 0 auto;
   padding: 16px 22px;
@@ -67,17 +100,22 @@ a {
   font-size: 28px;
   font-weight: 700;
   color: var(--branco);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.18);
 }
 
 .title-box p {
   margin-top: 6px;
   font-size: 14px;
-  color: rgba(255,255,255,.88);
+  color: rgba(255,255,255,.84);
 }
 
+/* NAVEGAÇÃO */
 .top-nav {
-  background: rgba(255,255,255,.08);
+  position: relative;
+  z-index: 1;
+  background: rgba(255,255,255,.05);
   border-top: 1px solid rgba(255,255,255,.12);
+  backdrop-filter: blur(4px);
 }
 
 .top-nav-inner {
@@ -95,6 +133,7 @@ a {
   border-radius: 10px 10px 0 0;
   font-weight: 700;
   font-size: 14px;
+  transition: background .2s ease, color .2s ease;
 }
 
 .nav-link:hover {
