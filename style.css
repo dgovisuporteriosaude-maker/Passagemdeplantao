@@ -25,7 +25,8 @@
   padding: 0;
 }
 
-html, body {
+html,
+body {
   font-family: Arial, Helvetica, sans-serif;
   background: var(--fundo);
   color: var(--texto);
@@ -39,21 +40,21 @@ a {
   text-decoration: none;
 }
 
-/* HEADER ESCURO SEM LINHAS */
+/* HEADER LIMPO SEM LINHAS */
 .site-header {
   position: relative;
   overflow: hidden;
-  background:
-    radial-gradient(circle at top right, rgba(69, 155, 255, 0.10), transparent 28%),
-    radial-gradient(circle at left center, rgba(88, 180, 255, 0.06), transparent 24%),
-    linear-gradient(135deg, #071625 0%, #0a1f36 42%, #123252 100%);
+  background: linear-gradient(135deg, #071625 0%, #0a1f36 42%, #123252 100%) !important;
+  background-image: linear-gradient(135deg, #071625 0%, #0a1f36 42%, #123252 100%) !important;
   color: var(--branco);
   box-shadow: 0 10px 24px rgba(7, 22, 37, 0.24);
 }
 
 .site-header::before,
 .site-header::after {
-  content: none;
+  display: none !important;
+  content: none !important;
+  background: none !important;
 }
 
 .header-inner {
@@ -87,16 +88,16 @@ a {
 .title-box p {
   margin-top: 6px;
   font-size: 14px;
-  color: rgba(255,255,255,.84);
+  color: rgba(255, 255, 255, 0.84);
 }
 
 /* NAVEGAÇÃO */
 .top-nav {
   position: relative;
   z-index: 1;
-  background: rgba(255,255,255,.05);
-  border-top: 1px solid rgba(255,255,255,.12);
-  backdrop-filter: blur(4px);
+  background: rgba(255, 255, 255, 0.04);
+  border-top: 1px solid rgba(255, 255, 255, 0.10);
+  backdrop-filter: none;
 }
 
 .top-nav-inner {
@@ -114,11 +115,11 @@ a {
   border-radius: 10px 10px 0 0;
   font-weight: 700;
   font-size: 14px;
-  transition: background .2s ease, color .2s ease;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
 .nav-link:hover {
-  background: rgba(255,255,255,.10);
+  background: rgba(255, 255, 255, 0.10);
 }
 
 .nav-link.active {
@@ -264,8 +265,13 @@ a {
   height: 14px;
 }
 
-.dot-green { background: var(--verde); }
-.dot-red { background: var(--vermelho); }
+.dot-green {
+  background: var(--verde);
+}
+
+.dot-red {
+  background: var(--vermelho);
+}
 
 .unit-status-grid {
   display: grid;
@@ -293,8 +299,13 @@ a {
   background: #d9e1ea;
 }
 
-.unit-status-bar.present { background: var(--verde); }
-.unit-status-bar.absent { background: var(--vermelho); }
+.unit-status-bar.present {
+  background: var(--verde);
+}
+
+.unit-status-bar.absent {
+  background: var(--vermelho);
+}
 
 .table-box {
   overflow: visible;
