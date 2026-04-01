@@ -20,4 +20,17 @@
     "imagem": "assets/avisos/aviso3.png",
     "link_forms": "https://linktr.ee/dgovi.registrodetreinamentos"
   }
+  {
+    "data": "2026-03-31 11:00",
+    "titulo": "Passagem de plantão",
+    "mensagem": "Reforçamos que o checklist de passagem de plantão deve ser realizado com checagem completa de todos os itens, seguindo obrigatoriamente as instruções descritas em cada etapa.
+
+Não é permitido registrar itens como “operantes” sem a devida verificação. Essa prática compromete a qualidade dos serviços e gera responsabilização ao técnico responsável pelo registro.
+
+Realize a conferência de forma correta, incluindo a contagem dos insumos conforme descrito.
+
+Qualidade e continuidade dos serviços dependem da sua validação correta.",
+    "imagem": "assets/avisos/aviso5.jpg",
+    "link_forms": "https://forms.gle/wcxcUZYypS3HGPU87"
+  }
 ]
