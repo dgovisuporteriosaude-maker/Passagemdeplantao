@@ -1,5 +1,5 @@
 {
-  "atualizadoEm": "2026-05-03T12:04:32.064Z",
+  "atualizadoEm": "2026-05-03T12:14:31.554Z",
   "total": 2642,
   "dados": [
     {
@@ -116233,7 +116233,7 @@
       "IMPRESSORAS": "OPERANTE",
       "Qual problema com impressoras?": "",
       "CFTV": "OPERANTE",
-      "TEMPO DE ARMAZENAMENTO": "Não sou da unidade. Não tenho essa informação.",
+      "TEMPO DE ARMAZENAMENTO": "",
       "Qual problema com CFTV?": "",
       "PULSEIRAS": "2",
       "RIBBON": "24",
